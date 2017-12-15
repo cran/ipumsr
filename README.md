@@ -5,9 +5,15 @@ ipumsr
 
 [![Project Status:Active](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/ipumsr)](http://cran.r-project.org/web/packages/ipumsr) [![Travis-CI Build Status](https://travis-ci.org/mnpopcenter/ipumsr.svg?branch=master)](https://travis-ci.org/mnpopcenter/ipumsr) [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/mnpopcenter/ipumsr?branch=master&svg=true)](https://ci.appveyor.com/project/mnpopcenter/ipumsr) [![Coverage Status](https://codecov.io/gh/mnpopcenter/ipumsr/master.svg)](https://codecov.io/github/mnpopcenter/ipumsr?branch=master)
 
-The ipumsr package helps import IPUMS extracts from the [IPUMS website](https://www.ipums.org) into R. We hope to post a more stable version on CRAN soon.
+The ipumsr package helps import IPUMS extracts from the [IPUMS website](https://www.ipums.org) into R.
 
-The ipumsr package can be installed by running the following commands:
+The ipumsr package is now on CRAN can be installed by running the following command:
+
+``` r
+install.packages("ipumsr")
+```
+
+Or, you can install the development version using the following commands:
 
 ``` r
 if (!require(devtools)) install.packages("devtools")
@@ -22,7 +28,7 @@ There are several vignettes included in the package:
 
 -   **ipums** - Provides general information about using the ipumsr package
 -   **value-labels** - Provides guidance for using the value labels provided by IPUMS
--   **ipums-geograph** - Provides guidance for using R as GIS tool with IPUMS data
+-   **ipums-geography** - Provides guidance for using R as GIS tool with IPUMS data
 -   **ipums-cps** - An example of using CPS data with the ipumsr package
 -   **ipums-nghis** - An example of using NHGIS data with the ipumsr package
 
@@ -57,36 +63,8 @@ Relies on user downloading the .xml DDI file and the .dat/.dat.gz file (doesn't 
 cps_hier_file <- ipums_example("cps_00010.xml")
 ddi <- read_ipums_ddi(cps_hier_file)
 data <- read_ipums_micro(ddi)
-#> Users of IPUMS-CPS data must agree to abide by the conditions of use. A user's
-#> license is valid for one year and may be renewed. Users must agree to the
-#> following conditions:
-#> 
-#> (1) No fees may be charged for use or distribution of the data. All persons are
-#> granted a limited license to use these data, but you may not charge a fee for
-#> the data if you distribute it to others.
-#> 
-#> (2) Cite IPUMS appropriately. For information on proper citation, refer to the
-#> citation requirement section of this DDI document.
-#> 
-#> (3) Tell us about any work you do using the IPUMS. Publications, research
-#> reports, or presentations making use of IPUMS-CPS should be added to our
-#> Bibliography. Continued funding for the IPUMS depends on our ability to show our
-#> sponsor agencies that researchers are using the data for productive purposes.
-#> 
-#> (4) Use it for GOOD -- never for EVIL.
-#> 
-#> Publications and research reports based on the IPUMS-CPS database must cite it
-#> appropriately. The citation should include the following:
-#> 
-#> Sarah Flood, Miriam King, Steven Ruggles, and J. Robert Warren. Integrated
-#> Public Use Microdata Series, Current Population Survey: Version 5.0 [dataset].
-#> Minneapolis, MN: University of Minnesota, 2017. https://doi.org/10.18128/
-#> D030.V5.0
-#> 
-#> The licensing agreement for use of IPUMS-CPS data requires that users supply
-#> us with the title and full citation for any publications, research reports, or
-#> educational materials making use of the data or documentation. Please add your
-#> citation to the IPUMS bibliography: http://bibliography.ipums.org/
+#> Use of data from IPUMS-CPS is subject to conditions including that users should
+#> cite the data appropriately. Use command `ipums_conditions()` for more details.
 #> 
 #> Reading data...
 #> Parsing data...
@@ -205,7 +183,7 @@ if ("geom_sf" %in% getNamespaceExports("ggplot2")) {
 }
 ```
 
-![](man/figures/README-unnamed-chunk-7-1.png)
+![](man/figures/README-nhgis_map-1.png)
 
 ### Terrapop
 
