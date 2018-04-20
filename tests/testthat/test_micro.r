@@ -109,7 +109,18 @@ test_that(
     expect_equal(ncol(cps), 2)
   })
 
-
+test_that(
+  "Arguments n_max and vars work for csv files (#26)", {
+    cps <- read_ipums_micro(
+      ipums_example("cps_00006.xml"),
+      ipums_example("cps_00006.csv.gz"),
+      n_max = 100,
+      vars = c(YEAR, SERIAL),
+      verbose = FALSE
+    )
+    expect_equal(nrow(cps), 100)
+    expect_equal(ncol(cps), 2)
+  })
 
 test_that(
   "Setting argument var_attrs to NULL works", {
@@ -130,3 +141,13 @@ test_that(
     expect_error(read_ipums_micro("FAKE_FILE.xml"), "working directory")
     expect_error(read_ipums_micro("C:/FAKE_FOLDER/FAKE_FILE.xml"), "check the path")
   })
+
+test_that("keyvar is loaded regardless of selection in hierarchical", {
+  cps <- read_ipums_micro_list(
+    ipums_example("cps_00010.xml"),
+    verbose = FALSE,
+    vars = c(STATEFIP, INCTOT)
+  )
+  expect_true("SERIAL" %in% names(cps$HOUSEHOLD))
+  expect_true("SERIAL" %in% names(cps$PERSON))
+})

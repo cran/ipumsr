@@ -75,6 +75,11 @@
 #'   head(cps_list$PERSON)
 #'   head(cps_list$HOUSEHOLD)
 #'
+#'   # Or you can use the \code{%<-%} operator from zeallot to unpack
+#'   c(household, person) %<-% read_ipums_micro_list(cps_hier_ddi_file)
+#'   head(person)
+#'   head(household)
+#'
 #' @family ipums_read
 #' @export
 read_ipums_micro <- function(
@@ -154,12 +159,30 @@ read_ipums_hier <- function(
   if (nrow(rec_vinfo) > 1) stop("Cannot support multiple rectype id variables.", call. = FALSE)
 
   all_vars <- select_var_rows(all_vars, vars)
-  if (!rec_vinfo$var_name %in% all_vars$var_name) {
-    if (verbose && data_structure == "long") {
-      cat(paste0("Adding rectype id var '", rec_vinfo$var_name, "' to data.\n"))
+  if (!rec_vinfo$var_name %in% all_vars$var_name && data_structure == "long") {
+    if (verbose) {
+      cat(paste0("Adding rectype id var '", rec_vinfo$var_name, "' to data.\n\n"))
     }
     all_vars <- dplyr::bind_rows(rec_vinfo, all_vars)
   }
+
+  if (data_structure == "list") {
+    key_vars <- purrr::flatten_chr(ddi$rectypes_keyvars$keyvars)
+    missing_kv <- dplyr::setdiff(key_vars, all_vars$var_name)
+    if (length(missing_kv) > 0) {
+      kv_rows <- select_var_rows(ddi$var_info, rlang::as_quosure(missing_kv))
+
+      if (verbose) {
+        cat(paste0(
+          "Adding cross rectype linking vars ('",
+          paste(missing_kv, collapse = "', '"),
+          "') to data.\n\n"
+        ))
+      }
+      all_vars <- dplyr::bind_rows(kv_rows, all_vars)
+    }
+  }
+
 
   nonrec_vinfo <- dplyr::filter(all_vars, .data$var_name != ddi$rectype_idvar)
   nonrec_vinfo <- tidyr::unnest_(nonrec_vinfo, "rectypes", .drop = FALSE)
@@ -216,7 +239,7 @@ read_ipums_rect <- function(ddi, vars, n_max, data_file, verbose, var_attrs) {
     out
   })
   names(col_types) <- all_vars$var_name
-  col_types <- do.call(readr::cols, col_types)
+  col_types <- do.call(readr::cols_only, col_types)
 
   col_positions <- readr::fwf_positions(
     start = all_vars$start,

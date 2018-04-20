@@ -3,11 +3,7 @@
 # in this project's top-level directory, and also on-line at:
 #   https://github.com/mnpopcenter/ipumsr
 
-# NOTE: These functions are not exported intentionally. They are considered
-# experimental until we work with the TerraPop group to get a more final
-# extract engine.
-
-#' EXPERIMENTAL - Read data from an IPUMS Terra raster extract
+#' Read data from an IPUMS Terra raster extract
 #'
 #' Read a single raster datasets downloaded from the IPUMS Terra extract system using
 #' \code{read_terra_raster}, or read multiple into a list using \code{read_terra_raster_list}.
@@ -22,13 +18,13 @@
 #'  \code{\link{dplyr_select_style}} conventions.
 #' @param verbose Logical, indicating whether to print progress information
 #'   to console.
+#' @export
 #' @examples
 #' \dontrun{
 #' data <- read_terra_raster("2552_bundle.zip", "LCDECIDOPZM2013.tiff")
 #' data <- read_terra_raster_list("2552_bundle.zip", "ZM")
 #' }
 #' @family ipums_read
-#' @keywords internal
 read_terra_raster <- function(
   data_file,
   data_layer = NULL,
@@ -39,6 +35,7 @@ read_terra_raster <- function(
 }
 
 #' @rdname read_terra_raster
+#' @export
 read_terra_raster_list <- function(
   data_file,
   data_layer = NULL,
@@ -71,7 +68,7 @@ read_terra_raster_internal <- function(data_file, data_layer, verbose, multiple_
       if (!multiple_ok) {
         out <- raster::raster(raster_paths)
       } else {
-        out <- purrr::map(raster_paths, ~raster::raster())
+        out <- purrr::map(raster_paths, ~raster::raster(.))
         out <- purrr::set_names(out, stringr::str_sub(basename(raster_paths), 1, -6))
       }
     } else {
@@ -88,7 +85,7 @@ read_terra_raster_internal <- function(data_file, data_layer, verbose, multiple_
     out
   }
 
-#' EXPERIMENTAL - Read data from an IPUMS Terra area extract
+#' Read data from an IPUMS Terra area extract
 #'
 #' Reads a area-level dataset downloaded from the IPUMS Terra extract system.
 #'
@@ -111,6 +108,10 @@ read_terra_raster_internal <- function(data_file, data_layer, verbose, multiple_
 #' @param shape_layer (Defaults to using the same value as data_layer) Specification
 #'   of which shape files to load using the same semantics as \code{data_layer}. Can
 #'   load multiple shape files, which will be combined.
+#' @param shape_encoding The text encoding to use when reading the shape file. Typically
+#'   the defaults should read the data correctly, but for some extracts you may need
+#'   to set them manually, but if funny characters appear in your data, you may need
+#'   to. Defaults to "UTF-8" for IPUMS Terra.
 #' @param ddi_file (Optional) If the download is unzipped, path to the .xml file which
 #'   provides usage and citation information for extract.
 #' @param cb_file (Optional) If the download is unzipped, path to the .txt file which
@@ -120,12 +121,12 @@ read_terra_raster_internal <- function(data_file, data_layer, verbose, multiple_
 #' @param var_attrs Variable attributes to add from the DDI, defaults to
 #'   adding all (val_labels, var_label and var_desc). See
 #'   \code{\link{set_ipums_var_attributes}} for more details.
+#' @export
 #' @examples
 #' \dontrun{
 #' data <- read_terra_area("2553_bundle.zip")
 #' }
 #' @family ipums_read
-#' @keywords internal
 read_terra_area <- function(
   data_file,
   data_layer = NULL,
@@ -156,6 +157,7 @@ read_terra_area <- function(
   # codebook has better variable information
   if (!is.null(ddi) & !is.null(cb)) {
     ddi$var_info <- cb$var_info
+    ddi$ipums_project <- cb$ipums_project
   } else if (is.null(ddi) & !is.null(cb)) {
     ddi <- cb
   } else if (is.null(ddi)) {
@@ -194,11 +196,13 @@ read_terra_area <- function(
 }
 
 #' @rdname read_terra_area
+#' @export
 read_terra_area_sf <- function(
   data_file,
   shape_file = NULL,
   data_layer = NULL,
   shape_layer = data_layer,
+  shape_encoding = "UTF-8",
   ddi_file = NULL,
   cb_file = NULL,
   verbose = TRUE,
@@ -211,40 +215,30 @@ read_terra_area_sf <- function(
   if (quo_text(shape_layer) == "data_layer") shape_layer <- data_layer
 
   if (is.null(shape_file)) shape_file <- data_file
-  shape_data <- read_ipums_sf(shape_file, !!shape_layer, verbose = verbose)
+  shape_data <- read_ipums_sf(
+    shape_file, !!shape_layer, encoding = shape_encoding, verbose = verbose
+  )
 
-  # TODO: This join seems like it is fragile. Is there a better way?
   geo_vars <- unname(dplyr::select_vars(names(data), starts_with("GEO")))
   label_name <- unname(dplyr::select_vars(geo_vars, ends_with("LABEL")))
   id_name <- dplyr::setdiff(geo_vars, label_name)[1]
+  by_vars <- rlang::set_names("GEOID", id_name)
 
-  # Set attributes to be identical to avoid a warning
-  shape_data$LABEL <- rlang::set_attrs(
-    shape_data$LABEL,
-    rlang::splice(attributes(data[[label_name]]))
-  )
-  shape_data$GEOID <- rlang::set_attrs(
-    shape_data$GEOID,
-    rlang::splice(attributes(data[[id_name]]))
-  )
+  # Shape data's label column is not reliable. Sometimes it is cut short
+  # for length, etc. Rely only on the code because it is easier.
+  shape_data$LABEL <- NULL
 
-  if (is.numeric(shape_data$GEOID) & is.integer(data[[id_name]])) {
-    att_temp <- attributes(data[[id_name]])
-    data[[id_name]] <- as.numeric(data[[id_name]])
-    attributes(data[[id_name]]) <- att_temp
-  }
-
-  out <- dplyr::full_join(shape_data, data, by = c(LABEL = label_name, GEOID = id_name))
-  attr(out, "sf_column") <- attr(shape_data, "sf_column")
-  out
+  ipums_shape_inner_join(data, shape_data, by = by_vars)
 }
 
 #' @rdname read_terra_area
+#' @export
 read_terra_area_sp <- function(
   data_file,
   shape_file = NULL,
   data_layer = NULL,
   shape_layer = data_layer,
+  shape_encoding = "UTF-8",
   ddi_file = NULL,
   cb_file = NULL,
   verbose = TRUE,
@@ -259,20 +253,16 @@ read_terra_area_sp <- function(
   if (is.null(shape_file)) shape_file <- data_file
   shape_data <- read_ipums_sp(shape_file, !!shape_layer, verbose = verbose)
 
-  # TODO: This join seems like it is fragile. Is there a better way?
+  # Shape data's label column is not reliable. Sometimes it is cut short
+  # for length, etc. Rely only on the code because it is easier.
+  shape_data$LABEL <- NULL
+
   geo_vars <- unname(dplyr::select_vars(names(data), starts_with("GEO")))
   label_name <- unname(dplyr::select_vars(geo_vars, ends_with("LABEL")))
   id_name <- dplyr::setdiff(geo_vars, label_name)[1]
+  by_vars <- rlang::set_names("GEOID", id_name)
 
-
-  out <- sp::merge(
-    shape_data,
-    data,
-    by.x = c("LABEL", "GEOID"),
-    by.y = c(label_name, id_name)
-  )
-
-  out
+  ipums_shape_inner_join(data, shape_data, by = by_vars)
 }
 
 #' Read data from an IPUMS Terra microdata extract
@@ -280,41 +270,35 @@ read_terra_area_sp <- function(
 #' Reads a microdata dataset downloaded from the IPUMS Terra extract system.
 #'
 #' @return
-#'   \code{read_terra_micro} returns a \code{tbl_df} with the tabular data,
-#'   \code{read_terra_micro_sf} returns a \code{sf} object with tabular data and shapes,
-#'   and \code{read_terra_micro_sp} returns a \code{SpatialPolygonsDataFrame} with
-#'   data and shapes.
+#'   \code{read_terra_micro} returns a \code{tbl_df} with the tabular data. Use
+#'   \code{\link{read_ipums_sf}} or \code{\link{read_ipums_sp}} to read shape
+#'   data out of a microdata Terra extract.
 #' @param data_file Path to the data file, which can either be the .zip file directly
 #'   downloaded from the IPUMS Terra website, a path to the unzipped version of that
 #'   folder, or to the csv unzipped from the download.
 #' @param ddi_file (Optional) If the download is unzipped, path to the .xml file which
 #'   provides usage and citation information for extract.
-#' @param shape_file (Optional) If the download is unzipped, path to the .zip
-#'   (unzipped path) or .shp file representing the the shape file. If only the
-#'   data table is needed, can be set to FALSE to indicate not to load the shape
-#'   file.
 #' @param data_layer For .zip extracts with multiple datasets, the name of the
 #'   data to load. Accepts a character vector specifying the file name, or
 #'  \code{\link{dplyr_select_style}} conventions. Data layer must uniquely identify
 #'  a dataset.
-#' @param shape_layer Specification
-#'   of which shape files to load using the same semantics as \code{data_layer}. Can
-#'   load multiple shape files, which will be combined.
+#' @param n_max Maximum number of observations to read from the data
 #' @param verbose Logical, indicating whether to print progress information
 #'   to console.
 #' @param var_attrs Variable attributes to add from the DDI, defaults to
 #'   adding all (val_labels, var_label and var_desc). See
 #'   \code{\link{set_ipums_var_attributes}} for more details.
+#' @export
 #' @examples
 #' \dontrun{
 #' data <- read_terra_micro("2553_bundle.zip")
 #' }
 #' @family ipums_read
-#' @keywords internal
 read_terra_micro <- function(
   data_file,
   ddi_file = NULL,
   data_layer = NULL,
+  n_max = Inf,
   verbose = TRUE,
   var_attrs = c("val_labels", "var_label", "var_desc")
 ) {
@@ -331,6 +315,7 @@ read_terra_micro <- function(
   } else {
     ddi <- terra_empty_ddi
   }
+  if (is.na(ddi$ipums_project)) ddi$ipums_project <- "IPUMS Terra"
 
   if (verbose) custom_cat(short_conditions_text(ddi))
 
@@ -373,6 +358,7 @@ read_terra_micro <- function(
   data <- readr::read_csv(
     read_data,
     col_types = var_types,
+    n_max = n_max,
     na = "null",
     locale = ipums_locale(ddi$file_encoding),
     progress = show_readr_progress(verbose)
@@ -391,66 +377,9 @@ read_terra_micro <- function(
 }
 
 
-#' @rdname read_terra_micro
-read_terra_micro_sf <- function(
-  data_file,
-  ddi_file = NULL,
-  shape_file = NULL,
-  data_layer = NULL,
-  shape_layer = NULL,
-  verbose = TRUE,
-  var_attrs = c("val_labels", "var_label", "var_desc")
-) {
-  shape_layer <- enquo(shape_layer)
-
-  data <- read_terra_micro(data_file, ddi_file, !!enquo(data_layer), verbose, var_attrs)
-
-  data_is_zip_or_path <- path_is_zip_or_dir(data_file)
-  if (data_is_zip_or_path & is.null(shape_file)) shape_file <- data_file
-
-  shape_data <- read_ipums_sf(shape_file, !!shape_layer, verbose = verbose)
-
-  geo_var <- unname(dplyr::select_vars(names(data), starts_with("GEO")))[1]
-  shape_data[[geo_var]] <- shape_data$GEOID
-
-  out <- list(
-    data = data,
-    shape = shape_data
-  )
-  out
-}
-
-#' @rdname read_terra_micro
-read_terra_micro_sp <- function(
-  data_file,
-  ddi_file = NULL,
-  shape_file = NULL,
-  data_layer = NULL,
-  shape_layer = NULL,
-  verbose = TRUE,
-  var_attrs = c("val_labels", "var_label", "var_desc")
-) {
-  shape_layer <- enquo(shape_layer)
-
-  data <- read_terra_micro(data_file, ddi_file, !!enquo(data_layer), verbose, var_attrs)
-
-  data_is_zip_or_path <- path_is_zip_or_dir(data_file)
-  if (data_is_zip_or_path & is.null(shape_file)) shape_file <- data_file
-
-  shape_data <- read_ipums_sp(shape_file, !!shape_layer, verbose = verbose)
-
-  geo_var <- unname(dplyr::select_vars(names(data), starts_with("GEO")))[1]
-  shape_data@data[[geo_var]] <- shape_data@data$GEOID
-
-  out <- list(
-    data = data,
-    shape = shape_data
-  )
-  out
-}
-
 # Fills in a default condition if we can't find ddi for terra
 terra_empty_ddi <- make_ddi_from_scratch(
+  ipums_project = "IPUMS Terra",
   file_type = "rectangular",
   conditions = paste0(
     "Use of IPUMS Terra data is subject to conditions, including that ",

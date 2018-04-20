@@ -9,6 +9,7 @@ knitr::opts_chunk$set(
 #  vignette("ipums-geography", package = "ipumsr")
 #  vignette("ipums-cps", package = "ipumsr")
 #  vignette("ipums-nhgis", package = "ipumsr")
+#  vignette("ipums-terra", package = "ipumsr")
 
 ## ------------------------------------------------------------------------
 library(ipumsr)
@@ -29,7 +30,7 @@ ipums_val_labels(cps_data$STATEFIP)
 
 # Convert the labels to factors (and drop the unused levels)
 cps_data <- cps_data %>%
-  mutate(STATE_factor = droplevels(as_factor(STATEFIP)))
+  mutate(STATE_factor = as_factor(lbl_clean(STATEFIP)))
 
 table(cps_data$STATE_factor, useNA = "always")
 
@@ -41,12 +42,10 @@ cps_data <- cps_data %>%
   mutate(STATE_factor2 = as_factor(ifelse(STATEFIP == 19, NA, STATEFIP)))
 
 ## ------------------------------------------------------------------------
-# Currently the best solution is to convert to factor first, then manipulate using
-# factor. We hope to improve this.
+# ipumsr provides helpers for these kinds of tasks, like lbl_na_if().
+# See the value-labels vignette for more information
 cps_data <- cps_data %>%
-  mutate(STATE_factor3 = droplevels(as_factor(STATEFIP), "Iowa"))
-
-table(cps_data$STATE_factor3, useNA = "always")
+  mutate(STATE_factor3 = as_factor(lbl_na_if(STATEFIP, ~.val == 19)))
 
 # The as_factor function also has a "levels" argument that can 
 # put both the labels and values into the factor

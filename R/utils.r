@@ -68,7 +68,7 @@ find_files_in <- function(
 #'
 #' Add variable attributes from an IPUMS DDI to the variables in a data.frame.
 #' This function is usually called automatically for you inside of the read_*
-#' functions (such as read_ipums_micro or read_ipums_nhgis), but they can
+#' functions (such as read_ipums_micro or read_nhgis), but they can
 #' be useful other times as well. For example, if you store the data in
 #' a database, you can store the data without attributes in the database
 #' and add them on after loading a subset into a data.frame.
@@ -78,7 +78,7 @@ find_files_in <- function(
 #'
 #' Attribute \code{var_label} Adds a short summary of the variable's
 #' contents that to the attribute "label". This label is viewable in the
-#' Rstudio Viewer.
+#' RStudio Viewer.
 #'
 #' Attribute \code{var_desc} Adds a longer summary of the variable's
 #' contents to the attribute "var_desc" when available.
@@ -242,14 +242,22 @@ tbl_print_for_message <- function(x, n = 5) {
 #       Can't use it directly because parse_number ignores when there
 #       are letters and numbers, while readr::parse_guess thinks leading
 #       0's means it is string.
-custom_parse_double <- function(x) {
+custom_parse_double <- function(x, var_msg_info = "variable") {
   converted <- suppressWarnings(as.double(x))
-  if (all(is.na(converted) == is.na(x))) return(converted) else return(x)
+  if (all(is.na(converted) == is.na(x))) {
+    return(converted)
+  } else {
+    stop("Could not convert ", var_msg_info, " from text to numeric.")
+  }
 }
 
-custom_parse_integer <- function(x) {
+custom_parse_integer <- function(x, var_msg_info = "variable") {
   converted <- suppressWarnings(readr::parse_integer(x))
-  if (all(is.na(converted) == is.na(x))) return(converted) else return(x)
+  if (all(is.na(converted) == is.na(x))) {
+    return(converted)
+  } else {
+    stop("Could not convert ", var_msg_info, " from text to integer.")
+  }
 }
 
 
@@ -303,3 +311,17 @@ path_is_zip_or_dir <- function(file) {
   ext == "zip" || ext == ""
 }
 
+
+release_questions <- function() {
+  c(
+    paste0(
+      "Do you have the ipumsexample installed? Install using ",
+      "devtools::install_github('mnpopcenter/ipumsr/ipumsexample')"
+    ),
+    paste0(
+      "Do you have the IPUMS Terra examples installed? From MPC, install ",
+      "using devtools::install_local('/pkg/ipums/personal/gfellis/ipumsr-misc/terraexample"
+    ),
+    "Have you spellchecked the whole package using spelling::spell_check_package()"
+  )
+}

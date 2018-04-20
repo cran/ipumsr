@@ -12,7 +12,7 @@
 
 <meta name="author" content="Minnesota Population Center" />
 
-<meta name="date" content="2017-12-15" />
+<meta name="date" content="2018-04-20" />
 
 <title>Value Labels</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Value Labels</h1>
 <h4 class="author"><em>Minnesota Population Center</em></h4>
-<h4 class="date"><em>2017-12-15</em></h4>
+<h4 class="date"><em>2018-04-20</em></h4>
 
 
 
@@ -293,20 +293,20 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">cps</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; # A tibble: 10,883 x 13</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;     YEAR SERIAL HWTSUPP  STATEFIP  ASECFLAG     MONTH PERNUM  WTSUPP</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;int+lbl&gt; &lt;int+lbl&gt; &lt;int+lbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;  1  2016  24138 3249.07        55         1         3      1 3249.07</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  2  2016  24139 3154.25        55         1         3      1 3154.25</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  3  2016  24139 3154.25        55         1         3      2 3154.25</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  4  2016  24140 1652.37        55         1         3      1 1652.37</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  5  2016  24140 1652.37        55         1         3      2 1502.68</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  6  2016  24140 1652.37        55         1         3      3 1652.37</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;  7  2016  24141 3049.23        55         1         3      1 3049.23</span></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;  8  2016  24142 1636.77        55         1         3      1 1636.77</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;  9  2016  24142 1636.77        55         1         3      2 1636.77</span></a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; 10  2016  24142 1636.77        55         1         3      3 1887.04</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; # ... with 10,873 more rows, and 5 more variables: AGE &lt;int+lbl&gt;,</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; #   EDUC &lt;int+lbl&gt;, INCTOT &lt;dbl+lbl&gt;, HEALTH &lt;int+lbl&gt;, MIGRATE1 &lt;int+lbl&gt;</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;     YEAR SERIAL HWTSUPP STATEFIP  ASECFLAG MONTH PERNUM WTSUPP AGE   EDUC </span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;int+lbl&gt; &lt;int+lb&gt; &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt;  1 2016. 24138.   3249. 55        1        3         1.  3249. 54    73   </span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt;  2 2016. 24139.   3154. 55        1        3         1.  3154. 54    73   </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;  3 2016. 24139.   3154. 55        1        3         2.  3154. 52    73   </span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt;  4 2016. 24140.   1652. 55        1        3         1.  1652. 38    60   </span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt;  5 2016. 24140.   1652. 55        1        3         2.  1503. 15    10   </span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#&gt;  6 2016. 24140.   1652. 55        1        3         3.  1652. 38    73   </span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co">#&gt;  7 2016. 24141.   3049. 55        1        3         1.  3049. 85    30   </span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co">#&gt;  8 2016. 24142.   1637. 55        1        3         1.  1637. 27    111  </span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="co">#&gt;  9 2016. 24142.   1637. 55        1        3         2.  1637. 27    111  </span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; 10 2016. 24142.   1637. 55        1        3         3.  1887. 2     1    </span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co">#&gt; # ... with 10,873 more rows, and 3 more variables: INCTOT &lt;dbl+lbl&gt;,</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; #   HEALTH &lt;int+lbl&gt;, MIGRATE1 &lt;int+lbl&gt;</span></a></code></pre></div>
 <p>The first clue that some of the variables are labelled is the <code>&lt;dbl+lbl&gt;</code> that appear below <code>STATEFIP</code>, <code>ASECFLAG</code> and other variables. The tibble package prints the variable’s type information below the variable name, and this “+lbl” indicates that the variable uses the <code>labelled</code> type. You also can use the <code>is.labelled()</code> function to check if a variable is labelled.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">is.labelled</span>(cps<span class="op">$</span>STATEFIP)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; [1] TRUE</span></a>
@@ -339,20 +339,20 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># Just get the labels</span></a>
 <a class="sourceLine" id="cb3-22" data-line-number="22"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>MONTH)</a>
 <a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; # A tibble: 12 x 2</span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt;      val       lbl</span></a>
-<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt;    &lt;dbl&gt;     &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt;  1     1   January</span></a>
-<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt;  2     2  February</span></a>
-<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt;  3     3     March</span></a>
-<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">#&gt;  4     4     April</span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt;  5     5       May</span></a>
-<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">#&gt;  6     6      June</span></a>
-<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt;  7     7      July</span></a>
-<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt;  8     8    August</span></a>
-<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt;  9     9 September</span></a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; 10    10   October</span></a>
-<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; 11    11  November</span></a>
-<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; 12    12  December</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt;      val lbl      </span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;    </span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt;  1    1. January  </span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt;  2    2. February </span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt;  3    3. March    </span></a>
+<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co">#&gt;  4    4. April    </span></a>
+<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="co">#&gt;  5    5. May      </span></a>
+<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co">#&gt;  6    6. June     </span></a>
+<a class="sourceLine" id="cb3-32" data-line-number="32"><span class="co">#&gt;  7    7. July     </span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt;  8    8. August   </span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt;  9    9. September</span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; 10   10. October  </span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; 11   11. November </span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; 12   12. December</span></a>
 <a class="sourceLine" id="cb3-38" data-line-number="38"></a>
 <a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co"># or if you're working interactively you can use ipums_view</span></a>
 <a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co"># ipums_view(ddi)</span></a></code></pre></div>
@@ -398,13 +398,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Though the labelled class does express all of the meaning provided by IPUMS value labels into R, many R functions cannot use them or even actively remove them from the data.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>HEALTH)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 2</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;     val       lbl</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;     &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1     1 Excellent</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2     2 Very good</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3     3      Good</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 4     4      Fair</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 5     5      Poor</span></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt;     val lbl      </span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;    </span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; 1    1. Excellent</span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; 2    2. Very good</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; 3    3. Good     </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; 4    4. Fair     </span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; 5    5. Poor</span></a>
 <a class="sourceLine" id="cb6-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11">HEALTH2 &lt;-<span class="st"> </span><span class="kw">ifelse</span>(cps<span class="op">$</span>HEALTH <span class="op">&gt;</span><span class="st"> </span><span class="dv">3</span>, <span class="dv">3</span>, cps<span class="op">$</span>HEALTH)</a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="kw">ipums_val_labels</span>(HEALTH2)</a>
@@ -430,13 +430,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The HEALTH variable is structured just like a factor and so can be converted directly. The <code>as_factor()</code> function is the easiest way to do so.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>HEALTH)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 2</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;     val       lbl</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;     &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1     1 Excellent</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2     2 Very good</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3     3      Good</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 4     4      Fair</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; 5     5      Poor</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;     val lbl      </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;    </span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; 1    1. Excellent</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; 2    2. Very good</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; 3    3. Good     </span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; 4    4. Fair     </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; 5    5. Poor</span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10">cps<span class="op">$</span>HEALTH &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>HEALTH)</a></code></pre></div>
 <p>The ASECFLAG and MONTH variables can also be converted directly (these were included by default by the IPUMS extract engine, but aren’t useful here because this data set only has respondents from ASEC in March)</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">cps<span class="op">$</span>ASECFLAG &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>ASECFLAG)</a>
@@ -454,30 +454,30 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>This extract only contains data from a few states and I don’t want the factor to have a level for the unused ones. The <code>lbl_clean()</code> function keeps only labels for values in the current data set and returns a labelled variable which we can convert to a factor.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>STATEFIP)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; # A tibble: 75 x 2</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;      val                  lbl</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;                &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1     1              Alabama</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2     2               Alaska</span></a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3     4              Arizona</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4     5             Arkansas</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5     6           California</span></a>
-<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6     8             Colorado</span></a>
-<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7     9          Connecticut</span></a>
-<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8    10             Delaware</span></a>
-<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9    11 District of Columbia</span></a>
-<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10    12              Florida</span></a>
+<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;      val lbl                 </span></a>
+<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;               </span></a>
+<a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co">#&gt;  1    1. Alabama             </span></a>
+<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="co">#&gt;  2    2. Alaska              </span></a>
+<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="co">#&gt;  3    4. Arizona             </span></a>
+<a class="sourceLine" id="cb10-8" data-line-number="8"><span class="co">#&gt;  4    5. Arkansas            </span></a>
+<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="co">#&gt;  5    6. California          </span></a>
+<a class="sourceLine" id="cb10-10" data-line-number="10"><span class="co">#&gt;  6    8. Colorado            </span></a>
+<a class="sourceLine" id="cb10-11" data-line-number="11"><span class="co">#&gt;  7    9. Connecticut         </span></a>
+<a class="sourceLine" id="cb10-12" data-line-number="12"><span class="co">#&gt;  8   10. Delaware            </span></a>
+<a class="sourceLine" id="cb10-13" data-line-number="13"><span class="co">#&gt;  9   11. District of Columbia</span></a>
+<a class="sourceLine" id="cb10-14" data-line-number="14"><span class="co">#&gt; 10   12. Florida             </span></a>
 <a class="sourceLine" id="cb10-15" data-line-number="15"><span class="co">#&gt; # ... with 65 more rows</span></a>
 <a class="sourceLine" id="cb10-16" data-line-number="16">cps<span class="op">$</span>STATEFIP &lt;-<span class="st"> </span><span class="kw">lbl_clean</span>(cps<span class="op">$</span>STATEFIP)</a>
 <a class="sourceLine" id="cb10-17" data-line-number="17"></a>
 <a class="sourceLine" id="cb10-18" data-line-number="18"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>STATEFIP)</a>
 <a class="sourceLine" id="cb10-19" data-line-number="19"><span class="co">#&gt; # A tibble: 5 x 2</span></a>
-<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt;     val          lbl</span></a>
-<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt;   &lt;dbl&gt;        &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt; 1    19         Iowa</span></a>
-<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt; 2    27    Minnesota</span></a>
-<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; 3    38 North Dakota</span></a>
-<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt; 4    46 South Dakota</span></a>
-<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt; 5    55    Wisconsin</span></a>
+<a class="sourceLine" id="cb10-20" data-line-number="20"><span class="co">#&gt;     val lbl         </span></a>
+<a class="sourceLine" id="cb10-21" data-line-number="21"><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;       </span></a>
+<a class="sourceLine" id="cb10-22" data-line-number="22"><span class="co">#&gt; 1   19. Iowa        </span></a>
+<a class="sourceLine" id="cb10-23" data-line-number="23"><span class="co">#&gt; 2   27. Minnesota   </span></a>
+<a class="sourceLine" id="cb10-24" data-line-number="24"><span class="co">#&gt; 3   38. North Dakota</span></a>
+<a class="sourceLine" id="cb10-25" data-line-number="25"><span class="co">#&gt; 4   46. South Dakota</span></a>
+<a class="sourceLine" id="cb10-26" data-line-number="26"><span class="co">#&gt; 5   55. Wisconsin</span></a>
 <a class="sourceLine" id="cb10-27" data-line-number="27">cps<span class="op">$</span>STATEFIP &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>STATEFIP)</a></code></pre></div>
 </section>
 <section id="lbl_na_if" class="level2">
@@ -489,10 +489,10 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># exponential format (1e+08) but that's not how they are actually stored</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>INCTOT)</a>
 <a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt; # A tibble: 2 x 2</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;     val                       lbl</span></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;   &lt;dbl&gt;                     &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; 1 1e+08                  Missing.</span></a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 2 1e+08 N.I.U. (Not in Universe).</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;         val lbl                      </span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;                    </span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; 1 99999998. Missing.                 </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 2 99999999. N.I.U. (Not in Universe).</span></a>
 <a class="sourceLine" id="cb11-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co"># All of these are equivalent</span></a>
 <a class="sourceLine" id="cb11-11" data-line-number="11">INCTOT1 &lt;-<span class="st"> </span><span class="kw">lbl_na_if</span>(cps<span class="op">$</span>INCTOT, <span class="op">~</span>.val <span class="op">&gt;=</span><span class="st"> </span><span class="dv">99999990</span>)</a>
@@ -513,40 +513,40 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>Let’s say that I only care about those more general categories provided by the first 2 digits. The <code>lbl_collapse()</code> function allows me to provide a function that takes .val and .lbl and returns the value to assign it to. If that code is already used, then the all of the values assigned to it will get that label, otherwise the label of the smallest value is used. Just like with <code>lbl_na_if()</code>, the purrr-style compact syntax using <code>~</code> functions is supported.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>EDUC)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; # A tibble: 36 x 2</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;      val                  lbl</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;                &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1     0  NIU or no schooling</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2     1         NIU or blank</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3     2    None or preschool</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4    10 Grades 1, 2, 3, or 4</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5    11              Grade 1</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6    12              Grade 2</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7    13              Grade 3</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8    14              Grade 4</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9    20        Grades 5 or 6</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10    21              Grade 5</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;      val lbl                 </span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;               </span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;  1    0. NIU or no schooling </span></a>
+<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;  2    1. NIU or blank        </span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;  3    2. None or preschool   </span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  4   10. Grades 1, 2, 3, or 4</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  5   11. Grade 1             </span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  6   12. Grade 2             </span></a>
+<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  7   13. Grade 3             </span></a>
+<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  8   14. Grade 4             </span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  9   20. Grades 5 or 6       </span></a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; 10   21. Grade 5             </span></a>
 <a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; # ... with 26 more rows</span></a>
 <a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co"># %/% is integer division, which divides by the number but doesn't keep the remainder</span></a>
 <a class="sourceLine" id="cb12-17" data-line-number="17">cps<span class="op">$</span>EDUC &lt;-<span class="st"> </span><span class="kw">lbl_collapse</span>(cps<span class="op">$</span>EDUC, <span class="op">~</span>.val <span class="op">%/%</span><span class="st"> </span><span class="dv">10</span>)</a>
 <a class="sourceLine" id="cb12-18" data-line-number="18"></a>
 <a class="sourceLine" id="cb12-19" data-line-number="19"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>EDUC)</a>
 <a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; # A tibble: 14 x 2</span></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt;      val                  lbl</span></a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt;    &lt;dbl&gt;                &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt;  1     0  NIU or no schooling</span></a>
-<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt;  2     1 Grades 1, 2, 3, or 4</span></a>
-<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt;  3     2        Grades 5 or 6</span></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt;  4     3        Grades 7 or 8</span></a>
-<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt;  5     4              Grade 9</span></a>
-<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt;  6     5             Grade 10</span></a>
-<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt;  7     6             Grade 11</span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt;  8     7             Grade 12</span></a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt;  9     8    1 year of college</span></a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; 10     9   2 years of college</span></a>
-<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#&gt; 11    10   3 years of college</span></a>
-<a class="sourceLine" id="cb12-34" data-line-number="34"><span class="co">#&gt; 12    11   4 years of college</span></a>
-<a class="sourceLine" id="cb12-35" data-line-number="35"><span class="co">#&gt; 13    12  5+ years of college</span></a>
-<a class="sourceLine" id="cb12-36" data-line-number="36"><span class="co">#&gt; 14    99      Missing/Unknown</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt;      val lbl                 </span></a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;               </span></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt;  1    0. NIU or no schooling </span></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt;  2    1. Grades 1, 2, 3, or 4</span></a>
+<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt;  3    2. Grades 5 or 6       </span></a>
+<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt;  4    3. Grades 7 or 8       </span></a>
+<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt;  5    4. Grade 9             </span></a>
+<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt;  6    5. Grade 10            </span></a>
+<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt;  7    6. Grade 11            </span></a>
+<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt;  8    7. Grade 12            </span></a>
+<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt;  9    8. 1 year of college   </span></a>
+<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; 10    9. 2 years of college  </span></a>
+<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#&gt; 11   10. 3 years of college  </span></a>
+<a class="sourceLine" id="cb12-34" data-line-number="34"><span class="co">#&gt; 12   11. 4 years of college  </span></a>
+<a class="sourceLine" id="cb12-35" data-line-number="35"><span class="co">#&gt; 13   12. 5+ years of college </span></a>
+<a class="sourceLine" id="cb12-36" data-line-number="36"><span class="co">#&gt; 14   99. Missing/Unknown</span></a>
 <a class="sourceLine" id="cb12-37" data-line-number="37"></a>
 <a class="sourceLine" id="cb12-38" data-line-number="38">cps<span class="op">$</span>EDUC &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>EDUC)</a></code></pre></div>
 </section>
@@ -556,16 +556,16 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>The <code>lbl_relabel()</code> function provides a more flexible way to group existing labelled values into new ones. It takes a two-sided formula, where the left-hand side is a label (defined with the <code>lbl()</code> function) and the right hand side is an expression that can use .val and .lbl to evaluate to a logical indicating which values should be assigned to this label.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>MIGRATE1)</a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#&gt; # A tibble: 8 x 2</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt;     val                                  lbl</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt;                                &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 1     0                                  NIU</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 2     1                           Same house</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 3     2  Different house, place not reported</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 4     3                  Moved within county</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; 5     4 Moved within state, different county</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; 6     5                 Moved between states</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; 7     6                               Abroad</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 8     9                              Unknown</span></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt;     val lbl                                 </span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;                               </span></a>
+<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 1    0. NIU                                 </span></a>
+<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; 2    1. Same house                          </span></a>
+<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; 3    2. Different house, place not reported </span></a>
+<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt; 4    3. Moved within county                 </span></a>
+<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; 5    4. Moved within state, different county</span></a>
+<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt; 6    5. Moved between states                </span></a>
+<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt; 7    6. Abroad                              </span></a>
+<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt; 8    9. Unknown</span></a>
 <a class="sourceLine" id="cb13-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb13-14" data-line-number="14">cps<span class="op">$</span>MIGRATE1 &lt;-<span class="st"> </span><span class="kw">lbl_relabel</span>(</a>
 <a class="sourceLine" id="cb13-15" data-line-number="15">  cps<span class="op">$</span>MIGRATE1,</a>
@@ -575,12 +575,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb13-19" data-line-number="19"></a>
 <a class="sourceLine" id="cb13-20" data-line-number="20"><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>MIGRATE1)</a>
 <a class="sourceLine" id="cb13-21" data-line-number="21"><span class="co">#&gt; # A tibble: 4 x 2</span></a>
-<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="co">#&gt;     val                     lbl</span></a>
-<a class="sourceLine" id="cb13-23" data-line-number="23"><span class="co">#&gt;   &lt;dbl&gt;                   &lt;chr&gt;</span></a>
-<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="co">#&gt; 1     0 NIU / Missing / Unknown</span></a>
-<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="co">#&gt; 2     1         Stayed in state</span></a>
-<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="co">#&gt; 3     5    Moved between states</span></a>
-<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="co">#&gt; 4     6                  Abroad</span></a>
+<a class="sourceLine" id="cb13-22" data-line-number="22"><span class="co">#&gt;     val lbl                    </span></a>
+<a class="sourceLine" id="cb13-23" data-line-number="23"><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;                  </span></a>
+<a class="sourceLine" id="cb13-24" data-line-number="24"><span class="co">#&gt; 1    0. NIU / Missing / Unknown</span></a>
+<a class="sourceLine" id="cb13-25" data-line-number="25"><span class="co">#&gt; 2    1. Stayed in state        </span></a>
+<a class="sourceLine" id="cb13-26" data-line-number="26"><span class="co">#&gt; 3    5. Moved between states   </span></a>
+<a class="sourceLine" id="cb13-27" data-line-number="27"><span class="co">#&gt; 4    6. Abroad</span></a>
 <a class="sourceLine" id="cb13-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb13-29" data-line-number="29">cps<span class="op">$</span>MIGRATE1 &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>MIGRATE1)</a></code></pre></div>
 </section>
