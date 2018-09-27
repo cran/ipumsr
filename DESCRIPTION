@@ -1,6 +1,6 @@
 Package: ipumsr
 Title: Read 'IPUMS' Extract Files
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(
   person("Greg Freedman Ellis", email = "gfellis@umn.edu", role = c("aut", "cre")), 
   person("Derek Burk", role = "ctb"),
@@ -17,19 +17,21 @@ Description: An easy way to import census, survey and geographic data provided b
 License: Mozilla Public License 2.0
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr (>= 0.7.0), haven, purrr, raster, readr, rlang, stringr,
-        tibble, tidyr, xml2, Rcpp, zeallot
-RoxygenNote: 6.0.1
+Imports: cli, crayon, dplyr (>= 0.7.0), haven, hipread, pillar, purrr,
+        R6, raster, readr, rlang, stringr, tibble, tidyr, xml2, Rcpp,
+        zeallot
+RoxygenNote: 6.1.0
 Suggests: DT, ggplot2, htmltools, knitr, rgdal, rmarkdown, rstudioapi,
-        scales, sf, sp, shiny, testthat, covr
+        scales, sf, sp, shiny, testthat, covr, biglm, DBI, RSQLite,
+        dbplyr
 VignetteBuilder: knitr
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2018-04-20 17:16:33 UTC; gfellis
+Packaged: 2018-09-27 14:03:14 UTC; gfellis
 Author: Greg Freedman Ellis [aut, cre],
   Derek Burk [ctb],
   Joe Grover [ctb],
   Minnesota Population Center [cph]
 Maintainer: Greg Freedman Ellis <gfellis@umn.edu>
 Repository: CRAN
-Date/Publication: 2018-04-20 17:31:30 UTC
+Date/Publication: 2018-09-27 15:00:03 UTC

@@ -12,10 +12,6 @@ cps <- read_ipums_micro(ddi, verbose = FALSE)
 cps
 
 ## ------------------------------------------------------------------------
-is.labelled(cps$STATEFIP)
-sapply(cps, is.labelled)
-
-## ------------------------------------------------------------------------
 # Printing the variable directly (or a subset)
 head(cps$MONTH)
 

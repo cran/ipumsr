@@ -5,44 +5,16 @@
 
 using namespace Rcpp;
 
-// raw_to_df_hier_list
-RObject raw_to_df_hier_list(List raw_, List rt_info_, List var_info_, CharacterVector encoding_);
-RcppExport SEXP _ipumsr_raw_to_df_hier_list(SEXP raw_SEXP, SEXP rt_info_SEXP, SEXP var_info_SEXP, SEXP encoding_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type raw_(raw_SEXP);
-    Rcpp::traits::input_parameter< List >::type rt_info_(rt_info_SEXP);
-    Rcpp::traits::input_parameter< List >::type var_info_(var_info_SEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type encoding_(encoding_SEXP);
-    rcpp_result_gen = Rcpp::wrap(raw_to_df_hier_list(raw_, rt_info_, var_info_, encoding_));
-    return rcpp_result_gen;
-END_RCPP
-}
-// raw_to_df_hier_long
-RObject raw_to_df_hier_long(List raw_, int num_vars, List rt_info_, List var_info_, CharacterVector encoding_);
-RcppExport SEXP _ipumsr_raw_to_df_hier_long(SEXP raw_SEXP, SEXP num_varsSEXP, SEXP rt_info_SEXP, SEXP var_info_SEXP, SEXP encoding_SEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type raw_(raw_SEXP);
-    Rcpp::traits::input_parameter< int >::type num_vars(num_varsSEXP);
-    Rcpp::traits::input_parameter< List >::type rt_info_(rt_info_SEXP);
-    Rcpp::traits::input_parameter< List >::type var_info_(var_info_SEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type encoding_(encoding_SEXP);
-    rcpp_result_gen = Rcpp::wrap(raw_to_df_hier_long(raw_, num_vars, rt_info_, var_info_, encoding_));
-    return rcpp_result_gen;
-END_RCPP
-}
 // set_ipums_var_attributes_
-DataFrame set_ipums_var_attributes_(DataFrame x, DataFrame var_info);
-RcppExport SEXP _ipumsr_set_ipums_var_attributes_(SEXP xSEXP, SEXP var_infoSEXP) {
+DataFrame set_ipums_var_attributes_(DataFrame x, DataFrame var_info, bool haven_v2);
+RcppExport SEXP _ipumsr_set_ipums_var_attributes_(SEXP xSEXP, SEXP var_infoSEXP, SEXP haven_v2SEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< DataFrame >::type x(xSEXP);
     Rcpp::traits::input_parameter< DataFrame >::type var_info(var_infoSEXP);
-    rcpp_result_gen = Rcpp::wrap(set_ipums_var_attributes_(x, var_info));
+    Rcpp::traits::input_parameter< bool >::type haven_v2(haven_v2SEXP);
+    rcpp_result_gen = Rcpp::wrap(set_ipums_var_attributes_(x, var_info, haven_v2));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -60,9 +32,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_ipumsr_raw_to_df_hier_list", (DL_FUNC) &_ipumsr_raw_to_df_hier_list, 4},
-    {"_ipumsr_raw_to_df_hier_long", (DL_FUNC) &_ipumsr_raw_to_df_hier_long, 5},
-    {"_ipumsr_set_ipums_var_attributes_", (DL_FUNC) &_ipumsr_set_ipums_var_attributes_, 2},
+    {"_ipumsr_set_ipums_var_attributes_", (DL_FUNC) &_ipumsr_set_ipums_var_attributes_, 3},
     {"_ipumsr_set_imp_decim_", (DL_FUNC) &_ipumsr_set_imp_decim_, 2},
     {NULL, NULL, 0}
 };

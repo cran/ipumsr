@@ -12,6 +12,7 @@ test_that("Terra raster works", {
     skip("Couldn't find raster example file. ipumsexamples likely not installed.")
   }
   skip_if_not_installed("raster")
+  skip_if_not_installed("rgdal")
   raster <- read_terra_raster_list(raster_file, verbose = FALSE)
 
   expect_equal(length(raster), 22)
@@ -27,7 +28,10 @@ test_that("Terra micro works", {
 
   micro <- read_terra_micro(micro_file, verbose = FALSE)
 
-  expect_s3_class(micro$COUNTRY, "labelled")
+  expect_true(
+    inherits(micro$COUNTRY, "haven_labelled") | # haven v2 compatibility
+      inherits(micro$COUNTRY, "labelled")
+  )
 })
 
 test_that("Terra area works (sf)", {

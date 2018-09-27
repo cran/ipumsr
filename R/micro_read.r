@@ -50,6 +50,9 @@
 #' @param var_attrs Variable attributes to add from the DDI, defaults to
 #'   adding all (val_labels, var_label and var_desc). See
 #'   \code{\link{set_ipums_var_attributes}} for more details.
+#' @param lower_vars If reading a DDI from a file, a logical indicating
+#'   whether to convert variable names to lowercase (default is FALSE due
+#'   to tradition)
 #' @return \code{read_ipums_micro} returns a single tbl_df data frame, and
 #'   \code{read_ipums_micro_list} returns a list of data frames, named by
 #'   the Record Type. See 'Details' for more
@@ -89,9 +92,10 @@ read_ipums_micro <- function(
   data_file = NULL,
   verbose = TRUE,
   rectype_convert = NULL,
-  var_attrs = c("val_labels", "var_label", "var_desc")
+  var_attrs = c("val_labels", "var_label", "var_desc"),
+  lower_vars = FALSE
 ) {
-  if (is.character(ddi)) ddi <- read_ipums_ddi(ddi)
+  if (is.character(ddi)) ddi <- read_ipums_ddi(ddi, lower_vars = lower_vars)
   if (is.null(data_file)) data_file <- file.path(ddi$file_path, ddi$file_name)
 
   data_file <- custom_check_file_exists(data_file, c(".dat.gz", ".csv", ".csv.gz"))
@@ -121,9 +125,10 @@ read_ipums_micro_list <- function(
   data_file = NULL,
   verbose = TRUE,
   rectype_convert = NULL,
-  var_attrs = c("val_labels", "var_label", "var_desc")
+  var_attrs = c("val_labels", "var_label", "var_desc"),
+  lower_vars = FALSE
 ) {
-  if (is.character(ddi)) ddi <- read_ipums_ddi(ddi)
+  if (is.character(ddi)) ddi <- read_ipums_ddi(ddi, lower_vars = lower_vars)
   if (is.null(data_file)) data_file <- file.path(ddi$file_path, ddi$file_name)
 
   data_file <- custom_check_file_exists(data_file, c(".dat.gz", ".csv", ".csv.gz"))
@@ -157,6 +162,7 @@ read_ipums_hier <- function(
 
   rec_vinfo <- dplyr::filter(all_vars, .data$var_name == ddi$rectype_idvar)
   if (nrow(rec_vinfo) > 1) stop("Cannot support multiple rectype id variables.", call. = FALSE)
+  hip_rec_vinfo <- hipread::hip_rt(rec_vinfo$start, rec_vinfo$end - rec_vinfo$start + 1)
 
   all_vars <- select_var_rows(all_vars, vars)
   if (!rec_vinfo$var_name %in% all_vars$var_name && data_structure == "long") {
@@ -183,27 +189,40 @@ read_ipums_hier <- function(
     }
   }
 
+  col_info <- tidyr::unnest_(all_vars, "rectypes", .drop = FALSE)
+  rts <- unique(col_info$rectypes)
+  col_info <- purrr::map(rts, function(rt) {
+    rt_cinfo <- col_info[col_info$rectypes == rt, ]
+    hipread::hip_fwf_positions(
+      rt_cinfo$start,
+      rt_cinfo$end,
+      rt_cinfo$var_name,
+      hipread_type_name_convert(rt_cinfo$var_type)
+    )
+  })
+  names(col_info) <- rts
 
-  nonrec_vinfo <- dplyr::filter(all_vars, .data$var_name != ddi$rectype_idvar)
-  nonrec_vinfo <- tidyr::unnest_(nonrec_vinfo, "rectypes", .drop = FALSE)
-
-  if (verbose) cat("Reading data...\n")
-  if (n_max == Inf) n_max <- -1
-  raw <- read_check_for_negative_bug(
-    readr::read_lines_raw,
-    data_file,
-    progress = show_readr_progress(verbose),
-    n_max = n_max
-  )
-
-  if (verbose) cat("Parsing data...\n")
   if (data_structure == "long") {
-    out <- read_raw_to_df_long(raw, rec_vinfo, all_vars, ddi$file_encoding)
+    out <- hipread::hipread_long(
+      data_file,
+      col_info,
+      hip_rec_vinfo,
+      progress = show_readr_progress(verbose),
+      n_max = n_max,
+      encoding = ddi$file_encoding
+    )
 
     out <- set_ipums_var_attributes(out, all_vars, var_attrs)
     out <- set_imp_decim(out, all_vars)
   } else if (data_structure == "list") {
-    out <- read_raw_to_df_list(raw, rec_vinfo, all_vars, ddi$file_encoding)
+    out <- hipread::hipread_list(
+      data_file,
+      col_info,
+      hip_rec_vinfo,
+      progress = show_readr_progress(verbose),
+      n_max = n_max,
+      encoding = ddi$file_encoding
+    )
     for (rt in names(out)) {
       rt_vinfo <- all_vars[purrr::map_lgl(all_vars$rectypes, ~rt %in% .), ]
       out[[rt]] <- set_ipums_var_attributes(out[[rt]], rt_vinfo, var_attrs)
@@ -223,8 +242,6 @@ read_ipums_hier <- function(
       rt_lbls <- stringr::str_replace_all(rt_lbls, "[:blank:]", "_")
       names(out) <- rt_lbls
     }
-
-
   }
   out
 }
@@ -251,13 +268,11 @@ read_ipums_rect <- function(ddi, vars, n_max, data_file, verbose, var_attrs) {
   is_csv <- ipums_file_ext(data_file) %in% c(".csv", ".csv.gz")
 
   if (is_fwf) {
-    out <- read_check_for_negative_bug(
-      readr::read_fwf,
+    out <- hipread::hipread_long(
       data_file,
-      col_positions,
-      col_types,
+      readr_to_hipread_specs(col_positions, col_types),
       n_max = n_max,
-      locale = ipums_locale(ddi$file_encoding),
+      encoding = ddi$file_encoding,
       progress = show_readr_progress(verbose)
     )
   } else if (is_csv) {
@@ -298,84 +313,3 @@ read_check_for_negative_bug <- function(readr_f, data_file, ...) {
   lines
 }
 
-
-read_raw_to_df_long <- function(raw, rec_vinfo, all_vars, encoding) {
-  # Simplify structures before sending to C++
-  rt_info <- prep_rt_info_cpp(rec_vinfo)
-  var_names <- all_vars$var_name
-  vars_by_rt <- prep_all_var_info_cpp(all_vars)
-  encoding <- prep_encoding_cpp(encoding)
-
-  # Read in data, add names and convert to numeric
-  out <- raw_to_df_hier_long(raw, length(var_names), rt_info, vars_by_rt, encoding)
-  names(out) <- var_names
-  out <- tibble::as_tibble(out)
-
-  numeric_vars <- all_vars$var_name[all_vars$var_type == "numeric"]
-  out <- dplyr::mutate_at(out, numeric_vars, readr::parse_number)
-  integer_vars <- all_vars$var_name[all_vars$var_type == "integer"]
-  out <- dplyr::mutate_at(out, integer_vars, readr::parse_integer)
-  out
-}
-
-read_raw_to_df_list <- function(raw, rec_vinfo, all_vars, encoding) {
-  # Simplify structures before sending to C++
-  rt_info <- prep_rt_info_cpp(rec_vinfo)
-  var_names <- all_vars$var_name
-  vars_by_rt <- prep_all_var_info_cpp(all_vars)
-  encoding <- prep_encoding_cpp(encoding)
-
-  # Read in data, add names and convert to numeric
-  out <- raw_to_df_hier_list(raw, rt_info, vars_by_rt, encoding)
-  names(out) <- names(vars_by_rt)
-
-  for (rt in names(vars_by_rt)) {
-    names(out[[rt]]) <- vars_by_rt[[rt]]$var_name
-    out[[rt]] <- tibble::as_tibble(out[[rt]])
-
-    numeric_vars <- vars_by_rt[[rt]]$var_name[vars_by_rt[[rt]]$var_type == "numeric"]
-    out[[rt]] <- dplyr::mutate_at(out[[rt]], numeric_vars, readr::parse_number)
-
-    integer_vars <- vars_by_rt[[rt]]$var_name[vars_by_rt[[rt]]$var_type == "integer"]
-    out[[rt]] <- dplyr::mutate_at(out[[rt]], integer_vars, readr::parse_integer)
-  }
-
-  out
-}
-
-prep_rt_info_cpp <- function(rec_vinfo) {
-  if (nrow(rec_vinfo) > 1) stop("Only one rectype variable allowed.")
-
-  list(
-    start = as.integer(rec_vinfo$start - 1),
-    width = as.integer(rec_vinfo$end - rec_vinfo$start + 1)
-  )
-}
-
-prep_all_var_info_cpp <- function(all_vars) {
-  out <- dplyr::mutate(
-    all_vars,
-    start = as.integer(.data$start - 1),
-    end = as.integer(.data$end),
-    width = as.integer(.data$end - .data$start),
-    var_pos = as.integer(seq_along(.data$width) - 1)
-  )
-  out <- dplyr::select(
-    out,
-    dplyr::one_of(c("var_name", "start", "width", "end", "var_pos", "var_type", "rectypes"))
-  )
-  out <- tidyr::unnest(out)
-  out <- dplyr::group_by(out, .data$rectypes)
-  out <- dplyr::mutate(out, max_end = max(.data$end))
-  out <- tidyr::nest(out, -.data$rectypes)
-  out <- tibble::deframe(out)
-  out
-}
-
-prep_encoding_cpp <- function(encoding) {
-  if (is.null(encoding) || encoding == "ISO-8859-1") {
-    "latin1"
-  } else {
-    encoding
-  }
-}
