@@ -128,17 +128,17 @@ set_ipums_var_attributes <- function(
   # Give error message if type doesn't match between value labels and variable
   # as haven::labelled would
 
-  class_data <- dplyr::data_frame(
+  class_data <- tibble::tibble(
     var_name = names(data),
     d_type = purrr::map(data, typeof),
     d_is_num = purrr::map_lgl(data, is.numeric)
   )
-  class_labels <- dplyr::data_frame(
+  class_labels <- tibble::tibble(
     var_name = var_info$var_name,
     l_type = purrr::map(var_info$val_labels, ~typeof(.$val)),
     l_is_num = purrr::map_lgl(
       var_info$val_labels,
-      ~ifelse(nrow(.) == 0, NA, is.numeric(.$val))
+      function(x) {if (is.null(x) || nrow(x) == 0) NA else is.numeric(x$val)}
     )
   )
   class_labels <- dplyr::filter(class_labels, !is.na(.data$l_is_num))
@@ -162,7 +162,7 @@ set_ipums_var_attributes <- function(
     if (length(x) == 0 || nrow(x) == 0) NULL else purrr::set_names(x$val, x$lbl)
   })
 
-  set_ipums_var_attributes_(data, var_info, is_haven_v2())
+  set_ipums_var_attributes_(data, var_info)
 }
 
 #' Collect data into R session with IPUMS attributes
@@ -251,7 +251,7 @@ show_readr_progress <- function(verbose) {
 }
 
 tbl_print_for_message <- function(x, n = 5) {
-  x <- dplyr::as_data_frame(x)
+  x <- tibble::as_tibble(x)
   out <- utils::capture.output(print(x, n = n))
   out <- paste(out[-1], collapse = "\n")
   out
@@ -366,8 +366,3 @@ hipread_type_name_convert <- function(x) {
   ifelse(x == "numeric", "double", x)
 }
 
-
-# haven 2.0 compatibility
-is_haven_v2 <- function() {
-  utils::packageVersion("haven") >= "1.1.2.900"
-}

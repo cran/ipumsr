@@ -95,24 +95,17 @@ ipumsi <- ipums_shape_inner_join(
   by = c("GEOLEV1" = "GEOLEVEL1")
 )
 
-## ------------------------------------------------------------------------
-join_failures(ipumsi)
-
 ## ---- fig.height = 4, fig.width = 7--------------------------------------
-# Note the function `geom_sf()` is currently only in the development version, 
-# so you may need to update ggplot2 to run using 
-#   devtools::install_github("tidyverse/ggplot2")
-if ("geom_sf" %in% getNamespaceExports("ggplot2")) {
-  ggplot(data = ipumsi, aes(fill = pct_solid)) +
-    geom_sf() + 
-    facet_wrap(~YEAR) + 
-    scale_fill_continuous("", labels = scales::percent) + 
-    labs(
-      title = "Percent of Children 0-5 Who Live in a Home That Cooks Using Solid Fuel",
-      subtitle = "Colombia (1985, 1993, 2005) Census Data",
-      caption = paste0("Source: ", ipums_file_info(ipumsi_ddi, "ipums_project"))
-    )
-}
+ggplot(data = ipumsi, aes(fill = pct_solid)) +
+  geom_sf() + 
+  facet_wrap(~YEAR) + 
+  scale_fill_continuous("", labels = scales::percent) + 
+  labs(
+    title = "% of Children 0-5 Who Live in a Home That Cooks Using Solid Fuel",
+    subtitle = "Colombia (1985, 1993, 2005) Census Data",
+    caption = paste0("Source: ", ipums_file_info(ipumsi_ddi, "ipums_project"))
+  )
+
 
 ## ------------------------------------------------------------------------
 nhgis_ddi <- read_ipums_codebook(ex_file("nhgis0024_csv.zip")) 
@@ -132,20 +125,19 @@ nhgis_subset <- nhgis %>%
   filter(COUNTY %in% c("Hartford County", "Providence County")) %>%
   mutate(place_name = paste0(COUNTY, ", ", STATE))
 
-if ("geom_sf" %in% getNamespaceExports("ggplot2")) {
-  ggplot(data = nhgis_subset, aes(fill = H77001)) +
-    geom_sf(linetype = "blank") + 
-    scale_fill_continuous("") + 
-    facet_wrap(~place_name) + 
-    labs(
-      title = "Median Age of Population By Census Block",
-      subtitle = "2010 Census",
-      caption = paste0(
-        "Source: ", ipums_file_info(nhgis_ddi, "ipums_project"), "\n",
-        "Simplified Census Block boundaries (1% of points retained)"
-      )
+ggplot(data = nhgis_subset, aes(fill = H77001)) +
+  geom_sf(linetype = "blank") + 
+  scale_fill_continuous("") + 
+  facet_wrap(~place_name) + 
+  labs(
+    title = "Median Age of Population By Census Block",
+    subtitle = "2010 Census",
+    caption = paste0(
+      "Source: ", ipums_file_info(nhgis_ddi, "ipums_project"), "\n",
+      "Simplified Census Block boundaries (1% of points retained)"
     )
-}
+  )
+
 
 ## ------------------------------------------------------------------------
 # Load data
@@ -217,27 +209,26 @@ all_shapes <- rbind(colombia_shape, ecuador_shape, peru_shape)
 ## ------------------------------------------------------------------------
 ipumsi <- ipums_shape_inner_join(
   ipumsi_summary, 
-  colombia_shape,
+  all_shapes,
   by = c("COUNTRY" = "CNTRY_NAME", "GEOLEV1" = "GEOJOIN")
 )
+
+## ------------------------------------------------------------------------
+join_failures(ipumsi)
 
 ## ---- fig.height = 4, fig.width = 7--------------------------------------
 # Convert the year to a round variable to display in facets
 ipumsi <- ipumsi %>%
   mutate(census_round = cut(YEAR, c(1984, 1992, 2004, 2014), c("1985", "1993", "2005-2010")))
 
-# Note the function `geom_sf()` is currently only in the development version, 
-# so you may need to update ggplot2 to run using 
-#   devtools::install_github("tidyverse/ggplot2")
-if ("geom_sf" %in% getNamespaceExports("ggplot2")) {
-  ggplot(data = ipumsi, aes(fill = pct_solid)) +
-    geom_sf() + 
-    facet_wrap(~census_round) + 
-    scale_fill_continuous("", labels = scales::percent) + 
-    labs(
-      title = "Percent of Children 0-5 Who Live in a Home That Cooks Using Solid Fuel",
-      subtitle = "Colombia (1985, 1993, 2005) Census Data",
-      caption = paste0("Source: ", ipums_file_info(ipumsi_ddi, "ipums_project"))
-    )
-}
+
+ggplot(data = ipumsi, aes(fill = pct_solid)) +
+  geom_sf() + 
+  facet_wrap(~census_round) + 
+  scale_fill_continuous("", labels = scales::percent) + 
+  labs(
+    title = "% of Children 0-5 Who Live in a Home That Cooks Using Solid Fuel",
+    subtitle = "Colombia, Ecuador and Peru Census Data",
+    caption = paste0("Source: ", ipums_file_info(ipumsi_ddi, "ipums_project"))
+  )
 

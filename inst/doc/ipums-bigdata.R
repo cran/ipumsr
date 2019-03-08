@@ -157,6 +157,81 @@ chunked_subset <- read_ipums_micro_chunked(
   chunk_size = 1000
 )
 
+## ------------------------------------------------------------------------
+data <- read_ipums_micro_yield(
+  cps_ddi_file, 
+  data_file = cps_data_file, 
+  verbose = FALSE
+)
+
+## ------------------------------------------------------------------------
+yield_results <- tibble(
+  HEALTH = factor(levels = c("Excellent", "Very good", "Good", "Fair", "Poor")), 
+  AT_WORK = factor(levels = c("No", "Yes")),
+  n = integer(0)
+)
+while (!data$is_done()) {
+  new <- data$yield(n = 1000) %>% 
+    mutate(
+      HEALTH = as_factor(HEALTH),
+      AT_WORK = EMPSTAT %>% 
+        lbl_relabel(
+          lbl(1, "Yes") ~ .lbl == "At work", 
+          lbl(0, "No") ~ .lbl != "At work"
+        ) %>% 
+        as_factor()
+    ) %>%
+    group_by(HEALTH, AT_WORK) %>%
+    summarize(n = n())
+  
+  yield_results <- bind_rows(yield_results, new) %>%
+    group_by(HEALTH, AT_WORK) %>%
+    summarize(n = sum(n))
+}
+
+yield_results
+
+## ------------------------------------------------------------------------
+data <- read_ipums_micro_yield(
+  cps_ddi_file, 
+  data_file = cps_data_file, 
+  verbose = FALSE
+)
+
+## ------------------------------------------------------------------------
+get_model_data <- function(reset) {
+  if (reset) {
+    data$reset()
+  } else {
+    yield <- data$yield(n = 1000) # Set n pretty low for example
+    if (is.null(yield)) return(yield)
+    out <- yield %>%
+      mutate(
+        HEALTH = as_factor(HEALTH),
+        WORK30PLUS = lbl_na_if(AHRSWORKT, ~.lbl == "NIU (Not in universe)") %>%
+          {. >= 30},
+        AT_WORK = EMPSTAT %>% 
+          lbl_relabel(
+            lbl(1, "Yes") ~ .lbl == "At work", 
+            lbl(0, "No") ~ .lbl != "At work"
+          ) %>% 
+          as_factor()
+      ) %>%
+      filter(AT_WORK == "Yes")
+    return(out)
+  }
+}
+
+## ------------------------------------------------------------------------
+library(biglm)
+results <- bigglm(
+  WORK30PLUS ~ AGE + I(AGE^2) + HEALTH,
+  family = binomial(link = "logit"),
+  data = get_model_data
+)
+
+summary(results)
+
 ## ---- eval = installed_db_pkgs-------------------------------------------
 # Connect to database
 library(DBI)

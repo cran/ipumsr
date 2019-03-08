@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# ipumsr <img src="tools/logo.png" align="right" height="149" width="128.5"/>
+# ipumsr <img src="man/figures/logo.png" align="right" height="149" width="128.5"/>
 
 [![Project
 Status:Active](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
@@ -9,7 +9,7 @@ Status:Active](http://www.repostatus.org/badges/latest/active.svg)](http://www.r
 [![Travis-CI Build
 Status](https://travis-ci.org/mnpopcenter/ipumsr.svg?branch=master)](https://travis-ci.org/mnpopcenter/ipumsr)
 [![AppVeyor Build
-Status](https://ci.appveyor.com/api/projects/status/github/mnpopcenter/ipumsr?branch=master&svg=true)](https://ci.appveyor.com/project/mnpopcenter/ipumsr)
+Status](https://ci.appveyor.com/api/projects/status/87yerkl5t1e4nape/branch/master?svg=true)](https://ci.appveyor.com/project/mpcit/ipumsr)
 [![Coverage
 Status](https://codecov.io/gh/mnpopcenter/ipumsr/master.svg)](https://codecov.io/github/mnpopcenter/ipumsr?branch=master)
 
@@ -52,8 +52,9 @@ data:
           - Provides guidance for using the value labels provided by
             IPUMS
       - [**ipums-geography**](https://cran.r-project.org/package=ipumsr/vignettes/ipums-geography.html)
-          - Provides guidance for using R as GIS tool with IPUMS data
-      - **ipums-bigdata**
+          - Provides guidance for using R as GIS tool with IPUMS
+        data
+      - [**ipums-bigdata**](https://cran.r-project.org/package=ipumsr/vignettes/ipums-bigdata.html)
           - How to handle large IPUMS data extracts and examples of
             using the chunked versions of microdata reading functions.
 

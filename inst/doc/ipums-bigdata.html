@@ -12,7 +12,7 @@
 
 <meta name="author" content="Minnesota Population Center" />
 
-<meta name="date" content="2018-09-27" />
+<meta name="date" content="2019-03-08" />
 
 <title>Big IPUMS data</title>
 
@@ -20,256 +20,46 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
-}
-#header {
-text-align: center;
-}
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
-}
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
-}
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
-}
-#TOC ul ul {
-margin-left: -2em;
-}
-#TOC li {
-line-height: 16px;
-}
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
-}
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
-}
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
-}
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
-}
-pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
-}
-pre:not([class]) {
-background-color: #f7f7f7;
-}
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
-
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
-</style>
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -280,32 +70,32 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Big IPUMS data</h1>
 <h4 class="author"><em>Minnesota Population Center</em></h4>
-<h4 class="date"><em>2018-09-27</em></h4>
+<h4 class="date"><em>2019-03-08</em></h4>
 
 
 
-<p>Browsing data on the IPUMS website can be a little like grocery shopping when you’re hungry — you show up to grab a couple things, but everything looks so good, and you end up with an overflowing cart<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. When you do this with IPUMS data, unfortunately, sometimes your extract may get so large that it doesn’t fit in your computer’s memory.</p>
-<p>If this you’ve got an extract that’s too big, both the IPUMS website and the ipumsr package have tools to help. There are four basic strategies:</p>
+<p>Browsing data on the IPUMS website can be a little like grocery shopping when you’re hungry — you show up to grab a couple things, but everything looks so good, and you end up with an overflowing cart<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>. When you do this with IPUMS data, unfortunately, sometimes your extract may get so large that it doesn’t fit in your computer’s memory.</p>
+<p>If you’ve got an extract that’s too big, both the IPUMS website and the ipumsr package have tools to help. There are four basic strategies:</p>
 <ol style="list-style-type: decimal">
 <li>Get more memory.</li>
 <li>Reduce the size of your dataset.</li>
-<li>Use “chunked” reading.</li>
+<li>Use “chunked”/“yield” reading to work one piece at a time.</li>
 <li>Use a database.</li>
 </ol>
 <p>The IPUMS website has features to help with option 2, and the ipumsr package can help you with options 3 and 4 (option 1 depends on your wallet).</p>
 <p>The examples in this vignette will rely on the ipumsr, dplyr and biglm packages, and the example CPS extract used in the <code>ipums-cps</code> vignette. If you want to follow along, you should follow the instructions in that vignette to make an extract.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(ipumsr)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># To run the full vignette you'll also need the following packages:</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">installed_biglm &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">&quot;biglm&quot;</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">installed_db_pkgs &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">&quot;DBI&quot;</span>) <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="st">  </span><span class="kw">requireNamespace</span>(<span class="st">&quot;RSQLite&quot;</span>) <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="st">  </span><span class="kw">requireNamespace</span>(<span class="st">&quot;dbplyr&quot;</span>)</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># Change these filepaths to the filepaths of your downloaded extract</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">cps_ddi_file &lt;-<span class="st"> &quot;cps_00001.xml&quot;</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">cps_data_file &lt;-<span class="st"> &quot;cps_00001.dat&quot;</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ipumsr)
+<span class="kw">library</span>(dplyr)
+
+<span class="co"># To run the full vignette you'll also need the following packages:</span>
+installed_biglm &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">&quot;biglm&quot;</span>)
+installed_db_pkgs &lt;-<span class="st"> </span><span class="kw">requireNamespace</span>(<span class="st">&quot;DBI&quot;</span>) <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">requireNamespace</span>(<span class="st">&quot;RSQLite&quot;</span>) <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">requireNamespace</span>(<span class="st">&quot;dbplyr&quot;</span>)
+
+<span class="co"># Change these filepaths to the filepaths of your downloaded extract</span>
+cps_ddi_file &lt;-<span class="st"> &quot;cps_00001.xml&quot;</span>
+cps_data_file &lt;-<span class="st"> &quot;cps_00001.dat&quot;</span></code></pre></div>
 <div id="option-1-trade-money-for-convenience" class="section level1">
 <h1>Option 1: Trade money for convenience</h1>
 <p>If you’ve got a dataset that’s too big for your RAM, you could always get more. You could accomplish this by upgrading your current computer, getting a new one, or paying a cloud service like Amazon or Microsoft Azure (or one of the many other similar services). Here are guides for using R on <a href="https://aws.amazon.com/blogs/big-data/statistical-analysis-with-open-source-r-and-rstudio-on-amazon-emr/">Amazon</a> and <a href="https://blog.jumpingrivers.com/posts/2017/rstudio_azure_cloud_1/">Microsoft Azure</a>.</p>
@@ -316,182 +106,301 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <p>If you do need every sample and variable, but your analysis is on a specific subset of the data, the IPUMS extract engine has a feature called “Select Cases”, where you can subset on an included variable (for example you could subset on AGE so that your extract only includes those older than 65, or subset on EDUCATION to look at only college graduates). In most IPUMS microdata projects, the select cases feature is on the “Create Extract” page, as the last step before you submit the extract. If you’ve already submitted the extract, you can click the “revise” link on the “Download or Revise Extracts” page to access the “Select Cases” feature.</p>
 <p>Or, if you would be happy with a random subsample of the data, the IPUMS extract engine has an option to “Customize Sample Size” that will take a random sample. This feature is also available on the “Create Extract” page, as the last step before you submit the extract. Again, if you’ve already submitted your extract, you can access this feature by clicking the “revise” link on the “Download or Revise Extracts” page.</p>
 </div>
-<div id="option-3-work-one-chunk-at-a-time" class="section level1">
-<h1>Option 3: Work one chunk at a time</h1>
+<div id="option-3-work-one-chunkyield-at-a-time" class="section level1">
+<h1>Option 3: work one “chunk”/“yield” at a time</h1>
+<p>ipumsr has two closely related concepts for reading parts of a function at a time. The “chunk” API inherits directly from the readr framework for reading chunks of data. These functions allow you to specify a function that will be called on each chunk and then how you’d like to combine them at the end. The “yield” API is unique to ipumsr (and fixed-width data), but allows a little more flexibility because control is returned to you between each piece of data.</p>
+<div id="option-3a-work-one-chunk-at-a-time" class="section level2">
+<h2>Option 3A: Work one chunk at a time</h2>
 <p>ipumsr has “chunked” versions of the microdata reading functions (<code>read_ipums_micro_chunked()</code> and <code>read_ipums_micro_list_chunked()</code>). These chunked versions of the functions allow you to specify a function that will be applied to each chunk, and then also control how the results from these chunks are combined. This functionality is based on the chunked functionality introduced by <code>readr</code> and so is quite flexible. Below, we’ll outline solutions to three common use-cases for IPUMS data: tabulation, regression and selecting cases.</p>
-<div id="chunked-tabulation-example" class="section level2">
-<h2>Chunked tabulation example</h2>
+<div id="chunked-tabulation-example" class="section level3">
+<h3>Chunked tabulation example</h3>
 <p>Let’s say you want to find the percent of people in the workforce by their self-reported health. Since this extract is small enough to fit in memory, we could just do the following:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">read_ipums_micro</span>(</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="st">  </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="st">      </span><span class="kw">lbl_relabel</span>(</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">        <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, </a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">        <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">      ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="st">      </span><span class="kw">as_factor</span>()</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="st">  </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; # A tibble: 10 x 3</span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt; # Groups:   HEALTH [?]</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;    HEALTH    AT_WORK     n</span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;  1 Excellent No      40582</span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;  2 Excellent Yes     28071</span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;  3 Very good No      32367</span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;  4 Very good Yes     32947</span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;  5 Good      No      26726</span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;  6 Good      Yes     22483</span></a>
-<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;  7 Fair      No      11089</span></a>
-<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt;  8 Fair      Yes      4520</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt;  9 Poor      No       5418</span></a>
-<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt; 10 Poor      Yes       780</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">read_ipums_micro</span>(
+  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>
+) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(
+    <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),
+    <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">lbl_relabel</span>(
+        <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, 
+        <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span>
+      ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">as_factor</span>()
+  ) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())
+<span class="co">#&gt; # A tibble: 10 x 3</span>
+<span class="co">#&gt; # Groups:   HEALTH [?]</span>
+<span class="co">#&gt;    HEALTH    AT_WORK     n</span>
+<span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;   &lt;int&gt;</span>
+<span class="co">#&gt;  1 Excellent No      40582</span>
+<span class="co">#&gt;  2 Excellent Yes     28071</span>
+<span class="co">#&gt;  3 Very good No      32367</span>
+<span class="co">#&gt;  4 Very good Yes     32947</span>
+<span class="co">#&gt;  5 Good      No      26726</span>
+<span class="co">#&gt;  6 Good      Yes     22483</span>
+<span class="co">#&gt;  7 Fair      No      11089</span>
+<span class="co">#&gt;  8 Fair      Yes      4520</span>
+<span class="co">#&gt;  9 Poor      No       5418</span>
+<span class="co">#&gt; 10 Poor      Yes       780</span></code></pre></div>
 <p>But let’s pretend like we can only store 1,000 rows at a time. In this case, we need to use a chunked function, tabulate for each chunk, and then calculate the counts across all of the chunks.</p>
 <p>First we’ll make the callback function, which will take two arguments: x (the data from a chunk) and pos (the position of the chunk, expressed as the line in the input file at which the chunk starts). We’ll only use x, but the callback function must always take both these arguments.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">cb_function &lt;-<span class="st"> </span><span class="cf">function</span>(x, pos) {</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">      </span><span class="kw">lbl_relabel</span>(</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">        <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">        <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">      ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="st">      </span><span class="kw">as_factor</span>()</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">  ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="st">    </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="st">    </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">}</a></code></pre></div>
-<p>Next we need to create a callback object. The choice of a callback object depends mainly on how we want to combine the results from applying our callback function to each chunk. In this case, we want to row-bind the data.frames returned by <code>cb_function()</code>. If we didn’t care about attaching IPUMS value labels and other metadata, we could use <code>readr::DataFrameCallback</code>, but ipumsr includes the <code>IpumsDataFrameCallback</code> object that allows you to preserve this metadata.</p>
-<p>Callback objects are <a href="https://CRAN.R-project.org/package=R6">R6</a> objects, but you don’t need to be familiar with R6 to use them<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. For now, all we really need to know is that to create a callback we can use, we use <code>$new()</code> syntax.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">cb &lt;-<span class="st"> </span>IpumsDataFrameCallback<span class="op">$</span><span class="kw">new</span>(cb_function)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cb_function &lt;-<span class="st"> </span><span class="cf">function</span>(x, pos) {
+  x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(
+    <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),
+    <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">lbl_relabel</span>(
+        <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, 
+        <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span>
+      ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">as_factor</span>()
+  ) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())
+}</code></pre></div>
+<p>Next we need to create a callback object. The choice of a callback object depends mainly on how we want to combine the results from applying our callback function to each chunk. The tree main types of callbacks that apply IPUMS variable metadta are:</p>
+<ul>
+<li><code>IpumsDataFrameCallback</code> - Combine the results from each chunk together by row binding them together.</li>
+<li><code>IpumsListCallback</code> - Use when you don’t want to (or can’t) immediately combine the resuts, so it returns a list with one item per chunk containing the results.</li>
+<li><code>IpumsSideEffectCallback</code> - Use when you are calling the function primarily for side effects, and do not need the results at all (for example if you are saving each chunk to disk).</li>
+</ul>
+<p>(The fourth, which is used for running lm regression is discussed later in this document).</p>
+<p>In this case, we want to row-bind the data.frames returned by <code>cb_function()</code>, so we use <code>IpumsDataFrameCallback</code>.</p>
+<p>Callback objects are <a href="https://CRAN.R-project.org/package=R6">R6</a> objects, but you don’t need to be familiar with R6 to use them<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. For now, all we really need to know is that to create a callback, we use <code>$new()</code> syntax.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cb &lt;-<span class="st"> </span>IpumsDataFrameCallback<span class="op">$</span><span class="kw">new</span>(cb_function)</code></pre></div>
 <p>Next we read in the data with the <code>read_ipums_micro_chunked()</code> function, specifying the callback and that we want the <code>chunk_size</code> to be 1000.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">chunked_tabulations &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_chunked</span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">callback =</span> cb, <span class="dt">chunk_size =</span> <span class="dv">1000</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chunked_tabulations &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_chunked</span>(
+  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,
+  <span class="dt">callback =</span> cb, <span class="dt">chunk_size =</span> <span class="dv">1000</span>
+)</code></pre></div>
 <p>Now we have a data.frame with the counts by health and work status within each chunk. To get the full table, we just need to sum by health and work status one more time.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">chunked_tabulations <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="st">  </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">sum</span>(n))</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; # A tibble: 10 x 3</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; # Groups:   HEALTH [?]</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;    HEALTH    AT_WORK     n</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;   &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt;  1 Excellent No      40582</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt;  2 Excellent Yes     28071</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;  3 Very good No      32367</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;  4 Very good Yes     32947</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;  5 Good      No      26726</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;  6 Good      Yes     22483</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;  7 Fair      No      11089</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt;  8 Fair      Yes      4520</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt;  9 Poor      No       5418</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; 10 Poor      Yes       780</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chunked_tabulations <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">sum</span>(n))
+<span class="co">#&gt; # A tibble: 10 x 3</span>
+<span class="co">#&gt; # Groups:   HEALTH [?]</span>
+<span class="co">#&gt;    HEALTH    AT_WORK     n</span>
+<span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;   &lt;int&gt;</span>
+<span class="co">#&gt;  1 Excellent No      40582</span>
+<span class="co">#&gt;  2 Excellent Yes     28071</span>
+<span class="co">#&gt;  3 Very good No      32367</span>
+<span class="co">#&gt;  4 Very good Yes     32947</span>
+<span class="co">#&gt;  5 Good      No      26726</span>
+<span class="co">#&gt;  6 Good      Yes     22483</span>
+<span class="co">#&gt;  7 Fair      No      11089</span>
+<span class="co">#&gt;  8 Fair      Yes      4520</span>
+<span class="co">#&gt;  9 Poor      No       5418</span>
+<span class="co">#&gt; 10 Poor      Yes       780</span></code></pre></div>
 </div>
-<div id="chunked-regression-example" class="section level2">
-<h2>Chunked regression example</h2>
+<div id="chunked-regression-example" class="section level3">
+<h3>Chunked regression example</h3>
 <p>With the biglm package, it is possible to use R to perform a regression on data that is too large to store in memory all at once. The ipumsr package provides a callback designed to make this simple: <code>IpumsBiglmCallback</code>.</p>
 <p>Again we’ll use the CPS example, which is small enough that we can keep it in memory. Here’s an example of a regression looking at how hours worked, self-reported health and age are related among those who are currently working. This is meant as a simple example, and ignores many of the complexities in this relationship, so please use caution when interpreting.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Read in data</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw">read_ipums_micro</span>(</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co"># Prepare data for model</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co"># (age has been capped at 99, which we assume is high enough to not</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#  cause any problems so we leave it.)</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9">data &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="st">   </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11">      <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),</a>
-<a class="sourceLine" id="cb7-12" data-line-number="12">      <span class="dt">AHRSWORKT =</span> <span class="kw">lbl_na_if</span>(AHRSWORKT, <span class="op">~</span>.lbl <span class="op">==</span><span class="st"> &quot;NIU (Not in universe)&quot;</span>),</a>
-<a class="sourceLine" id="cb7-13" data-line-number="13">      <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="st">        </span><span class="kw">lbl_relabel</span>(</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15">          <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, </a>
-<a class="sourceLine" id="cb7-16" data-line-number="16">          <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17">        ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="st">        </span><span class="kw">as_factor</span>()</a>
-<a class="sourceLine" id="cb7-19" data-line-number="19">    ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="st">    </span><span class="kw">filter</span>(AT_WORK <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>)</a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co"># Run regression</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23">model &lt;-<span class="st"> </span><span class="kw">lm</span>(AHRSWORKT <span class="op">~</span><span class="st"> </span>AGE <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(AGE<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>HEALTH, data)</a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="kw">summary</span>(model)</a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; Call:</span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; lm(formula = AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data = data)</span></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; Residuals:</span></a>
-<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt; &lt;Labelled double&gt;</span></a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></a>
-<a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt; -41.230  -4.949  -0.080   5.945  75.697 </span></a>
-<a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; Coefficients:</span></a>
-<a class="sourceLine" id="cb7-35" data-line-number="35"><span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span></a>
-<a class="sourceLine" id="cb7-36" data-line-number="36"><span class="co">#&gt; (Intercept)      5.626953   0.367851  15.297  &lt; 2e-16 ***</span></a>
-<a class="sourceLine" id="cb7-37" data-line-number="37"><span class="co">#&gt; AGE              1.568287   0.017790  88.156  &lt; 2e-16 ***</span></a>
-<a class="sourceLine" id="cb7-38" data-line-number="38"><span class="co">#&gt; I(AGE^2)        -0.016798   0.000204 -82.338  &lt; 2e-16 ***</span></a>
-<a class="sourceLine" id="cb7-39" data-line-number="39"><span class="co">#&gt; HEALTHVery good -0.280826   0.104433  -2.689  0.00717 ** </span></a>
-<a class="sourceLine" id="cb7-40" data-line-number="40"><span class="co">#&gt; HEALTHGood      -1.275358   0.115861 -11.008  &lt; 2e-16 ***</span></a>
-<a class="sourceLine" id="cb7-41" data-line-number="41"><span class="co">#&gt; HEALTHFair      -3.614487   0.207121 -17.451  &lt; 2e-16 ***</span></a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt; HEALTHPoor      -5.732656   0.465751 -12.308  &lt; 2e-16 ***</span></a>
-<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt; ---</span></a>
-<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></a>
-<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co">#&gt; Residual standard error: 12.8 on 88794 degrees of freedom</span></a>
-<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="co">#&gt; Multiple R-squared:  0.08886,    Adjusted R-squared:  0.08879 </span></a>
-<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">#&gt; F-statistic:  1443 on 6 and 88794 DF,  p-value: &lt; 2.2e-16</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Read in data</span>
+data &lt;-<span class="st"> </span><span class="kw">read_ipums_micro</span>(
+  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>
+)
+
+<span class="co"># Prepare data for model</span>
+<span class="co"># (age has been capped at 99, which we assume is high enough to not</span>
+<span class="co">#  cause any problems so we leave it.)</span>
+data &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span>
+<span class="st">   </span><span class="kw">mutate</span>(
+      <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),
+      <span class="dt">AHRSWORKT =</span> <span class="kw">lbl_na_if</span>(AHRSWORKT, <span class="op">~</span>.lbl <span class="op">==</span><span class="st"> &quot;NIU (Not in universe)&quot;</span>),
+      <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">lbl_relabel</span>(
+          <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, 
+          <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span>
+        ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">as_factor</span>()
+    ) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">filter</span>(AT_WORK <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>)
+
+<span class="co"># Run regression</span>
+model &lt;-<span class="st"> </span><span class="kw">lm</span>(AHRSWORKT <span class="op">~</span><span class="st"> </span>AGE <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(AGE<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>HEALTH, data)
+<span class="kw">summary</span>(model)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Call:</span>
+<span class="co">#&gt; lm(formula = AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data = data)</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residuals:</span>
+<span class="co">#&gt; &lt;Labelled double&gt;: Hours worked last week</span>
+<span class="co">#&gt;     Min      1Q  Median      3Q     Max </span>
+<span class="co">#&gt; -41.230  -4.949  -0.080   5.945  75.697 </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Coefficients:</span>
+<span class="co">#&gt;                  Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="co">#&gt; (Intercept)      5.626953   0.367851  15.297  &lt; 2e-16 ***</span>
+<span class="co">#&gt; AGE              1.568287   0.017790  88.156  &lt; 2e-16 ***</span>
+<span class="co">#&gt; I(AGE^2)        -0.016798   0.000204 -82.338  &lt; 2e-16 ***</span>
+<span class="co">#&gt; HEALTHVery good -0.280826   0.104433  -2.689  0.00717 ** </span>
+<span class="co">#&gt; HEALTHGood      -1.275358   0.115861 -11.008  &lt; 2e-16 ***</span>
+<span class="co">#&gt; HEALTHFair      -3.614487   0.207121 -17.451  &lt; 2e-16 ***</span>
+<span class="co">#&gt; HEALTHPoor      -5.732656   0.465751 -12.308  &lt; 2e-16 ***</span>
+<span class="co">#&gt; ---</span>
+<span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Residual standard error: 12.8 on 88794 degrees of freedom</span>
+<span class="co">#&gt; Multiple R-squared:  0.08886,    Adjusted R-squared:  0.08879 </span>
+<span class="co">#&gt; F-statistic:  1443 on 6 and 88794 DF,  p-value: &lt; 2.2e-16</span></code></pre></div>
 <p>To do the same regression, but with only 1000 rows loaded at a time, we work in a similar manner.</p>
 <p>First we make the <code>IpumsBiglmCallback</code> callback object that specifies both the model and a function to prepare the data.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">biglm_cb &lt;-<span class="st"> </span>IpumsBiglmCallback<span class="op">$</span><span class="kw">new</span>(</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="dt">model =</span> AHRSWORKT <span class="op">~</span><span class="st"> </span>AGE <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(AGE<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>HEALTH,</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="dt">prep =</span> <span class="cf">function</span>(x, pos) {</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">    x <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="st">      </span><span class="kw">mutate</span>(</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">        <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">        <span class="dt">AHRSWORKT =</span> <span class="kw">lbl_na_if</span>(AHRSWORKT, <span class="op">~</span>.lbl <span class="op">==</span><span class="st"> &quot;NIU (Not in universe)&quot;</span>),</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">        <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="st">          </span><span class="kw">lbl_relabel</span>(</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">            <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, </a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">            <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12">          ) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="st">          </span><span class="kw">as_factor</span>()</a>
-<a class="sourceLine" id="cb8-14" data-line-number="14">      ) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="st">      </span><span class="kw">filter</span>(AT_WORK <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>)</a>
-<a class="sourceLine" id="cb8-16" data-line-number="16">  }</a>
-<a class="sourceLine" id="cb8-17" data-line-number="17">)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">biglm_cb &lt;-<span class="st"> </span>IpumsBiglmCallback<span class="op">$</span><span class="kw">new</span>(
+  <span class="dt">model =</span> AHRSWORKT <span class="op">~</span><span class="st"> </span>AGE <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(AGE<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>HEALTH,
+  <span class="dt">prep =</span> <span class="cf">function</span>(x, pos) {
+    x <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">      </span><span class="kw">mutate</span>(
+        <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),
+        <span class="dt">AHRSWORKT =</span> <span class="kw">lbl_na_if</span>(AHRSWORKT, <span class="op">~</span>.lbl <span class="op">==</span><span class="st"> &quot;NIU (Not in universe)&quot;</span>),
+        <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">          </span><span class="kw">lbl_relabel</span>(
+            <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, 
+            <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span>
+          ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">          </span><span class="kw">as_factor</span>()
+      ) <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">filter</span>(AT_WORK <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>)
+  }
+)</code></pre></div>
 <p>And then we read the data using <code>read_ipums_micro_chunked()</code>, passing the callback that we just made.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">chunked_model &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_chunked</span>(</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2">  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3">  <span class="dt">callback =</span> biglm_cb, <span class="dt">chunk_size =</span> <span class="dv">1000</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="kw">summary</span>(chunked_model)</a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; Large data regression model: biglm(AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data, ...)</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; Sample size =  88801 </span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt;                    Coef    (95%     CI)     SE      p</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; (Intercept)      5.6270  4.8913  6.3627 0.3679 0.0000</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; AGE              1.5683  1.5327  1.6039 0.0178 0.0000</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; I(AGE^2)        -0.0168 -0.0172 -0.0164 0.0002 0.0000</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; HEALTHVery good -0.2808 -0.4897 -0.0720 0.1044 0.0072</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; HEALTHGood      -1.2754 -1.5071 -1.0436 0.1159 0.0000</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; HEALTHFair      -3.6145 -4.0287 -3.2002 0.2071 0.0000</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; HEALTHPoor      -5.7327 -6.6642 -4.8012 0.4658 0.0000</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">chunked_model &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_chunked</span>(
+  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,
+  <span class="dt">callback =</span> biglm_cb, <span class="dt">chunk_size =</span> <span class="dv">1000</span>
+)
+
+<span class="kw">summary</span>(chunked_model)
+<span class="co">#&gt; Large data regression model: biglm(AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data, ...)</span>
+<span class="co">#&gt; Sample size =  88801 </span>
+<span class="co">#&gt;                    Coef    (95%     CI)     SE      p</span>
+<span class="co">#&gt; (Intercept)      5.6270  4.8913  6.3627 0.3679 0.0000</span>
+<span class="co">#&gt; AGE              1.5683  1.5327  1.6039 0.0178 0.0000</span>
+<span class="co">#&gt; I(AGE^2)        -0.0168 -0.0172 -0.0164 0.0002 0.0000</span>
+<span class="co">#&gt; HEALTHVery good -0.2808 -0.4897 -0.0720 0.1044 0.0072</span>
+<span class="co">#&gt; HEALTHGood      -1.2754 -1.5071 -1.0436 0.1159 0.0000</span>
+<span class="co">#&gt; HEALTHFair      -3.6145 -4.0287 -3.2002 0.2071 0.0000</span>
+<span class="co">#&gt; HEALTHPoor      -5.7327 -6.6642 -4.8012 0.4658 0.0000</span></code></pre></div>
 </div>
-<div id="chunked-select-cases-example" class="section level2">
-<h2>Chunked “select cases” example</h2>
+<div id="chunked-select-cases-example" class="section level3">
+<h3>Chunked “select cases” example</h3>
 <p>Sometimes you may want to select a subset of the data before reading it in. The IPUMS website has this functionality built in, which can be a faster way to do this (this “select cases” functionality is described in the second section above). Also, Unix commands like <code>awk</code> and <code>sed</code> will generally be much faster than these R based solutions. However, it is possible to use the chunked functions to create a subset, which can be convenient if you want to subset on some complex logic that would be hard to code into the IPUMS extract system or Unix tools.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Subset only those in &quot;Poor&quot; health</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">chunked_subset &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_chunked</span>(</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">  <span class="dt">callback =</span> IpumsDataFrameCallback<span class="op">$</span><span class="kw">new</span>(<span class="cf">function</span>(x, pos) {</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">    <span class="kw">filter</span>(x, HEALTH <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">  }), </a>
-<a class="sourceLine" id="cb10-7" data-line-number="7">  <span class="dt">chunk_size =</span> <span class="dv">1000</span></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">)</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Subset only those in &quot;Poor&quot; health</span>
+chunked_subset &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_chunked</span>(
+  cps_ddi_file, <span class="dt">data_file =</span> cps_data_file, <span class="dt">verbose =</span> <span class="ot">FALSE</span>,
+  <span class="dt">callback =</span> IpumsDataFrameCallback<span class="op">$</span><span class="kw">new</span>(<span class="cf">function</span>(x, pos) {
+    <span class="kw">filter</span>(x, HEALTH <span class="op">==</span><span class="st"> </span><span class="dv">5</span>)
+  }), 
+  <span class="dt">chunk_size =</span> <span class="dv">1000</span>
+)</code></pre></div>
+</div>
+</div>
+<div id="option-3b-work-one-yield-at-atime" class="section level2">
+<h2>Option 3B: Work one ‘yield’ at atime</h2>
+<p>ipumsr now has a second form of chunked reading called ‘yields’ which accomplish a similar goal as chunks, but are more flexible. They grant you more freedom in what R code you run between reading chunks, including the ability to have multiple files open at once. Additionally, yields are compatible with the bigglm function which allows you to run glm models on data larger than memory (as oposed to plain old lm’s that you can run with chunks). The downside to this greater control is that yields have an API that is unique to IPUMS data and the way they work is unusual for R code.</p>
+<div id="chunked-tabulation-example-1" class="section level3">
+<h3>Chunked tabulation example</h3>
+<p>To see how the yield functions work as compared to the chunked functions, here’s the same chunked tabulation example that was shown earlier in this document, but using yields rather than chunks. We want to calculate the percent of people in the workforce by their self-reported health status.</p>
+<p>First we create the yield object with the function <code>read_ipums_micro_yield()</code> – the arguments are similar to <code>read_ipums_micro()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_yield</span>(
+  cps_ddi_file, 
+  <span class="dt">data_file =</span> cps_data_file, 
+  <span class="dt">verbose =</span> <span class="ot">FALSE</span>
+)</code></pre></div>
+<p>This function returns an R6 object (like the callbacks for the chunked data) which contains methods for reading the data. The most important method is the <code>yield(n)</code> function which will return n rows of the data.frame. In this example, we’ll also use <code>is_done()</code>, which tells us whether we’ve finished reading the data yet.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">yield_results &lt;-<span class="st"> </span><span class="kw">tibble</span>(
+  <span class="dt">HEALTH =</span> <span class="kw">factor</span>(<span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;Excellent&quot;</span>, <span class="st">&quot;Very good&quot;</span>, <span class="st">&quot;Good&quot;</span>, <span class="st">&quot;Fair&quot;</span>, <span class="st">&quot;Poor&quot;</span>)), 
+  <span class="dt">AT_WORK =</span> <span class="kw">factor</span>(<span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;No&quot;</span>, <span class="st">&quot;Yes&quot;</span>)),
+  <span class="dt">n =</span> <span class="kw">integer</span>(<span class="dv">0</span>)
+)
+<span class="cf">while</span> (<span class="op">!</span>data<span class="op">$</span><span class="kw">is_done</span>()) {
+  new &lt;-<span class="st"> </span>data<span class="op">$</span><span class="kw">yield</span>(<span class="dt">n =</span> <span class="dv">1000</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">    </span><span class="kw">mutate</span>(
+      <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),
+      <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">lbl_relabel</span>(
+          <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, 
+          <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span>
+        ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">        </span><span class="kw">as_factor</span>()
+    ) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">n</span>())
+  
+  yield_results &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(yield_results, new) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">group_by</span>(HEALTH, AT_WORK) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">summarize</span>(<span class="dt">n =</span> <span class="kw">sum</span>(n))
+}
+
+yield_results
+<span class="co">#&gt; # A tibble: 10 x 3</span>
+<span class="co">#&gt; # Groups:   HEALTH [?]</span>
+<span class="co">#&gt;    HEALTH    AT_WORK     n</span>
+<span class="co">#&gt;    &lt;fct&gt;     &lt;fct&gt;   &lt;int&gt;</span>
+<span class="co">#&gt;  1 Excellent No      40582</span>
+<span class="co">#&gt;  2 Excellent Yes     28071</span>
+<span class="co">#&gt;  3 Very good No      32367</span>
+<span class="co">#&gt;  4 Very good Yes     32947</span>
+<span class="co">#&gt;  5 Good      No      26726</span>
+<span class="co">#&gt;  6 Good      Yes     22483</span>
+<span class="co">#&gt;  7 Fair      No      11089</span>
+<span class="co">#&gt;  8 Fair      Yes      4520</span>
+<span class="co">#&gt;  9 Poor      No       5418</span>
+<span class="co">#&gt; 10 Poor      Yes       780</span></code></pre></div>
+</div>
+<div id="glm-yield-regression-example" class="section level3">
+<h3>GLM yield regression example</h3>
+<p>One of the major benefits of the yield-style reading over chunks is that it is compatible with the GLM functions from biglm, allowing more complicated models than just linear models. Logistic models are one such model that requires GLM methods. The same caution as the chunked example applies - this is meant as a simple example model, please interpret with caution.</p>
+<p>To run a logistic model we start by loading the data in the same way as the frequency example above:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data &lt;-<span class="st"> </span><span class="kw">read_ipums_micro_yield</span>(
+  cps_ddi_file, 
+  <span class="dt">data_file =</span> cps_data_file, 
+  <span class="dt">verbose =</span> <span class="ot">FALSE</span>
+)</code></pre></div>
+<p>Next we make a function that takes a single argument <code>reset</code>. When it is <code>FALSE</code>, it returns the next chunk of data (and formats it for our model). When reset is <code>TRUE</code>, it resets the data to the beginning. To create this function, we use the the <code>reset()</code> method from the yield object.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">get_model_data &lt;-<span class="st"> </span><span class="cf">function</span>(reset) {
+  <span class="cf">if</span> (reset) {
+    data<span class="op">$</span><span class="kw">reset</span>()
+  } <span class="cf">else</span> {
+    yield &lt;-<span class="st"> </span>data<span class="op">$</span><span class="kw">yield</span>(<span class="dt">n =</span> <span class="dv">1000</span>) <span class="co"># Set n pretty low for example</span>
+    <span class="cf">if</span> (<span class="kw">is.null</span>(yield)) <span class="kw">return</span>(yield)
+    out &lt;-<span class="st"> </span>yield <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">mutate</span>(
+        <span class="dt">HEALTH =</span> <span class="kw">as_factor</span>(HEALTH),
+        <span class="dt">WORK30PLUS =</span> <span class="kw">lbl_na_if</span>(AHRSWORKT, <span class="op">~</span>.lbl <span class="op">==</span><span class="st"> &quot;NIU (Not in universe)&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">          </span>{. <span class="op">&gt;=</span><span class="st"> </span><span class="dv">30</span>},
+        <span class="dt">AT_WORK =</span> EMPSTAT <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">          </span><span class="kw">lbl_relabel</span>(
+            <span class="kw">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Yes&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">==</span><span class="st"> &quot;At work&quot;</span>, 
+            <span class="kw">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;No&quot;</span>) <span class="op">~</span><span class="st"> </span>.lbl <span class="op">!=</span><span class="st"> &quot;At work&quot;</span>
+          ) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">          </span><span class="kw">as_factor</span>()
+      ) <span class="op">%&gt;%</span>
+<span class="st">      </span><span class="kw">filter</span>(AT_WORK <span class="op">==</span><span class="st"> &quot;Yes&quot;</span>)
+    <span class="kw">return</span>(out)
+  }
+}</code></pre></div>
+<p>Finally we feed this function and a model specification to the <code>bigglm()</code> function:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(biglm)
+<span class="co">#&gt; Loading required package: DBI</span>
+results &lt;-<span class="st"> </span><span class="kw">bigglm</span>(
+  WORK30PLUS <span class="op">~</span><span class="st"> </span>AGE <span class="op">+</span><span class="st"> </span><span class="kw">I</span>(AGE<span class="op">^</span><span class="dv">2</span>) <span class="op">+</span><span class="st"> </span>HEALTH,
+  <span class="dt">family =</span> <span class="kw">binomial</span>(<span class="dt">link =</span> <span class="st">&quot;logit&quot;</span>),
+  <span class="dt">data =</span> get_model_data
+)
+
+<span class="kw">summary</span>(results)
+<span class="co">#&gt; Large data regression model: bigglm(WORK30PLUS ~ AGE + I(AGE^2) + HEALTH, family = binomial(link = &quot;logit&quot;), </span>
+<span class="co">#&gt;     data = get_model_data)</span>
+<span class="co">#&gt; Sample size =  88801 </span>
+<span class="co">#&gt;                    Coef    (95%     CI)     SE      p</span>
+<span class="co">#&gt; (Intercept)     -3.9623 -4.0956 -3.8290 0.0667 0.0000</span>
+<span class="co">#&gt; AGE              0.2677  0.2609  0.2744 0.0034 0.0000</span>
+<span class="co">#&gt; I(AGE^2)        -0.0029 -0.0030 -0.0028 0.0000 0.0000</span>
+<span class="co">#&gt; HEALTHVery good  0.0491  0.0043  0.0939 0.0224 0.0282</span>
+<span class="co">#&gt; HEALTHGood      -0.1248 -0.1737 -0.0760 0.0244 0.0000</span>
+<span class="co">#&gt; HEALTHFair      -0.6458 -0.7250 -0.5666 0.0396 0.0000</span>
+<span class="co">#&gt; HEALTHPoor      -0.9561 -1.1209 -0.7913 0.0824 0.0000</span></code></pre></div>
+</div>
 </div>
 </div>
 <div id="option-4-use-a-database" class="section level1">
@@ -504,71 +413,71 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <h2>Importing data into a database</h2>
 <p>When using rectangular extracts, your best bet to import IPUMS data into your database is probably going to be a csv file. Most databases support csv importing, and these implementations will generally be well supported since this is a common file format.</p>
 <p>However, if you need a hierarchical extract, or your database software doesn’t support the csv format, then you can use the chunking functions to load the data into a database without storing the full data in R.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="co"># Connect to database</span></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="kw">library</span>(DBI)</a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="kw">library</span>(RSQLite)</a>
-<a class="sourceLine" id="cb11-4" data-line-number="4">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(<span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)</a>
-<a class="sourceLine" id="cb11-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co"># Add data to tables in chunks</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">ddi &lt;-<span class="st"> </span><span class="kw">read_ipums_ddi</span>(cps_ddi_file)</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw">read_ipums_micro_chunked</span>(</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9">  ddi,</a>
-<a class="sourceLine" id="cb11-10" data-line-number="10">  <span class="dt">data_file =</span> cps_data_file,</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">  readr<span class="op">::</span>SideEffectChunkCallback<span class="op">$</span><span class="kw">new</span>(<span class="cf">function</span>(x, pos) {</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">    <span class="cf">if</span> (pos <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</a>
-<a class="sourceLine" id="cb11-13" data-line-number="13">      <span class="kw">dbWriteTable</span>(con, <span class="st">&quot;cps&quot;</span>, x)</a>
-<a class="sourceLine" id="cb11-14" data-line-number="14">    } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb11-15" data-line-number="15">      <span class="kw">dbWriteTable</span>(con, <span class="st">&quot;cps&quot;</span>, x, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">append =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb11-16" data-line-number="16">    }</a>
-<a class="sourceLine" id="cb11-17" data-line-number="17">  }),</a>
-<a class="sourceLine" id="cb11-18" data-line-number="18">  <span class="dt">chunk_size =</span> <span class="dv">1000</span>,</a>
-<a class="sourceLine" id="cb11-19" data-line-number="19">  <span class="dt">verbose =</span> <span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb11-20" data-line-number="20">)</a>
-<a class="sourceLine" id="cb11-21" data-line-number="21"><span class="co">#&gt; NULL</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Connect to database</span>
+<span class="kw">library</span>(DBI)
+<span class="kw">library</span>(RSQLite)
+con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(<span class="kw">SQLite</span>(), <span class="dt">path =</span> <span class="st">&quot;:memory:&quot;</span>)
+
+<span class="co"># Add data to tables in chunks</span>
+ddi &lt;-<span class="st"> </span><span class="kw">read_ipums_ddi</span>(cps_ddi_file)
+<span class="kw">read_ipums_micro_chunked</span>(
+  ddi,
+  <span class="dt">data_file =</span> cps_data_file,
+  readr<span class="op">::</span>SideEffectChunkCallback<span class="op">$</span><span class="kw">new</span>(<span class="cf">function</span>(x, pos) {
+    <span class="cf">if</span> (pos <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {
+      <span class="kw">dbWriteTable</span>(con, <span class="st">&quot;cps&quot;</span>, x)
+    } <span class="cf">else</span> {
+      <span class="kw">dbWriteTable</span>(con, <span class="st">&quot;cps&quot;</span>, x, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">append =</span> <span class="ot">TRUE</span>)
+    }
+  }),
+  <span class="dt">chunk_size =</span> <span class="dv">1000</span>,
+  <span class="dt">verbose =</span> <span class="ot">FALSE</span>
+)
+<span class="co">#&gt; NULL</span></code></pre></div>
 </div>
 <div id="connecting-to-a-database-with-dbplyr" class="section level2">
 <h2>Connecting to a database with dbplyr</h2>
 <p>The dbplyr vignette “dbplyr” (which you can access with <code>vignette(&quot;dbplyr&quot;, package = &quot;dbplyr&quot;)</code>) is a good place to get started learning about how to connect to a database. Here I’ll just briefly show some examples.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">example &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">&quot;cps&quot;</span>)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3">example <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="st">  </span><span class="kw">filter</span>(<span class="st">'AGE'</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">25</span>)</a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt; # Source:   lazy query [?? x 14]</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt; # Database: sqlite 3.22.0 []</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;     YEAR SERIAL HWTSUPP   CPSID ASECFLAG FOODSTMP MONTH PERNUM  CPSIDP</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt;  1  2011      2 5454500 2.01e13        1        1     3      1 2.01e13</span></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co">#&gt;  2  2011      3 4754200 2.01e13        1        1     3      1 2.01e13</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co">#&gt;  3  2011      3 4754200 2.01e13        1        1     3      2 2.01e13</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co">#&gt;  4  2011      4 5483800 2.01e13        1        1     3      1 2.01e13</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co">#&gt;  5  2011      4 5483800 2.01e13        1        1     3      2 2.01e13</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt;  6  2011      5 4754200 2.01e13        1        1     3      1 2.01e13</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt;  7  2011      6 2983100 2.01e13        1        1     3      1 2.01e13</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt;  8  2011      6 2983100 2.01e13        1        1     3      2 2.01e13</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt;  9  2011      6 2983100 2.01e13        1        1     3      3 2.01e13</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; 10  2011      6 2983100 2.01e13        1        1     3      4 2.01e13</span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; # ... with more rows, and 5 more variables: WTSUPP &lt;dbl&gt;, AGE &lt;int&gt;,</span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; #   EMPSTAT &lt;int&gt;, AHRSWORKT &lt;dbl&gt;, HEALTH &lt;int&gt;</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example &lt;-<span class="st"> </span><span class="kw">tbl</span>(con, <span class="st">&quot;cps&quot;</span>)
+
+example <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="st">'AGE'</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">25</span>)
+<span class="co">#&gt; # Source:   lazy query [?? x 14]</span>
+<span class="co">#&gt; # Database: sqlite 3.22.0 []</span>
+<span class="co">#&gt;     YEAR SERIAL HWTSUPP   CPSID ASECFLAG FOODSTMP MONTH PERNUM  CPSIDP</span>
+<span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;int&gt;    &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1  2011      2    545. 2.01e13        1        1     3      1 2.01e13</span>
+<span class="co">#&gt;  2  2011      3    475. 2.01e13        1        1     3      1 2.01e13</span>
+<span class="co">#&gt;  3  2011      3    475. 2.01e13        1        1     3      2 2.01e13</span>
+<span class="co">#&gt;  4  2011      4    548. 2.01e13        1        1     3      1 2.01e13</span>
+<span class="co">#&gt;  5  2011      4    548. 2.01e13        1        1     3      2 2.01e13</span>
+<span class="co">#&gt;  6  2011      5    475. 2.01e13        1        1     3      1 2.01e13</span>
+<span class="co">#&gt;  7  2011      6    298. 2.01e13        1        1     3      1 2.01e13</span>
+<span class="co">#&gt;  8  2011      6    298. 2.01e13        1        1     3      2 2.01e13</span>
+<span class="co">#&gt;  9  2011      6    298. 2.01e13        1        1     3      3 2.01e13</span>
+<span class="co">#&gt; 10  2011      6    298. 2.01e13        1        1     3      4 2.01e13</span>
+<span class="co">#&gt; # ... with more rows, and 5 more variables: WTSUPP &lt;dbl&gt;, AGE &lt;int&gt;,</span>
+<span class="co">#&gt; #   EMPSTAT &lt;int&gt;, AHRSWORKT &lt;dbl&gt;, HEALTH &lt;int&gt;</span></code></pre></div>
 <p>Though dbplyr shows us a nice preview of the first rows of the result of our query, the data still lives in the database. When using a regular database, in general you’d use the function <code>dplyr::collect()</code> to load in the full results of the query to your R session. However, the database has no concept of IPUMS attributes like value and variable labels, so if you want them, you can use <code>ipums_collect()</code> like so:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">example <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">  </span><span class="kw">filter</span>(<span class="st">'AGE'</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">25</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="st">  </span><span class="kw">ipums_collect</span>(ddi)</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; # A tibble: 204,983 x 14</span></a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt;     YEAR SERIAL HWTSUPP   CPSID ASECFLAG FOODSTMP MONTH   PERNUM  CPSIDP</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int+lb&gt; &lt;int+lb&gt; &lt;int+l&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt;  1  2011      2 5454500 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co">#&gt;  2  2011      3 4754200 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt;  3  2011      3 4754200 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      2 2.01e13</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co">#&gt;  4  2011      4 5483800 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co">#&gt;  5  2011      4 5483800 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      2 2.01e13</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="co">#&gt;  6  2011      5 4754200 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span></a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt;  7  2011      6 2983100 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt;  8  2011      6 2983100 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      2 2.01e13</span></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#&gt;  9  2011      6 2983100 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      3 2.01e13</span></a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#&gt; 10  2011      6 2983100 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      4 2.01e13</span></a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt; # ... with 204,973 more rows, and 5 more variables: WTSUPP &lt;dbl&gt;,</span></a>
-<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="co">#&gt; #   AGE &lt;int+lbl&gt;, EMPSTAT &lt;int+lbl&gt;, AHRSWORKT &lt;dbl+lbl&gt;,</span></a>
-<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt; #   HEALTH &lt;int+lbl&gt;</span></a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">example <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="st">'AGE'</span> <span class="op">&gt;</span><span class="st"> </span><span class="dv">25</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ipums_collect</span>(ddi)
+<span class="co">#&gt; # A tibble: 204,983 x 14</span>
+<span class="co">#&gt;     YEAR SERIAL HWTSUPP   CPSID ASECFLAG FOODSTMP MONTH   PERNUM  CPSIDP</span>
+<span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;int+lb&gt; &lt;int+lb&gt; &lt;int+l&gt;  &lt;dbl&gt;   &lt;dbl&gt;</span>
+<span class="co">#&gt;  1  2011      2    545. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span>
+<span class="co">#&gt;  2  2011      3    475. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span>
+<span class="co">#&gt;  3  2011      3    475. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      2 2.01e13</span>
+<span class="co">#&gt;  4  2011      4    548. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span>
+<span class="co">#&gt;  5  2011      4    548. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      2 2.01e13</span>
+<span class="co">#&gt;  6  2011      5    475. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span>
+<span class="co">#&gt;  7  2011      6    298. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      1 2.01e13</span>
+<span class="co">#&gt;  8  2011      6    298. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      2 2.01e13</span>
+<span class="co">#&gt;  9  2011      6    298. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      3 2.01e13</span>
+<span class="co">#&gt; 10  2011      6    298. 2.01e13 1 [ASEC] 1 [No]   3 [Mar~      4 2.01e13</span>
+<span class="co">#&gt; # ... with 204,973 more rows, and 5 more variables: WTSUPP &lt;dbl&gt;,</span>
+<span class="co">#&gt; #   AGE &lt;int+lbl&gt;, EMPSTAT &lt;int+lbl&gt;, AHRSWORKT &lt;dbl+lbl&gt;,</span>
+<span class="co">#&gt; #   HEALTH &lt;int+lbl&gt;</span></code></pre></div>
 </div>
 </div>
 <div id="learning-more" class="section level1">
@@ -585,8 +494,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Bonus joke: Why is the IPUMS website better than any grocery store? Answer: More free samples.<a href="#fnref1" class="footnote-back">↩</a></p></li>
-<li id="fn2"><p>If you’re interested in learning more about R6, the upcoming revision to Hadley Wickham’s Advanced R book includes a chapter on R6 <a href="https://github.com/hadley/adv-r/blob/master/R6.Rmd">available for free here</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn1"><p>Bonus joke: Why is the IPUMS website better than any grocery store? Answer: More free samples.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>If you’re interested in learning more about R6, the upcoming revision to Hadley Wickham’s Advanced R book includes a chapter on R6 <a href="https://adv-r.hadley.nz/r6.html">available for free here</a><a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
 
