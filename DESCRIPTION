@@ -1,9 +1,9 @@
 Package: ipumsr
 Title: Read 'IPUMS' Extract Files
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: c(
-  person("Greg Freedman Ellis", email = "gfellis@umn.edu", role = c("aut", "cre")), 
-  person("Derek Burk", role = "ctb"),
+  person("Greg Freedman Ellis", role = "aut"), 
+  person("Derek Burk", email = "ipums+cran@umn.edu", role = c("aut", "cre")),
   person("Joe Grover", role = "ctb"),
   person("Minnesota Population Center", email = "ipums@umn.edu", role = "cph")
   )
@@ -18,8 +18,8 @@ License: Mozilla Public License 2.0
 Encoding: UTF-8
 LazyData: true
 Imports: cli, crayon, dplyr (>= 0.7.0), haven (>= 2.0.0), hipread (>=
-        0.2.0), pillar, purrr, R6, raster, readr, rlang, stringr,
-        tibble, tidyr, xml2, Rcpp, zeallot
+        0.2.0), pillar, purrr, R6, raster, readr, rlang, tibble,
+        tidyselect, xml2, Rcpp, zeallot
 RoxygenNote: 6.1.1
 Suggests: DT, ggplot2, htmltools, knitr, rgdal, rmarkdown, rstudioapi,
         scales, sf, sp, shiny, testthat, covr, biglm, DBI, RSQLite,
@@ -27,11 +27,11 @@ Suggests: DT, ggplot2, htmltools, knitr, rgdal, rmarkdown, rstudioapi,
 VignetteBuilder: knitr
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2019-03-08 22:10:26 UTC; gfellis
-Author: Greg Freedman Ellis [aut, cre],
-  Derek Burk [ctb],
+Packaged: 2019-05-15 14:49:32 UTC; burkx031
+Author: Greg Freedman Ellis [aut],
+  Derek Burk [aut, cre],
   Joe Grover [ctb],
   Minnesota Population Center [cph]
-Maintainer: Greg Freedman Ellis <gfellis@umn.edu>
+Maintainer: Derek Burk <ipums+cran@umn.edu>
 Repository: CRAN
-Date/Publication: 2019-03-08 22:30:03 UTC
+Date/Publication: 2019-05-15 18:20:07 UTC

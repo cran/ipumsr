@@ -19,7 +19,7 @@ ipums_locale <- function(encoding = NULL) {
 # rows based on values in a column of a data.frame.
 select_var_rows <- function(df, vars, filter_var = "var_name") {
   if (!quo_is_null(vars)) {
-    vars <- dplyr::select_vars(df[[filter_var]], !!vars)
+    vars <- tidyselect::vars_select(df[[filter_var]], !!vars)
     df <- dplyr::filter(df, .data[[!!filter_var]] %in% vars)
   }
   df
@@ -44,8 +44,8 @@ find_files_in <- function(
   }
 
 
-  if (!is.null(name_ext)) file_names <- stringr::str_subset(file_names, paste0("\\.", name_ext, "$"))
-  if (!quo_is_null(name_select)) file_names <- dplyr::select_vars(file_names, !!name_select)
+  if (!is.null(name_ext)) file_names <- fostr_subset(file_names, paste0("\\.", name_ext, "$"))
+  if (!quo_is_null(name_select)) file_names <- tidyselect::vars_select(file_names, !!name_select)
 
   if (!multiple_ok && length(file_names) > 1) {
     arg_name <- deparse(substitute(name_select))
@@ -156,6 +156,18 @@ set_ipums_var_attributes <- function(
       custom_format_text(paste(class_join$var_name, collapse = ", "), indent = 4, exdent = 4)
     ))
   }
+
+  # Check for values with multiple labels and drop shorter ones because
+  # haven will break
+  var_info$val_labels <- purrr::map(var_info$val_labels, function(x) {
+    duplicated_values <- unique(x$val[which(duplicated(x$val))])
+    for (vvv in duplicated_values) {
+      dup_labels <- x$lbl[x$val == vvv]
+      longest_label <- x$lbl[x$val == vvv][which.max(nchar(dup_labels))[1]]
+      x <- x[x$val != vvv | (x$val == vvv & x$lbl == longest_label), ]
+    }
+    x
+  })
 
   # Convert data frame of value labels to named vector as the labelled class expects
   var_info$val_labels <- purrr::map(var_info$val_labels, function(x) {
@@ -282,8 +294,8 @@ custom_parse_integer <- function(x, var_msg_info = "variable") {
 
 custom_format_text <- function(..., indent = 0, exdent = 0) {
   text <- paste0(...)
-  text <- stringr::str_split(text, "\n")
-  text <- stringr::str_wrap(text[[1]], indent = indent, exdent = exdent)
+  text <- fostr_split(text, "\n")
+  text <- fostr_wrap(text[[1]], indent = indent, exdent = exdent)
   text <- paste(text, collapse = "\n")
   text
 }
@@ -332,17 +344,28 @@ path_is_zip_or_dir <- function(file) {
 
 
 release_questions <- function() {
-  c(
-    paste0(
-      "Do you have the ipumsexample installed? Install using ",
-      "devtools::install_github('mnpopcenter/ipumsr/ipumsexample')"
-    ),
-    paste0(
-      "Do you have the IPUMS Terra examples installed? From MPC, install ",
-      "using devtools::install_local('/pkg/ipums/personal/gfellis/ipumsr-misc/terraexample"
-    ),
-    "Have you spellchecked the whole package using spelling::spell_check_package()"
-  )
+  installed_packages <- rownames(utils::installed.packages())
+
+  out <- c()
+  if (!"ipumsexamples" %in% installed_packages) {
+    out <- c(
+      out,
+      "It looks like you don't have ipumsexamples installed. Do ",
+      "you want to install it with `",
+      "devtools::install_github('mnpopcenter/ipumsr/ipumsexample')",
+      "` before you continue?"
+    )
+  }
+  if (!"ipumsexamples" %in% installed_packages) {
+    out <- c(
+      out,
+      "It looks like you don't have terraexample installed. Do ",
+      "you want to install it with `",
+      "devtools::install_local('Z:/programming/r_ipums/internal_packages/terraexample')",
+      "` before you continue?"
+    )
+  }
+  out
 }
 
 
@@ -366,3 +389,76 @@ hipread_type_name_convert <- function(x) {
   ifelse(x == "numeric", "double", x)
 }
 
+# stringr replacements -----
+fostr_replace_all <- function(string, pattern, replacement) {
+  gsub(pattern, replacement, string)
+}
+
+fostr_replace <- function(string, pattern, replacement) {
+  sub(pattern, replacement, string)
+}
+
+fostr_sub <- function(string, start = 1L, end = -1L) {
+  if (start < 0) start <- nchar(string) + start + 1
+  if (end < 0) end <- nchar(string) + end + 1
+  substr(string, start, end)
+}
+
+fostr_detect <- function(string, pattern, negate = FALSE) {
+  detect <- grepl(pattern, string)
+  if (negate) detect <- !detect
+  detect
+}
+
+fostr_subset <- function(string, pattern, negate = FALSE) {
+  string[fostr_detect(string, pattern, negate)]
+}
+
+fostr_wrap <- function(string, width = 80, indent = 0, exdent = 0) {
+  out <- strwrap(string, width, indent = indent, exdent = exdent)
+  paste(out, collapse = "\n")
+}
+
+fostr_split <- function(string, pattern) {
+  strsplit(string, pattern)
+}
+
+# Replacement for str_match that doesn't quite work the same
+# but can be used in similar circumstances
+# Uses perl style regexes because they allow named capture groups
+# Example:
+#  fostr_named_capture(
+#    c("title: xyz", "type: book", "structure: unknown", "bad", "name: pair"),
+#    "^(?<key>.+?): (?<value>.+)$"
+#  )
+#  #> # A tibble: 5 x 2
+#  #>  key       value
+#  #>  <chr>     <chr>
+#  #>  1 title     xyz
+#  #>  2 type      book
+#  #>  3 structure unknown
+#  #>  4 ""        ""
+#  #>  5 name      pair
+fostr_named_capture <- function(string, pattern, only_matches = FALSE) {
+  matches <- regexpr(pattern, string, perl = TRUE)
+  if (is.null(attr(matches, "capture.start"))) {
+    stop("No named capture items in regex")
+  }
+  capture_names <- colnames(attr(matches, "capture.start"))
+  capture_names <- capture_names[capture_names != ""]
+  starts <- purrr::map(capture_names, ~attr(matches, "capture.start")[, .])
+  ends <- purrr::map2(capture_names, starts, ~attr(matches, "capture.length")[, .x] + .y - 1)
+
+
+  out <- purrr::map2_dfc(starts, ends, ~substr(string, .x, .y))
+  names(out) <- capture_names
+  if (only_matches) out <- out[out[[1]] != "", ]
+
+  out
+}
+
+fostr_named_capture_single <- function(string, pattern, only_matches = FALSE) {
+  out <- fostr_named_capture(string, pattern, only_matches)
+  if (ncol(out) > 1) stop("Found multiple capture groups when expected only one")
+  out[[1]]
+}
