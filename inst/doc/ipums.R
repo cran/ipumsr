@@ -76,7 +76,7 @@ ipums_var_desc(cps_ddi, "YEAR")
 
 # The DDI also has file level information that is not available from just
 # the data.
-ipums_file_info(cps_ddi, "extract_notes")
+ipums_file_info(cps_ddi, "extract_notes") %>% cat()
 
 ## ------------------------------------------------------------------------
 library(ipumsr)

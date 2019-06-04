@@ -80,7 +80,7 @@ library(dplyr, warn.conflicts = FALSE)
 ## ------------------------------------------------------------------------
 length(table(nhgis$STATE))
 
-#     A:  Twenty-Eight (28)
+#     A:  Twenty‚ÄêEight (28)
 
 ## ------------------------------------------------------------------------
 table(nhgis$STATE)
@@ -135,7 +135,7 @@ nhgis %>%
   select(STATE, slave_pop, total_pop, pct_slave) 
 
 #     A: Possibilities: Did you know some states had more slaves than free persons? Did
-#        you know that some ìfree statesî were home to substantial numbers of slaves?
+#        you know that some ‚Äúfree states‚Äù were home to substantial numbers of slaves?
 
 ## ------------------------------------------------------------------------
 cat(ipums_file_info(nhgis_ddi, "conditions"))
