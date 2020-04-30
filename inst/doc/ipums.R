@@ -1,17 +1,17 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  vignette("value-labels", package = "ipumsr")
 #  vignette("ipums-geography", package = "ipumsr")
 #  vignette("ipums-cps", package = "ipumsr")
 #  vignette("ipums-nhgis", package = "ipumsr")
 #  vignette("ipums-terra", package = "ipumsr")
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ipumsr)
 library(dplyr, warn.conflicts = FALSE)
 
@@ -34,14 +34,14 @@ cps_data <- cps_data %>%
 
 table(cps_data$STATE_factor, useNA = "always")
 
-## ---- error = TRUE-------------------------------------------------------
+## ---- error = TRUE------------------------------------------------------------
 # Manipulating the labelled value before as_factor 
 # often leads to losing the information...
 # Say we want to set Iowa (STATEFIP == 19) to missing
 cps_data <- cps_data %>%
   mutate(STATE_factor2 = as_factor(ifelse(STATEFIP == 19, NA, STATEFIP)))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # ipumsr provides helpers for these kinds of tasks, like lbl_na_if().
 # See the value-labels vignette for more information
 cps_data <- cps_data %>%
@@ -55,7 +55,7 @@ cps_data <- cps_data %>%
 table(cps_data$STATE_factor4, useNA = "always")
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ipumsr)
 library(dplyr, warn.conflicts = FALSE)
 
@@ -78,7 +78,7 @@ ipums_var_desc(cps_ddi, "YEAR")
 # the data.
 ipums_file_info(cps_ddi, "extract_notes") %>% cat()
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ipumsr)
 library(dplyr, warn.conflicts = FALSE)
 
@@ -104,7 +104,7 @@ ipums_list_files(nf, data_layer = "nhgis0008_csv/nhgis0008_ds135_1990_pmsa.csv")
 
 ipums_list_files(nf, data_layer = contains("ds135"))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ipumsr)
 library(dplyr, warn.conflicts = FALSE)
 

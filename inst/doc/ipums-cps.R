@@ -1,17 +1,17 @@
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ipumsr)
 
 # Change these filepaths to the filepaths of your downloaded extract
 cps_ddi_file <- "cps_00001.xml"
 cps_data_file <- "cps_00001.dat"
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 # If files doesn't exist, check if ipumsexamples is installed
 if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
   ipumsexamples_ddi <- system.file("extdata", "cps_00011.xml", package = "ipumsexamples")
@@ -38,20 +38,20 @@ if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
   knitr::opts_chunk$set(eval = FALSE)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cps_ddi <- read_ipums_ddi(cps_ddi_file) # Contains metadata, nice to have as separate object
 cps_data <- read_ipums_micro(cps_ddi_file, data_file = cps_data_file)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(dplyr, warn.conflicts = FALSE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Can find on the website or from the data
 ipums_val_labels(cps_ddi, FOODSTMP)
 
 #    A: 0 = NIU, 1 = No, 2 = Yes
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  ipums_website(cps_ddi, "FOODSTMP")
 #  
 #  #    A: (Only available on website)
@@ -59,7 +59,7 @@ ipums_val_labels(cps_ddi, FOODSTMP)
 #  #       Note the NIU on the codes page, this is a household variable and the
 #  #       NIU cases are the vacant households.
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # We will be working with the FOODSTMP variable a lot, so 
 # let's turn it into a factor
 cps_data <- cps_data %>%
@@ -72,10 +72,10 @@ cps_data %>%
 
 #    A: 39,187,348
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #    A: 12.8% (found in code from previous question)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cps_data %>% 
   group_by(SERIAL) %>%
   filter(row_number() == 1) %>%
@@ -85,34 +85,34 @@ cps_data %>%
 
 #    A: 12,855,283
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #    A: 10.7% (found in code from previous question)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  ipums_website(cps_ddi, "EMPSTAT")
 #  
 #  #    A: Age 15+
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ipums_val_labels(cps_ddi, HEALTH)
 
 #    A: 1 = Excellent, 2 = Very Good, 3 = Good, 4 = Fair, 5 = Poor
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cps_data %>%
   filter(HEALTH == 5) %>%
   summarize(emp_pct = weighted.mean(EMPSTAT == 10, WTSUPP))
 
 #    A: 11.6%
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cps_data %>%
   filter(HEALTH == 2) %>%
   summarize(emp_pct = weighted.mean(EMPSTAT == 10, WTSUPP))
 
 #    A: 51.6%
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 ipums_val_labels(cps_ddi, EMPSTAT)
 
 # 10 is the code for "At work"
@@ -127,15 +127,15 @@ pct_emp_by_health
 
 #    A: 11.8%
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #    A: 64.0% (found in code from previous question)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  ipums_website(cps_ddi, "AHRSWORK")
 #  
 #  #     A: Civilians age 15+, at work last week
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 avg_hrs_by_health <- cps_data %>% 
   filter(AGE >= 15 & AHRSWORKT < 999) %>%
   mutate(HEALTH_factor = as_factor(HEALTH)) %>% 
@@ -150,7 +150,7 @@ avg_hrs_by_health
 #        Fair       35.7
 #        Poor       32.4
 
-## ---- fig.height = 4, fig.width = 7--------------------------------------
+## ---- fig.height = 4, fig.width = 7-------------------------------------------
 library(ggplot2)
 
 x_label <- ipums_var_label(cps_data, HEALTH)
@@ -167,7 +167,7 @@ ggplot(pct_emp_by_health, aes(x = HEALTH_factor, y = emp_pct)) +
   )
 
 
-## ---- fig.height = 6, fig.width = 7--------------------------------------
+## ---- fig.height = 6, fig.width = 7-------------------------------------------
 # Age is likely correlated with self-reported health and employment, so a good 
 # analysis would control for this.
 

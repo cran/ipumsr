@@ -14,7 +14,7 @@
 #'    labels) and returns TRUE or FALSE. It is passed to a function similar
 #'    to \code{\link[rlang]{as_function}}, so also accepts quosure-style lambda
 #'    functions (that use values .val and .lbl). See examples for more information.
-#' @return A haven::labeled vector
+#' @return A haven::labelled vector
 #' @examples
 #' x <- haven::labelled(
 #'   c(10, 10, 11, 20, 30, 99, 30, 10),
@@ -67,7 +67,7 @@ lbl_na_if <- function(x, .predicate) {
 #'    It is passed to a function similar to \code{\link[rlang]{as_function}}, so
 #'    also accepts quosure-style lambda functions (that use values .val and .lbl).
 #'    See examples for more information.
-#' @return A haven::labeled vector
+#' @return A haven::labelled vector
 #' @examples
 #' x <- haven::labelled(
 #'   c(10, 10, 11, 20, 30, 99, 30, 10),
@@ -77,7 +77,7 @@ lbl_na_if <- function(x, .predicate) {
 #' lbl_collapse(x, ~(.val %/% 10) * 10)
 #' # Notice that 90 get's NIU from 99 even though 90 didn't have a label in original
 #'
-#' lbl_collapse(x, ~ifelse(.lbl == 10, 11, .lbl))
+#' lbl_collapse(x, ~ifelse(.val == 10, 11, .val))
 #' # But here 10 is assigned 11's label
 #'
 #' # You can also use the more explicit function notation
@@ -132,7 +132,7 @@ lbl_collapse <- function(x, .fun) {
 #'   is passed to a function similar to \code{\link[rlang]{as_function}}, so
 #'   also accepts quosure-style lambda functions (that use values .val and .lbl).
 #'   See examples for more information.
-#' @return A haven::labeled vector
+#' @return A haven::labelled vector
 #' @examples
 #' x <- haven::labelled(
 #'   c(10, 10, 11, 20, 30, 99, 30, 10),
@@ -157,6 +157,10 @@ lbl_collapse <- function(x, .fun) {
 #' @family lbl_helpers
 #' @export
 lbl_relabel <- function(x, ...) {
+  if (is.null(attr(x, "labels", exact = TRUE))) {
+    stop("Vector must be labelled. To add labels to an unlabelled vector use ",
+         "'lbl_define()'.")
+  }
   dots <- list(...)
 
   transformation <- ipums_val_labels(x)
@@ -206,6 +210,49 @@ lbl_relabel <- function(x, ...) {
   out
 }
 
+
+#' Define labels for an unlabelled vector
+#'
+#' Creates a \code{\link[haven]{labelled}} vector from an unlabelled atomic
+#' vector using \code{\link{lbl_relabel}} syntax, which allows grouping multiple
+#' values into a single labelled value. Values not assigned a label will remain
+#' unlabelled.
+#' @param x An unlabelled atomic vector
+#' @param ... Two-sided formulas where the left hand side is a label placeholder
+#'   (created with the \code{\link{lbl}} function) and the right hand side is a
+#'   function that returns a logical vector that indicates which existing values
+#'   should be assigned that labeled value. The right hand side is passed to a
+#'   function similar to \code{\link[rlang]{as_function}}, so also accepts
+#'   quosure-style lambda functions (that use values .val and .lbl). See
+#'   examples for more information.
+#' @return A haven::labelled vector
+#' @examples
+#' age <- c(10, 12, 16, 18, 20, 22, 25, 27)
+#'
+#' # Note that values not assigned a new labelled value remain unchanged
+#' lbl_define(
+#'   age,
+#'   lbl(1, "Pre-college age") ~ .val < 18,
+#'   lbl(2, "College age") ~ .val >= 18 & .val <= 22
+#' )
+#' @family lbl_helpers
+#' @export
+lbl_define <- function(x, ...) {
+  if (!is.null(attr(x, "labels", exact = TRUE))) {
+    stop("Vector should not have labels. To relabel a labelled vector use",
+         "'lbl_relabel()'.")
+  }
+  unique_x <- sort(unique(x))
+  tmp_lbls <- rep(NA_character_, length(unique_x))
+  attr(x, "labels") <- purrr::set_names(unique_x, tmp_lbls)
+  x <- lbl_relabel(x, ...)
+  label_is_na <- is.na(names(attr(x, "labels")))
+  attr(x, "labels") <- attr(x, "labels")[!label_is_na]
+  attr(x, "class") <- "haven_labelled"
+  x
+}
+
+
 #' Add labels for unlabelled values
 #'
 #' Add labels for values that don't already have them.
@@ -217,7 +264,7 @@ lbl_relabel <- function(x, ...) {
 #' @param labeller A function that takes a single argument of the values and returns the
 #'   labels. Defaults to \code{as.character}. \code{\link[rlang]{as_function}}, so
 #'   also accepts quosure-style lambda functions. See examples for more details.
-#' @return A haven::labeled vector
+#' @return A haven::labelled vector
 #' @examples
 #' x <- haven::labelled(
 #'   c(100, 200, 105, 990, 999, 230),
@@ -301,7 +348,7 @@ lbl_add_vals <- function(x, labeller = as.character, vals = NULL) {
 #' Remove labels that do not appear in the data.
 #'
 #' @param x A \code{\link[haven]{labelled}} vector
-#' @return A haven::labeled vector
+#' @return A haven::labelled vector
 #' @examples
 #' x <- haven::labelled(
 #'   c(1, 2, 3, 1, 2, 3, 1, 2, 3),
@@ -325,24 +372,67 @@ lbl_clean <-function(x) {
 # Changed so that instead of function having args .x & .y, it has
 # .val and .lbl
 as_lbl_function <- function(x, env = caller_env()) {
-  rlang::coerce_type(
-    x,
-    rlang::friendly_type("function"),
-    primitive = ,
-    closure = {
-      x
-    },
-    formula = {
-      if (length(x) > 2) {
-        abort("Can't convert a two-sided formula to a function")
-      }
-      args <- list(... = rlang::missing_arg(), .val = quote(..1), .lbl = quote(..2))
-      rlang::new_function(args, rlang::f_rhs(x), rlang::f_env(x))
-    },
-    string = {
-      get(x, envir = env, mode = "function")
+  if (rlang::is_function(x)) {
+    return(x)
+  }
+
+  if (rlang::is_quosure(x)) {
+    return(eval(rlang::expr(function(...) rlang::eval_tidy(!!x))))
+  }
+
+  if (rlang::is_formula(x)) {
+    if (length(x) > 2) {
+      rlang::abort("Can't convert a two-sided formula to a function")
     }
-  )
+
+    args <- list(... = rlang::missing_arg(), .val = quote(..1), .lbl = quote(..2))
+    fn <- new_function(args, rlang::f_rhs(x), rlang::f_env(x))
+    return(fn)
+  }
+
+  if (rlang::is_string(x)) {
+    return(get(x, envir = env, mode = "function"))
+  }
+
+  abort_coercion_function(x)
+}
+
+# Adapted from rlang:::abort_coercion
+abort_coercion_function <- function(x) {
+  x_type <- friendly_type_of(x)
+  abort(paste0("Can't convert ", x_type, " to function"))
+}
+
+# Copied from rlang:::friendly_type_of()
+friendly_type_of <- function(x, length = FALSE) {
+  if (is.object(x)) {
+    return(sprintf("a `%s` object", paste(class(x),
+                                          collapse = "/")))
+  }
+  friendly <- as_friendly_type(typeof(x))
+  if (length && rlang::is_vector(x)) {
+    friendly <- paste0(friendly, sprintf(" of length %s",
+                                         length(x)))
+  }
+  friendly
+}
+
+# Copied from rlang:::as_friendly_type()
+as_friendly_type <- function(type) {
+  switch(type, logical = "a logical vector", integer = "an integer vector",
+         numeric = , double = "a double vector", complex = "a complex vector",
+         character = "a character vector", raw = "a raw vector",
+         string = "a string", list = "a list", `NULL` = "NULL",
+         environment = "an environment", externalptr = "a pointer",
+         weakref = "a weak reference", S4 = "an S4 object",
+         name = , symbol = "a symbol", language = "a call",
+         pairlist = "a pairlist node", expression = "an expression vector",
+         quosure = "a quosure", formula = "a formula",
+         char = "an internal string", promise = "an internal promise",
+         ... = "an internal dots object", any = "an internal `any` object",
+         bytecode = "an internal bytecode object", primitive = ,
+         builtin = , special = "a primitive function", closure = "a function",
+         type)
 }
 
 #' Make a label placeholder object

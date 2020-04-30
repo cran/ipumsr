@@ -1,3 +1,13 @@
+# ipumsr 0.4.3
+
+* Add `lbl_define()` function to enable the use of `lbl_relabel()` syntax when  
+  creating a new labelled vector from an unlabelled one (#51, thanks 
+  @chengchou).
+  
+* Remove pillar printing from ipumsr, getting rid of pesky warning (#47).
+
+* Improved documentation for `lower_vars` argument (#56, thanks @hrecht).
+
 # ipumsr 0.4.2
 
 * Incorporate bug fix in knitr 1.23 that affected encoding in NHGIS vignette.

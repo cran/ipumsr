@@ -1,38 +1,38 @@
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 if (!suppressPackageStartupMessages(require(sf))) {
   message("Could not find sf package and so could not run vignette.")
   knitr::opts_chunk$set(eval = FALSE)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: Fifteen (15)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: Population that is urban, particular ages, deaf and dumb, blind, and foreign born
 #        not naturalized.
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: Six (6)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: Nation, State, & County
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: Persons
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: It includes the counts of "white" persons, in addition to "colored" persons
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: Percentage of total population in slavery, or ratio of slave:free population
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(ipumsr)
 library(sf)
 
@@ -40,7 +40,7 @@ library(sf)
 nhgis_csv_file <- "nhgis0001_csv.zip"
 nhgis_shp_file <- "nhgis0001_shape.zip"
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 # If files doesn't exist, check if ipumsexamples is installed
 if (!file.exists(nhgis_csv_file) | !file.exists(nhgis_shp_file)) {
   ipumsexamples_csv <- system.file("extdata", "nhgis0010_csv.zip", package = "ipumsexamples")
@@ -67,28 +67,28 @@ if (!file.exists(nhgis_csv_file) | !file.exists(nhgis_shp_file)) {
   knitr::opts_chunk$set(eval = FALSE)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 nhgis_ddi <- read_ipums_codebook(nhgis_csv_file) # Contains metadata, nice to have as separate object
 nhgis <- read_nhgis_sf(
   data_file = nhgis_csv_file,
   shape_file = nhgis_shp_file
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(dplyr, warn.conflicts = FALSE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 length(table(nhgis$STATE))
 
 #     A:  Twenty‐Eight (28)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 table(nhgis$STATE)
 #     A: In 1830, there were not any other states yet! Every decennial census is a 
 #        historical snapshot, and NHGIS provides census counts just as they were 
 #        originally reported without "filling in" any information for newer areas.
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 nhgis <- nhgis %>%
   mutate(total_pop = ABO001 + ABO002 + ABO003 + ABO004 + ABO005 + ABO006)
 
@@ -100,7 +100,7 @@ nhgis %>%
 
 #     A: New  York
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 nhgis <- nhgis %>%
   mutate(slave_pop = ABO003 + ABO004)
 
@@ -112,7 +112,7 @@ nhgis %>%
 
 #     A: Virginia 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 nhgis <- nhgis %>%
   mutate(pct_slave = slave_pop / total_pop)
 
@@ -123,7 +123,7 @@ nhgis %>%
 
 #     A: South Carolina (54.27%) and Vermont (0.00%)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 nhgis %>%
   as.data.frame() %>%
   filter(pct_slave > 0.5) %>%
@@ -137,18 +137,18 @@ nhgis %>%
 #     A: Possibilities: Did you know some states had more slaves than free persons? Did
 #        you know that some “free states” were home to substantial numbers of slaves?
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cat(ipums_file_info(nhgis_ddi, "conditions"))
 
 #     A: Minnesota Population Center. National Historical Geographic Information
 #        System: Version 11.0 [Database]. Minneapolis: University of Minnesota. 2016.
 #        http://doi.org/10.18128/D050.V11.0.
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 #     A: (You can also send questions you may have about the site. We're happy to help!)
 #     nhgis@umn.edu
 
-## ---- fig.height = 4, fig.width = 6--------------------------------------
+## ---- fig.height = 4, fig.width = 6-------------------------------------------
 library(ggplot2)
 ggplot(data = nhgis, aes(fill = pct_slave)) +
   geom_sf() + 

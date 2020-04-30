@@ -1,10 +1,10 @@
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- message = FALSE----------------------------------------------------
+## ---- message = FALSE---------------------------------------------------------
 library(ipumsr)
 library(dplyr)
 
@@ -18,7 +18,7 @@ installed_db_pkgs <- requireNamespace("DBI") &
 cps_ddi_file <- "cps_00001.xml"
 cps_data_file <- "cps_00001.dat"
 
-## ---- echo = FALSE-------------------------------------------------------
+## ---- echo = FALSE------------------------------------------------------------
 # If files doesn't exist, check if ipumsexamples is installed
 if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
   ipumsexamples_ddi <- system.file("extdata", "cps_00011.xml", package = "ipumsexamples")
@@ -49,7 +49,7 @@ if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
   knitr::opts_chunk$set(eval = FALSE)
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 read_ipums_micro(
   cps_ddi_file, data_file = cps_data_file, verbose = FALSE
 ) %>%
@@ -65,7 +65,7 @@ read_ipums_micro(
   group_by(HEALTH, AT_WORK) %>%
   summarize(n = n())
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cb_function <- function(x, pos) {
   x %>% mutate(
     HEALTH = as_factor(HEALTH),
@@ -80,21 +80,21 @@ cb_function <- function(x, pos) {
     summarize(n = n())
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 cb <- IpumsDataFrameCallback$new(cb_function)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 chunked_tabulations <- read_ipums_micro_chunked(
   cps_ddi_file, data_file = cps_data_file, verbose = FALSE,
   callback = cb, chunk_size = 1000
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 chunked_tabulations %>%
   group_by(HEALTH, AT_WORK) %>% 
   summarize(n = sum(n))
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Read in data
 data <- read_ipums_micro(
   cps_ddi_file, data_file = cps_data_file, verbose = FALSE
@@ -120,7 +120,7 @@ data <- data %>%
 model <- lm(AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data)
 summary(model)
 
-## ---- eval = installed_biglm---------------------------------------------
+## ---- eval = installed_biglm--------------------------------------------------
 biglm_cb <- IpumsBiglmCallback$new(
   model = AHRSWORKT ~ AGE + I(AGE^2) + HEALTH,
   prep = function(x, pos) {
@@ -139,7 +139,7 @@ biglm_cb <- IpumsBiglmCallback$new(
   }
 )
 
-## ---- eval = installed_biglm---------------------------------------------
+## ---- eval = installed_biglm--------------------------------------------------
 chunked_model <- read_ipums_micro_chunked(
   cps_ddi_file, data_file = cps_data_file, verbose = FALSE,
   callback = biglm_cb, chunk_size = 1000
@@ -147,7 +147,7 @@ chunked_model <- read_ipums_micro_chunked(
 
 summary(chunked_model)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # Subset only those in "Poor" health
 chunked_subset <- read_ipums_micro_chunked(
   cps_ddi_file, data_file = cps_data_file, verbose = FALSE,
@@ -157,14 +157,14 @@ chunked_subset <- read_ipums_micro_chunked(
   chunk_size = 1000
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data <- read_ipums_micro_yield(
   cps_ddi_file, 
   data_file = cps_data_file, 
   verbose = FALSE
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 yield_results <- tibble(
   HEALTH = factor(levels = c("Excellent", "Very good", "Good", "Fair", "Poor")), 
   AT_WORK = factor(levels = c("No", "Yes")),
@@ -191,14 +191,14 @@ while (!data$is_done()) {
 
 yield_results
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 data <- read_ipums_micro_yield(
   cps_ddi_file, 
   data_file = cps_data_file, 
   verbose = FALSE
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 get_model_data <- function(reset) {
   if (reset) {
     data$reset()
@@ -222,7 +222,7 @@ get_model_data <- function(reset) {
   }
 }
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(biglm)
 results <- bigglm(
   WORK30PLUS ~ AGE + I(AGE^2) + HEALTH,
@@ -232,7 +232,7 @@ results <- bigglm(
 
 summary(results)
 
-## ---- eval = installed_db_pkgs-------------------------------------------
+## ---- eval = installed_db_pkgs------------------------------------------------
 # Connect to database
 library(DBI)
 library(RSQLite)
@@ -255,13 +255,13 @@ read_ipums_micro_chunked(
 )
 
 
-## ---- eval = installed_db_pkgs-------------------------------------------
+## ---- eval = installed_db_pkgs------------------------------------------------
 example <- tbl(con, "cps")
 
 example %>%
   filter('AGE' > 25)
 
-## ---- eval = installed_db_pkgs-------------------------------------------
+## ---- eval = installed_db_pkgs------------------------------------------------
 example %>%
   filter('AGE' > 25) %>%
   ipums_collect(ddi)
