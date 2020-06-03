@@ -1,3 +1,8 @@
+# ipumsr 0.4.4
+
+* Modify `lbl_define()` test to reflect changes to haven's `labelled` class 
+  definition.
+
 # ipumsr 0.4.3
 
 * Add `lbl_define()` function to enable the use of `lbl_relabel()` syntax when  

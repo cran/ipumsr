@@ -12,7 +12,7 @@
 
 <meta name="author" content="Minnesota Population Center" />
 
-<meta name="date" content="2020-04-30" />
+<meta name="date" content="2020-06-03" />
 
 <title>Value Labels</title>
 
@@ -303,7 +303,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Value Labels</h1>
 <h4 class="author">Minnesota Population Center</h4>
-<h4 class="date">2020-04-30</h4>
+<h4 class="date">2020-06-03</h4>
 
 
 
@@ -335,63 +335,40 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>However, as you can see, there often isn’t enough space to see the labels when printing out a full data.frame. So, there are a few options to see the labels directly:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Printing the variable directly (or a subset)</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="kw">head</span>(cps<span class="op">$</span>MONTH)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; &lt;Labelled integer&gt;: Month</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt; [1] 3 3 3 3 3 3</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt; </span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt; Labels:</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  value     label</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;      1   January</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;      2  February</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;      3     March</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;      4     April</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;      5       May</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;      6      June</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt;      7      July</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt;      8    August</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt;      9 September</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt;     10   October</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;     11  November</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt;     12  December</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="co"># Just get the labels</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>MONTH)</span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt; # A tibble: 12 x 2</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt;      val lbl      </span></span>
-<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;    </span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt;  1     1 January  </span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt;  2     2 February </span></span>
-<span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt;  3     3 March    </span></span>
-<span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt;  4     4 April    </span></span>
-<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt;  5     5 May      </span></span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="co">#&gt;  6     6 June     </span></span>
-<span id="cb2-32"><a href="#cb2-32"></a><span class="co">#&gt;  7     7 July     </span></span>
-<span id="cb2-33"><a href="#cb2-33"></a><span class="co">#&gt;  8     8 August   </span></span>
-<span id="cb2-34"><a href="#cb2-34"></a><span class="co">#&gt;  9     9 September</span></span>
-<span id="cb2-35"><a href="#cb2-35"></a><span class="co">#&gt; 10    10 October  </span></span>
-<span id="cb2-36"><a href="#cb2-36"></a><span class="co">#&gt; 11    11 November </span></span>
-<span id="cb2-37"><a href="#cb2-37"></a><span class="co">#&gt; 12    12 December</span></span>
-<span id="cb2-38"><a href="#cb2-38"></a></span>
-<span id="cb2-39"><a href="#cb2-39"></a><span class="co"># or if you&#39;re working interactively you can use ipums_view</span></span>
-<span id="cb2-40"><a href="#cb2-40"></a><span class="co"># ipums_view(ddi)</span></span></code></pre></div>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt; [1] 3 3 3 3 3 3</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Just get the labels</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">ipums_val_labels</span>(cps<span class="op">$</span>MONTH)</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt; # A tibble: 12 x 2</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;      val lbl      </span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  1     1 January  </span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  2     2 February </span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  3     3 March    </span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;  4     4 April    </span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt;  5     5 May      </span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt;  6     6 June     </span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt;  7     7 July     </span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt;  8     8 August   </span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;  9     9 September</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt; 10    10 October  </span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt; 11    11 November </span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt; 12    12 December</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="co"># or if you&#39;re working interactively you can use ipums_view</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co"># ipums_view(ddi)</span></span></code></pre></div>
 </div>
 <div id="why-use-the-labelled-class-instead-of-base-rs-factors" class="section level1">
 <h1>Why use the labelled class instead of base R’s factors?</h1>
 <p>The usual way to connect numeric data to labels in R is in <code>factor</code> variables. Though this data type is more native to R, and more widely supported by R code, it was designed for efficient calculations in linear models, not as a general purpose value labeling system and so is missing important features that the value labels provided by IPUMS require.</p>
 <p>Factors only allow for integers to be mapped to a text label, and these integers have to be a count starting at 1. This doesn’t work for IPUMS data because often our variables have specific meanings for the codes. For example, the variable <code>AGE</code> uses the value to mean the actual age, but does have labels for age 0 and the top codes.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">head</span>(cps<span class="op">$</span>AGE)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; &lt;Labelled integer&gt;: Age</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="co">#&gt; </span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; Labels:</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;  value               label</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;      0        Under 1 year</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt;     90 90 (90+, 1988-2002)</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt;     99                 99+</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a></span>
-<span id="cb3-11"><a href="#cb3-11"></a>cps<span class="op">$</span>AGE_FACTOR &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>AGE)</span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="kw">head</span>(cps<span class="op">$</span>AGE_FACTOR)</span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt; 84 Levels: Under 1 year 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 ... 99+</span></span></code></pre></div>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a>cps<span class="op">$</span>AGE_FACTOR &lt;-<span class="st"> </span><span class="kw">as_factor</span>(cps<span class="op">$</span>AGE)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">head</span>(cps<span class="op">$</span>AGE_FACTOR)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt; 84 Levels: Under 1 year 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 ... 99+</span></span></code></pre></div>
 <p>It may seem like the new <code>AGE_FACTOR</code> variable is okay, but it can be very confusing!</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">mean</span>(cps<span class="op">$</span>AGE)</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; [1] 35.0226</span></span>
@@ -610,7 +587,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-4"><a href="#cb13-4"></a>)</span>
 <span id="cb13-5"><a href="#cb13-5"></a></span>
 <span id="cb13-6"><a href="#cb13-6"></a><span class="kw">lbl_add</span>(x, <span class="kw">lbl</span>(<span class="dv">100</span>, <span class="st">&quot;$100&quot;</span>), <span class="kw">lbl</span>(<span class="dv">105</span>, <span class="st">&quot;$105&quot;</span>), <span class="kw">lbl</span>(<span class="dv">200</span>, <span class="st">&quot;$200&quot;</span>), <span class="kw">lbl</span>(<span class="dv">230</span>, <span class="st">&quot;$230&quot;</span>))</span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; &lt;Labelled double&gt;</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[6]&gt;</span></span>
 <span id="cb13-8"><a href="#cb13-8"></a><span class="co">#&gt; [1] 100 200 105 990 999 230</span></span>
 <span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; </span></span>
 <span id="cb13-10"><a href="#cb13-10"></a><span class="co">#&gt; Labels:</span></span>
@@ -622,7 +599,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt;    990 Unknown</span></span>
 <span id="cb13-17"><a href="#cb13-17"></a><span class="co">#&gt;    999     NIU</span></span>
 <span id="cb13-18"><a href="#cb13-18"></a><span class="kw">lbl_add_vals</span>(x, <span class="op">~</span><span class="kw">paste0</span>(<span class="st">&quot;$&quot;</span>, .))</span>
-<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt; &lt;Labelled double&gt;</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[6]&gt;</span></span>
 <span id="cb13-20"><a href="#cb13-20"></a><span class="co">#&gt; [1] 100 200 105 990 999 230</span></span>
 <span id="cb13-21"><a href="#cb13-21"></a><span class="co">#&gt; </span></span>
 <span id="cb13-22"><a href="#cb13-22"></a><span class="co">#&gt; Labels:</span></span>
