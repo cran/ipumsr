@@ -164,7 +164,7 @@ set_ipums_var_attributes <- function(
     for (vvv in duplicated_values) {
       dup_labels <- x$lbl[x$val == vvv]
       longest_label <- x$lbl[x$val == vvv][which.max(nchar(dup_labels))[1]]
-      x <- x[x$val != vvv | (x$val == vvv & x$lbl == longest_label), ]
+      x <- dplyr::distinct(x[x$val != vvv | (x$val == vvv & x$lbl == longest_label), ])
     }
     x
   })
@@ -174,7 +174,29 @@ set_ipums_var_attributes <- function(
     if (length(x) == 0 || nrow(x) == 0) NULL else purrr::set_names(x$val, x$lbl)
   })
 
-  set_ipums_var_attributes_(data, var_info)
+  purrr::walk(
+    seq_len(nrow(var_info)),
+    function(iii) {
+      data[[var_info$var_name[iii]]] <<- set_single_var_attributes(
+          data[[var_info$var_name[iii]]],
+          var_info$val_labels[[iii]],
+          var_info$var_label[[iii]],
+          var_info$var_desc[[iii]]
+      )
+    }
+  )
+
+  data
+}
+
+set_single_var_attributes <- function(x, val_labels, var_label, var_desc) {
+  if (is.na(var_label)) var_label <- NULL
+  if (is.na(var_desc)) var_desc <- NULL
+  if (!is.null(val_labels)) {
+    structure(haven::labelled(x, val_labels), label = var_label, var_desc = var_desc)
+  } else {
+    structure(x, label = var_label, var_desc = var_desc)
+  }
 }
 
 #' Collect data into R session with IPUMS attributes
@@ -194,22 +216,6 @@ set_ipums_var_attributes <- function(
 ipums_collect <- function(data, ddi, var_attrs = c("val_labels", "var_label", "var_desc")) {
   var_attrs <- match.arg(var_attrs, several.ok = TRUE)
   set_ipums_var_attributes(dplyr::collect(data), ddi, var_attrs)
-}
-
-set_imp_decim <- function(data, var_info) {
-  if (is.null(var_info)) return(data)
-
-  var_info <- dplyr::filter(var_info, .data$var_name %in% names(data))
-
-  # Set imp_decim to 0 when missing or variable is character
-  if (is.null(var_info$imp_decim)) var_info$imp_decim <- 0
-  var_info$imp_decim[is.na(var_info$imp_decim)] <- 0
-
-  non_numeric_vars <- purrr::map_lgl(data, ~!is.numeric(.))
-  non_numeric_vars <- names(data)[non_numeric_vars]
-  var_info$imp_decim[var_info$var_name %in% non_numeric_vars] <- 0
-
-  set_imp_decim_(data, var_info)
 }
 
 load_sf_namespace <- function() {

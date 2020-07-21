@@ -12,10 +12,26 @@
 
 <meta name="author" content="Minnesota Population Center" />
 
-<meta name="date" content="2020-06-03" />
+<meta name="date" content="2020-07-21" />
 
 <title>ipumsr Example - NHGIS</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -303,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore"><code>ipumsr</code> Example - NHGIS</h1>
 <h4 class="author">Minnesota Population Center</h4>
-<h4 class="date">2020-06-03</h4>
+<h4 class="date">2020-07-21</h4>
 
 
 
@@ -442,12 +458,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt; Reading data file...</span></span>
 <span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt; Reading geography...</span></span>
 <span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt; options:        ENCODING=latin1 </span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt; Reading layer `US_state_1830&#39; from data source `C:\Users\derek\AppData\Local\Temp\RtmpMjC9Nm\fileccc10824501\US_state_1830.shp&#39; using driver `ESRI Shapefile&#39;</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt; Reading layer `US_state_1830&#39; from data source `C:\Users\derek\AppData\Local\Temp\Rtmp8MyPec\file1f483ce818ea\US_state_1830.shp&#39; using driver `ESRI Shapefile&#39;</span></span>
 <span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt; Simple feature collection with 29 features and 7 fields</span></span>
 <span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; geometry type:  MULTIPOLYGON</span></span>
 <span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt; dimension:      XY</span></span>
 <span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt; bbox:           xmin: -1389608 ymin: -1337508 xmax: 2258225 ymax: 1408188</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt; proj4string:    +proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +datum=NAD83 +units=m +no_defs</span></span></code></pre></div>
+<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt; projected CRS:  USA_Contiguous_Albers_Equal_Area_Conic</span></span></code></pre></div>
 <p>Note that <code>read_nhgis_sf</code> relies on package <code>sf</code>. You can also read NHGIS data into the format used by package <code>sp</code> with function <code>read_nhgis_sp</code>.</p>
 </div>
 <div id="exercises" class="section level2">

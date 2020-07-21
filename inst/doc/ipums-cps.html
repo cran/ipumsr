@@ -12,10 +12,26 @@
 
 <meta name="author" content="Minnesota Population Center" />
 
-<meta name="date" content="2020-06-03" />
+<meta name="date" content="2020-07-21" />
 
 <title>ipumsr Example - CPS</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -303,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore"><code>ipumsr</code> Example - CPS</h1>
 <h4 class="author">Minnesota Population Center</h4>
-<h4 class="date">2020-06-03</h4>
+<h4 class="date">2020-07-21</h4>
 
 
 
@@ -434,13 +450,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb6-7"><a href="#cb6-7"></a><span class="st">  </span><span class="kw">group_by</span>(FOODSTMP_factor) <span class="op">%&gt;%</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n_foodstmp =</span> <span class="kw">sum</span>(WTSUPP)) <span class="op">%&gt;%</span></span>
 <span id="cb6-9"><a href="#cb6-9"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pct_foodstmp =</span> n_foodstmp <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(n_foodstmp))</span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;   FOODSTMP_factor n_foodstmp pct_foodstmp</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; * &lt;fct&gt;                &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; 1 No              267365863.        0.872</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; 2 Yes              39187348.        0.128</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#    A: 39,187,348</span></span></code></pre></div>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; `summarise()` ungrouping output (override with `.groups` argument)</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;   FOODSTMP_factor n_foodstmp pct_foodstmp</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;   &lt;fct&gt;                &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; 1 No              267365863.        0.872</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; 2 Yes              39187348.        0.128</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#    A: 39,187,348</span></span></code></pre></div>
 <ol start="4" style="list-style-type: upper-alpha">
 <li>What proportion of the population received food stamps in 2011?</li>
 </ol>
@@ -459,13 +476,14 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb8-4"><a href="#cb8-4"></a><span class="st">  </span><span class="kw">group_by</span>(FOODSTMP_factor) <span class="op">%&gt;%</span></span>
 <span id="cb8-5"><a href="#cb8-5"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">n_foodstmp =</span> <span class="kw">sum</span>(HWTSUPP)) <span class="op">%&gt;%</span></span>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pct_foodstmp =</span> n_foodstmp <span class="op">/</span><span class="st"> </span><span class="kw">sum</span>(n_foodstmp))</span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;   FOODSTMP_factor n_foodstmp pct_foodstmp</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; * &lt;fct&gt;                &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; 1 No              107139102.        0.893</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; 2 Yes              12855283.        0.107</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#    A: 12,855,283</span></span></code></pre></div>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; `summarise()` ungrouping output (override with `.groups` argument)</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;   FOODSTMP_factor n_foodstmp pct_foodstmp</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;   &lt;fct&gt;                &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; 1 No              107139102.        0.893</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; 2 Yes              12855283.        0.107</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#    A: 12,855,283</span></span></code></pre></div>
 <ol start="2" style="list-style-type: upper-alpha">
 <li>What proportion of households received food stamps in 2011?</li>
 </ol>
@@ -549,18 +567,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb14-24"><a href="#cb14-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">HEALTH_factor =</span> <span class="kw">as_factor</span>(HEALTH)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb14-25"><a href="#cb14-25"></a><span class="st">  </span><span class="kw">group_by</span>(HEALTH_factor) <span class="op">%&gt;%</span></span>
 <span id="cb14-26"><a href="#cb14-26"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">emp_pct =</span> <span class="kw">weighted.mean</span>(EMPSTAT <span class="op">==</span><span class="st"> </span><span class="dv">10</span>, WTSUPP))</span>
-<span id="cb14-27"><a href="#cb14-27"></a></span>
-<span id="cb14-28"><a href="#cb14-28"></a>pct_emp_by_health</span>
-<span id="cb14-29"><a href="#cb14-29"></a><span class="co">#&gt; # A tibble: 5 x 2</span></span>
-<span id="cb14-30"><a href="#cb14-30"></a><span class="co">#&gt;   HEALTH_factor emp_pct</span></span>
-<span id="cb14-31"><a href="#cb14-31"></a><span class="co">#&gt; * &lt;fct&gt;           &lt;dbl&gt;</span></span>
-<span id="cb14-32"><a href="#cb14-32"></a><span class="co">#&gt; 1 Excellent       0.639</span></span>
-<span id="cb14-33"><a href="#cb14-33"></a><span class="co">#&gt; 2 Very good       0.640</span></span>
-<span id="cb14-34"><a href="#cb14-34"></a><span class="co">#&gt; 3 Good            0.521</span></span>
-<span id="cb14-35"><a href="#cb14-35"></a><span class="co">#&gt; 4 Fair            0.282</span></span>
-<span id="cb14-36"><a href="#cb14-36"></a><span class="co">#&gt; 5 Poor            0.118</span></span>
-<span id="cb14-37"><a href="#cb14-37"></a></span>
-<span id="cb14-38"><a href="#cb14-38"></a><span class="co">#    A: 11.8%</span></span></code></pre></div>
+<span id="cb14-27"><a href="#cb14-27"></a><span class="co">#&gt; `summarise()` ungrouping output (override with `.groups` argument)</span></span>
+<span id="cb14-28"><a href="#cb14-28"></a></span>
+<span id="cb14-29"><a href="#cb14-29"></a>pct_emp_by_health</span>
+<span id="cb14-30"><a href="#cb14-30"></a><span class="co">#&gt; # A tibble: 5 x 2</span></span>
+<span id="cb14-31"><a href="#cb14-31"></a><span class="co">#&gt;   HEALTH_factor emp_pct</span></span>
+<span id="cb14-32"><a href="#cb14-32"></a><span class="co">#&gt;   &lt;fct&gt;           &lt;dbl&gt;</span></span>
+<span id="cb14-33"><a href="#cb14-33"></a><span class="co">#&gt; 1 Excellent       0.639</span></span>
+<span id="cb14-34"><a href="#cb14-34"></a><span class="co">#&gt; 2 Very good       0.640</span></span>
+<span id="cb14-35"><a href="#cb14-35"></a><span class="co">#&gt; 3 Good            0.521</span></span>
+<span id="cb14-36"><a href="#cb14-36"></a><span class="co">#&gt; 4 Fair            0.282</span></span>
+<span id="cb14-37"><a href="#cb14-37"></a><span class="co">#&gt; 5 Poor            0.118</span></span>
+<span id="cb14-38"><a href="#cb14-38"></a></span>
+<span id="cb14-39"><a href="#cb14-39"></a><span class="co">#    A: 11.8%</span></span></code></pre></div>
 <ol start="2" style="list-style-type: lower-roman">
 <li>self-report ‘very good’ health and are at work?</li>
 </ol>
@@ -582,22 +601,23 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb17-3"><a href="#cb17-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">HEALTH_factor =</span> <span class="kw">as_factor</span>(HEALTH)) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb17-4"><a href="#cb17-4"></a><span class="st">  </span><span class="kw">group_by</span>(HEALTH_factor) <span class="op">%&gt;%</span></span>
 <span id="cb17-5"><a href="#cb17-5"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_hours_worked =</span> <span class="kw">weighted.mean</span>(AHRSWORKT, WTSUPP))</span>
-<span id="cb17-6"><a href="#cb17-6"></a></span>
-<span id="cb17-7"><a href="#cb17-7"></a>avg_hrs_by_health </span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="co">#&gt; # A tibble: 5 x 2</span></span>
-<span id="cb17-9"><a href="#cb17-9"></a><span class="co">#&gt;   HEALTH_factor mean_hours_worked</span></span>
-<span id="cb17-10"><a href="#cb17-10"></a><span class="co">#&gt; * &lt;fct&gt;                     &lt;dbl&gt;</span></span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="co">#&gt; 1 Excellent                  38.4</span></span>
-<span id="cb17-12"><a href="#cb17-12"></a><span class="co">#&gt; 2 Very good                  38.7</span></span>
-<span id="cb17-13"><a href="#cb17-13"></a><span class="co">#&gt; 3 Good                       37.8</span></span>
-<span id="cb17-14"><a href="#cb17-14"></a><span class="co">#&gt; 4 Fair                       35.7</span></span>
-<span id="cb17-15"><a href="#cb17-15"></a><span class="co">#&gt; 5 Poor                       32.4</span></span>
-<span id="cb17-16"><a href="#cb17-16"></a></span>
-<span id="cb17-17"><a href="#cb17-17"></a><span class="co">#     A: Excellent  38.4</span></span>
-<span id="cb17-18"><a href="#cb17-18"></a><span class="co">#        Very good  38.7</span></span>
-<span id="cb17-19"><a href="#cb17-19"></a><span class="co">#        Good       37.8</span></span>
-<span id="cb17-20"><a href="#cb17-20"></a><span class="co">#        Fair       35.7</span></span>
-<span id="cb17-21"><a href="#cb17-21"></a><span class="co">#        Poor       32.4</span></span></code></pre></div>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="co">#&gt; `summarise()` ungrouping output (override with `.groups` argument)</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a></span>
+<span id="cb17-8"><a href="#cb17-8"></a>avg_hrs_by_health </span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="co">#&gt; # A tibble: 5 x 2</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="co">#&gt;   HEALTH_factor mean_hours_worked</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co">#&gt;   &lt;fct&gt;                     &lt;dbl&gt;</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="co">#&gt; 1 Excellent                  38.4</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="co">#&gt; 2 Very good                  38.7</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="co">#&gt; 3 Good                       37.8</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="co">#&gt; 4 Fair                       35.7</span></span>
+<span id="cb17-16"><a href="#cb17-16"></a><span class="co">#&gt; 5 Poor                       32.4</span></span>
+<span id="cb17-17"><a href="#cb17-17"></a></span>
+<span id="cb17-18"><a href="#cb17-18"></a><span class="co">#     A: Excellent  38.4</span></span>
+<span id="cb17-19"><a href="#cb17-19"></a><span class="co">#        Very good  38.7</span></span>
+<span id="cb17-20"><a href="#cb17-20"></a><span class="co">#        Good       37.8</span></span>
+<span id="cb17-21"><a href="#cb17-21"></a><span class="co">#        Fair       35.7</span></span>
+<span id="cb17-22"><a href="#cb17-22"></a><span class="co">#        Poor       32.4</span></span></code></pre></div>
 </div>
 <div id="bonus" class="section level3">
 <h3>Bonus</h3>
@@ -639,20 +659,21 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb19-15"><a href="#cb19-15"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb19-16"><a href="#cb19-16"></a><span class="st">  </span><span class="kw">group_by</span>(HEALTH_factor, AGE_factor) <span class="op">%&gt;%</span></span>
 <span id="cb19-17"><a href="#cb19-17"></a><span class="st">  </span><span class="kw">summarize</span>(<span class="dt">emp_pct =</span> <span class="kw">weighted.mean</span>(EMPSTAT <span class="op">==</span><span class="st"> </span><span class="dv">10</span>, WTSUPP))</span>
-<span id="cb19-18"><a href="#cb19-18"></a></span>
-<span id="cb19-19"><a href="#cb19-19"></a>x_label &lt;-<span class="st"> </span><span class="kw">ipums_var_label</span>(cps_data, HEALTH)</span>
-<span id="cb19-20"><a href="#cb19-20"></a>source_info &lt;-<span class="st"> </span><span class="kw">ipums_file_info</span>(cps_ddi, <span class="st">&quot;ipums_project&quot;</span>)</span>
-<span id="cb19-21"><a href="#cb19-21"></a></span>
-<span id="cb19-22"><a href="#cb19-22"></a><span class="kw">ggplot</span>(pct_emp_by_health_age, <span class="kw">aes</span>(<span class="dt">x =</span> HEALTH_factor, <span class="dt">y =</span> emp_pct)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-23"><a href="#cb19-23"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;#00263a&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-24"><a href="#cb19-24"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(x_label) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-25"><a href="#cb19-25"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Percent employed&quot;</span>, <span class="dt">labels =</span> scales<span class="op">::</span>percent) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-26"><a href="#cb19-26"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>AGE_factor, <span class="dt">ncol =</span> <span class="dv">2</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb19-27"><a href="#cb19-27"></a><span class="st">  </span><span class="kw">labs</span>(</span>
-<span id="cb19-28"><a href="#cb19-28"></a>    <span class="dt">title =</span> <span class="st">&quot;Low Self-Reported Health Status Correlated with Unemployment&quot;</span>, </span>
-<span id="cb19-29"><a href="#cb19-29"></a>    <span class="dt">subtitle =</span> <span class="st">&quot;Among age 15+ from CPS 2011 ASEC sample&quot;</span>,</span>
-<span id="cb19-30"><a href="#cb19-30"></a>    <span class="dt">caption =</span> <span class="kw">paste0</span>(<span class="st">&quot;Source: &quot;</span>, source_info)</span>
-<span id="cb19-31"><a href="#cb19-31"></a>  )</span></code></pre></div>
+<span id="cb19-18"><a href="#cb19-18"></a><span class="co">#&gt; `summarise()` regrouping output by &#39;HEALTH_factor&#39; (override with `.groups` argument)</span></span>
+<span id="cb19-19"><a href="#cb19-19"></a></span>
+<span id="cb19-20"><a href="#cb19-20"></a>x_label &lt;-<span class="st"> </span><span class="kw">ipums_var_label</span>(cps_data, HEALTH)</span>
+<span id="cb19-21"><a href="#cb19-21"></a>source_info &lt;-<span class="st"> </span><span class="kw">ipums_file_info</span>(cps_ddi, <span class="st">&quot;ipums_project&quot;</span>)</span>
+<span id="cb19-22"><a href="#cb19-22"></a></span>
+<span id="cb19-23"><a href="#cb19-23"></a><span class="kw">ggplot</span>(pct_emp_by_health_age, <span class="kw">aes</span>(<span class="dt">x =</span> HEALTH_factor, <span class="dt">y =</span> emp_pct)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb19-24"><a href="#cb19-24"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;#00263a&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb19-25"><a href="#cb19-25"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(x_label) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb19-26"><a href="#cb19-26"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="st">&quot;Percent employed&quot;</span>, <span class="dt">labels =</span> scales<span class="op">::</span>percent) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb19-27"><a href="#cb19-27"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>AGE_factor, <span class="dt">ncol =</span> <span class="dv">2</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb19-28"><a href="#cb19-28"></a><span class="st">  </span><span class="kw">labs</span>(</span>
+<span id="cb19-29"><a href="#cb19-29"></a>    <span class="dt">title =</span> <span class="st">&quot;Low Self-Reported Health Status Correlated with Unemployment&quot;</span>, </span>
+<span id="cb19-30"><a href="#cb19-30"></a>    <span class="dt">subtitle =</span> <span class="st">&quot;Among age 15+ from CPS 2011 ASEC sample&quot;</span>,</span>
+<span id="cb19-31"><a href="#cb19-31"></a>    <span class="dt">caption =</span> <span class="kw">paste0</span>(<span class="st">&quot;Source: &quot;</span>, source_info)</span>
+<span id="cb19-32"><a href="#cb19-32"></a>  )</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>

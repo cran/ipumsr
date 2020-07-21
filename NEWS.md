@@ -1,3 +1,15 @@
+# ipumsr 0.4.5
+
+* Fixed bug causing a read error for some labeled string variables (#61, thanks 
+  @chengchou).
+  
+* ipumsr now always uses the `haven::labelled()` function to create `labelled`
+  vectors, in order to maintain compatibility with developments in the haven and 
+  vctrs packages (thanks @gergness!).
+  
+* ipumsr now requires R 3.5 or greater, in line with the new requirements of 
+  package dependency raster.
+
 # ipumsr 0.4.4
 
 * Modify `lbl_define()` test to reflect changes to haven's `labelled` class 

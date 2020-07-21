@@ -12,10 +12,26 @@
 
 <meta name="author" content="Minnesota Population Center" />
 
-<meta name="date" content="2020-06-03" />
+<meta name="date" content="2020-07-21" />
 
 <title>Introduction to ipumsr - IPUMS Data in R</title>
 
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -303,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introduction to <code>ipumsr</code> - IPUMS Data in R</h1>
 <h4 class="author">Minnesota Population Center</h4>
-<h4 class="date">2020-06-03</h4>
+<h4 class="date">2020-07-21</h4>
 
 
 
@@ -402,7 +418,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb2-29"><a href="#cb2-29"></a><span class="kw">ipums_val_labels</span>(cps_data<span class="op">$</span>STATEFIP)</span>
 <span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt; # A tibble: 75 x 2</span></span>
 <span id="cb2-31"><a href="#cb2-31"></a><span class="co">#&gt;      val lbl                 </span></span>
-<span id="cb2-32"><a href="#cb2-32"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb2-32"><a href="#cb2-32"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;               </span></span>
 <span id="cb2-33"><a href="#cb2-33"></a><span class="co">#&gt;  1     1 Alabama             </span></span>
 <span id="cb2-34"><a href="#cb2-34"></a><span class="co">#&gt;  2     2 Alaska              </span></span>
 <span id="cb2-35"><a href="#cb2-35"></a><span class="co">#&gt;  3     4 Arizona             </span></span>
@@ -505,19 +521,19 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <span id="cb6-23"><a href="#cb6-23"></a><span class="kw">ipums_list_files</span>(nf)</span>
 <span id="cb6-24"><a href="#cb6-24"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
 <span id="cb6-25"><a href="#cb6-25"></a><span class="co">#&gt;   type  file                                       </span></span>
-<span id="cb6-26"><a href="#cb6-26"></a><span class="co">#&gt; * &lt;chr&gt; &lt;chr&gt;                                      </span></span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                                      </span></span>
 <span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; 1 data  nhgis0008_csv/nhgis0008_ds135_1990_pmsa.csv</span></span>
 <span id="cb6-28"><a href="#cb6-28"></a></span>
 <span id="cb6-29"><a href="#cb6-29"></a><span class="kw">ipums_list_files</span>(nf, <span class="dt">data_layer =</span> <span class="st">&quot;nhgis0008_csv/nhgis0008_ds135_1990_pmsa.csv&quot;</span>)</span>
 <span id="cb6-30"><a href="#cb6-30"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
 <span id="cb6-31"><a href="#cb6-31"></a><span class="co">#&gt;   type  file                                       </span></span>
-<span id="cb6-32"><a href="#cb6-32"></a><span class="co">#&gt; * &lt;chr&gt; &lt;chr&gt;                                      </span></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                                      </span></span>
 <span id="cb6-33"><a href="#cb6-33"></a><span class="co">#&gt; 1 data  nhgis0008_csv/nhgis0008_ds135_1990_pmsa.csv</span></span>
 <span id="cb6-34"><a href="#cb6-34"></a></span>
 <span id="cb6-35"><a href="#cb6-35"></a><span class="kw">ipums_list_files</span>(nf, <span class="dt">data_layer =</span> <span class="kw">contains</span>(<span class="st">&quot;ds135&quot;</span>))</span>
 <span id="cb6-36"><a href="#cb6-36"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
 <span id="cb6-37"><a href="#cb6-37"></a><span class="co">#&gt;   type  file                                       </span></span>
-<span id="cb6-38"><a href="#cb6-38"></a><span class="co">#&gt; * &lt;chr&gt; &lt;chr&gt;                                      </span></span>
+<span id="cb6-38"><a href="#cb6-38"></a><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;                                      </span></span>
 <span id="cb6-39"><a href="#cb6-39"></a><span class="co">#&gt; 1 data  nhgis0008_csv/nhgis0008_ds135_1990_pmsa.csv</span></span></code></pre></div>
 </div>
 <div id="hierarchical-data-structures" class="section level3">
