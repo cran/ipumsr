@@ -1,7 +1,7 @@
-# This file is part of the Minnesota Population Center's ipumsr.
+# This file is part of the ipumsr R package created by IPUMS.
 # For copyright and licensing information, see the NOTICE and LICENSE files
 # in this project's top-level directory, and also on-line at:
-#   https://github.com/mnpopcenter/ipumsr
+#   https://github.com/ipums/ipumsr
 
 
 #' Read data from an NHGIS extract
@@ -73,7 +73,7 @@ read_nhgis <- function(
     cb_ddi_info <- try(read_ipums_codebook(cb_name), silent = TRUE)
   }
 
-  if (class(cb_ddi_info) == "try-error") cb_ddi_info <- nhgis_empty_ddi
+  if (inherits(cb_ddi_info, "try-error")) cb_ddi_info <- nhgis_empty_ddi
 
   # Specify encoding (assuming all nhgis extracts are ISO-8859-1 eg latin1
   # because an extract with county names has n with tildes and so is can

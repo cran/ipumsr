@@ -14,7 +14,7 @@ if (!file.exists(ipumsexamples_file)) {
     "The data is available on github - you can install it using the following ",
     "commands: \n",
     "  if (!require(devtools)) install.packages('devtools')\n",
-    "  devtools::install_github('mnpopcenter/ipumsr/ipumsexamples')\n",
+    "  devtools::install_github('ipums/ipumsr/ipumsexamples')\n",
     "After installation, the data should be available for this vignette.\n\n"
   ))
   knitr::opts_chunk$set(eval = FALSE)
@@ -27,7 +27,7 @@ if (!suppressPackageStartupMessages(require(sf))) {
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  if (!require(devtools)) install.packages(devtools)
-#  devtools::install_github("mnpopcenter/ipumsr/ipumsexamples")
+#  devtools::install_github("ipums/ipumsr/ipumsexamples")
 
 ## -----------------------------------------------------------------------------
 # This function helps find the data from the ipumsexamples package for us
@@ -83,7 +83,10 @@ ipumsi_data <- ipumsi_data %>%
 ## -----------------------------------------------------------------------------
 ipumsi_summary <- ipumsi_data %>% 
   group_by(YEAR, COUNTRY, GEOLEV1) %>%
-  summarize(pct_solid = mean(SOLIDFUEL == "Solid Fuel", na.rm = TRUE))
+  summarize(
+    pct_solid = mean(SOLIDFUEL == "Solid Fuel", na.rm = TRUE),
+    .groups = "drop"
+  )
 
 ## -----------------------------------------------------------------------------
 names(ipumsi_summary)
@@ -184,7 +187,10 @@ ipumsi_data <- ipumsi_data %>%
 ## -----------------------------------------------------------------------------
 ipumsi_summary <- ipumsi_data %>% 
   group_by(YEAR, COUNTRY, GEOLEV1) %>%
-  summarize(pct_solid = mean(SOLIDFUEL == "Solid Fuel", na.rm = TRUE))
+  summarize(
+    pct_solid = mean(SOLIDFUEL == "Solid Fuel", na.rm = TRUE),
+    .groups = "drop"
+  )
 
 ## -----------------------------------------------------------------------------
 # Currently each shape file has different variable names

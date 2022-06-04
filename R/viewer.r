@@ -1,7 +1,7 @@
-# This file is part of the Minnesota Population Center's ipumsr.
+# This file is part of the ipumsr R package created by IPUMS.
 # For copyright and licensing information, see the NOTICE and LICENSE files
 # in this project's top-level directory, and also on-line at:
-#   https://github.com/mnpopcenter/ipumsr
+#   https://github.com/ipums/ipumsr
 
 #' View a static webpage with variable information from a IPUMS extract
 #'
@@ -119,7 +119,7 @@ display_ipums_var_row <- function(var_name, var_label, var_desc, val_labels, cod
     ipums_website(var = var_name, project = project, launch = FALSE, verbose = FALSE, var_label = var_label),
     silent = TRUE
   )
-  if (class(url)[1] == "try-error") {
+  if (inherits(class(url)[1], "try-error")) {
     link <- NULL
   } else {
     link <- htmltools::a(href = url, "More details")

@@ -39,7 +39,7 @@ if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
     "The data is also available on github. You can install it using the following ",
     "commands: \n",
     "  if (!require(devtools)) install.packages('devtools')\n",
-    "  devtools::install_github('mnpopcenter/ipumsr/ipumsexamples')\n",
+    "  devtools::install_github('ipums/ipumsr/ipumsexamples')\n",
     "After installation, the data should be available for this vignette.\n\n"
   ))
   
@@ -63,7 +63,7 @@ read_ipums_micro(
       as_factor()
   ) %>%
   group_by(HEALTH, AT_WORK) %>%
-  summarize(n = n())
+  summarize(n = n(), .groups = "drop")
 
 ## -----------------------------------------------------------------------------
 cb_function <- function(x, pos) {
@@ -77,7 +77,7 @@ cb_function <- function(x, pos) {
       as_factor()
   ) %>%
     group_by(HEALTH, AT_WORK) %>%
-    summarize(n = n())
+    summarize(n = n(), .groups = "drop")
 }
 
 ## -----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ chunked_tabulations <- read_ipums_micro_chunked(
 ## -----------------------------------------------------------------------------
 chunked_tabulations %>%
   group_by(HEALTH, AT_WORK) %>% 
-  summarize(n = sum(n))
+  summarize(n = sum(n), .groups = "drop")
 
 ## -----------------------------------------------------------------------------
 # Read in data
@@ -186,7 +186,7 @@ while (!data$is_done()) {
   
   yield_results <- bind_rows(yield_results, new) %>%
     group_by(HEALTH, AT_WORK) %>%
-    summarize(n = sum(n))
+    summarize(n = sum(n), .groups = "drop")
 }
 
 yield_results
@@ -222,7 +222,7 @@ get_model_data <- function(reset) {
   }
 }
 
-## -----------------------------------------------------------------------------
+## ---- eval=installed_biglm----------------------------------------------------
 library(biglm)
 results <- bigglm(
   WORK30PLUS ~ AGE + I(AGE^2) + HEALTH,

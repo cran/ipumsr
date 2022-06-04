@@ -1,7 +1,7 @@
-# This file is part of the Minnesota Population Center's ipumsr.
+# This file is part of the ipumsr R package created by IPUMS.
 # For copyright and licensing information, see the NOTICE and LICENSE files
 # in this project's top-level directory, and also on-line at:
-#   https://github.com/mnpopcenter/ipumsr
+#   https://github.com/ipums/ipumsr
 
 #' Read data from an IPUMS Terra raster extract
 #'
@@ -364,7 +364,9 @@ read_terra_micro <- function(
     progress = show_readr_progress(verbose)
   )
 
-  data <- readr::type_convert(data, readr::cols())
+  if (any(purrr::map_lgl(data, is.character))) {
+    data <- readr::type_convert(data, readr::cols())
+  }
 
 
   # Add var labels and value labels from DDI, if available

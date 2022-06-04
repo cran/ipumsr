@@ -1,7 +1,7 @@
-# This file is part of the Minnesota Population Center's ipumsr.
+# This file is part of the ipumsr R package created by IPUMS.
 # For copyright and licensing information, see the NOTICE and LICENSE files
 # in this project's top-level directory, and also on-line at:
-#   https://github.com/mnpopcenter/ipumsr
+#   https://github.com/ipums/ipumsr
 
 
 #' Read data from an IPUMS extract (in chunks)
@@ -54,7 +54,7 @@
 #'         ) %>%
 #'       filter(!is.na(INCTOT)) %>%
 #'       group_by(STATEFIP = as_factor(STATEFIP)) %>%
-#'       summarize(INCTOT_SUM = sum(INCTOT), n = n())
+#'       summarize(INCTOT_SUM = sum(INCTOT), n = n(), .groups = "drop")
 #'   }),
 #'   chunk_size = 1000 # Generally you want this larger, but this example is a small file
 #' ) %>%

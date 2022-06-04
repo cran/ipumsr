@@ -71,7 +71,7 @@ if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
     "The data is also available on github. You can install it using the following ",
     "commands: \n",
     "  if (!require(devtools)) install.packages('devtools')\n",
-    "  devtools::install_github('mnpopcenter/ipumsr/ipumsexamples')\n",
+    "  devtools::install_github('ipums/ipumsr/ipumsexamples')\n",
     "After installation, the data should be available for this vignette.\n\n"
   ))
   
@@ -89,7 +89,7 @@ one, or paying a cloud service like Amazon or Microsoft Azure (or one of the
 many other similar services). Here are guides for using R on
 [Amazon](https://aws.amazon.com/blogs/big-data/statistical-analysis-with-open-source-r-and-rstudio-on-amazon-emr/)
 and 
-[Microsoft Azure](https://blog.jumpingrivers.com/posts/2017/rstudio_azure_cloud_1/).
+[Microsoft Azure](https://www.jumpingrivers.com/blog/hosting-rstudio-server-on-azure/).
 
 # Option 2: Do you really need all of that?
 The IPUMS website has many features that will let you reduce the size of your
@@ -149,7 +149,7 @@ read_ipums_micro(
       as_factor()
   ) %>%
   group_by(HEALTH, AT_WORK) %>%
-  summarize(n = n())
+  summarize(n = n(), .groups = "drop")
 ```
 
 But let's pretend like we can only store 1,000 rows at a time.
@@ -174,7 +174,7 @@ cb_function <- function(x, pos) {
       as_factor()
   ) %>%
     group_by(HEALTH, AT_WORK) %>%
-    summarize(n = n())
+    summarize(n = n(), .groups = "drop")
 }
 ```
 
@@ -221,7 +221,7 @@ more time.
 ```{r}
 chunked_tabulations %>%
   group_by(HEALTH, AT_WORK) %>% 
-  summarize(n = sum(n))
+  summarize(n = sum(n), .groups = "drop")
 ```
 
 ### Chunked regression example
@@ -374,7 +374,7 @@ while (!data$is_done()) {
   
   yield_results <- bind_rows(yield_results, new) %>%
     group_by(HEALTH, AT_WORK) %>%
-    summarize(n = sum(n))
+    summarize(n = sum(n), .groups = "drop")
 }
 
 yield_results
@@ -432,7 +432,7 @@ get_model_data <- function(reset) {
 Finally we feed this function and a model specification to the `bigglm()`
 function:
 
-```{r}
+```{r, eval=installed_biglm}
 library(biglm)
 results <- bigglm(
   WORK30PLUS ~ AGE + I(AGE^2) + HEALTH,
@@ -539,7 +539,7 @@ useful while writing this document:
 - *Statistical Analysis with Open-Source R and RStudio on Amazon EMR* - Markus Schmidberger on
   the AWS Big Data Blog [link](https://aws.amazon.com/blogs/big-data/statistical-analysis-with-open-source-r-and-rstudio-on-amazon-emr/)
 - *Hosting RStudio Server on Azure* - Colin Gillespie's blog post on using Rstudio on Azure
-[link](https://blog.jumpingrivers.com/posts/2017/rstudio_azure_cloud_1/)
+[link](https://www.jumpingrivers.com/blog/hosting-rstudio-server-on-azure/)
 - *Improving DBI: A Retrospect* - Kirill Müller's report on the R Consortium 
   grant to improve database support in R 
   [link](https://www.r-consortium.org/blog/2017/05/15/improving-dbi-a-retrospect)
