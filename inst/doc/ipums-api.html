@@ -453,7 +453,7 @@ information on the extract, returned as an <code>ipums_extract</code>
 object, with:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>submitted_usa_extract <span class="ot">&lt;-</span> <span class="fu">get_extract_info</span>(submitted_usa_extract)</span></code></pre></div>
 <p>To print the latest status, you can use:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>submitted_extract<span class="sc">$</span>status</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>submitted_usa_extract<span class="sc">$</span>status</span></code></pre></div>
 <p>If you forget to capture the return value of
 <code>submit_extract()</code>, you can pull down an
 <code>ipums_extract</code> object containing all the information on your
@@ -566,7 +566,11 @@ extract definition, facilitating a “revise and resubmit” workflow.
 Here’s how you would pull down the definition of USA extract number 33
 and add a sample and a variable to it:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>old_extract <span class="ot">&lt;-</span> <span class="fu">get_extract_info</span>(<span class="st">&quot;usa:33&quot;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>new_extract <span class="ot">&lt;-</span> <span class="fu">add_to_extract</span>(old_extract, <span class="at">samples =</span> <span class="st">&quot;us2020a&quot;</span>, <span class="at">vars =</span> <span class="st">&quot;RELATE&quot;</span>)</span></code></pre></div>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>new_extract <span class="ot">&lt;-</span> <span class="fu">add_to_extract</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  old_extract, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;us2020a&quot;</span>, </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">&quot;RELATE&quot;</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>The <code>add_to_extract()</code> function returns an
 <code>ipums_extract</code> object that has been modified as requested
 and has been reset to an unsubmitted state, by stripping the extract
@@ -592,9 +596,9 @@ on elements as <code>ipums_extract</code> objects. For instance, to
 retrieve your most second-most-recent extract and revise it for
 resubmission, you could use:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>second_most_recent_extract <span class="ot">&lt;-</span> <span class="fu">get_recent_extracts_info_list</span>(<span class="st">&quot;usa&quot;</span>)[[<span class="dv">2</span>]]</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>revised_extract <span class="ot">&lt;-</span> <span class="fu">revise_extract_micro</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>revised_extract <span class="ot">&lt;-</span> <span class="fu">add_to_extract</span>(</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  second_most_recent_extract, </span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">samples_to_add =</span> <span class="st">&quot;us2010a&quot;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;us2010a&quot;</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
 <p>Or to download all recent extracts that are ready to download, using
 <code>purrr::keep()</code> and <code>purrr::map_chr()</code>:</p>
@@ -607,13 +611,13 @@ criteria.</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>recent_usa_extracts_tbl <span class="ot">&lt;-</span> <span class="fu">get_recent_extracts_info_tbl</span>(<span class="st">&quot;usa&quot;</span>)</span></code></pre></div>
 <p>For example, to find extracts with descriptions including the word
 “occupation”, you could use:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>recent_usa_extracts <span class="sc">%&gt;%</span>  </span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>recent_usa_extracts_tbl <span class="sc">%&gt;%</span>  </span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">&quot;occupation&quot;</span>, description))</span></code></pre></div>
 <p>Filtering on properties such as “samples” or “variables” is a little
 more complex, because these are stored in list columns, but it is
 possible. For example, to find extracts including the variable “AGE”,
 you could use <code>purrr::map_lgl()</code> like this:</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>recent_usa_extracts <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>recent_usa_extracts_tbl <span class="sc">%&gt;%</span> </span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">map_lgl</span>(variables, <span class="sc">~</span><span class="st">&quot;AGE&quot;</span> <span class="sc">%in%</span> .x))</span></code></pre></div>
 <p>To convert between these two representations, ipumsr provides the
 functions <code>extract_list_to_tbl()</code> and

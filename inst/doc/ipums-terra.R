@@ -26,6 +26,9 @@ library(ggplot2)
 library(dplyr)
 library(sf)
 
+## ----eval = FALSE-------------------------------------------------------------
+#  install.packages("raster")
+
 ## -----------------------------------------------------------------------------
 ipums_list_files(raster_extract)
 

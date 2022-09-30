@@ -54,7 +54,7 @@ cps_extract_definition <- define_extract_cps(
 #  submitted_usa_extract <- get_extract_info(submitted_usa_extract)
 
 ## -----------------------------------------------------------------------------
-#  submitted_extract$status
+#  submitted_usa_extract$status
 
 ## -----------------------------------------------------------------------------
 #  submitted_usa_extract <- get_last_extract_info("usa")
@@ -99,7 +99,11 @@ cps_extract_definition <- define_extract_cps(
 
 ## -----------------------------------------------------------------------------
 #  old_extract <- get_extract_info("usa:33")
-#  new_extract <- add_to_extract(old_extract, samples = "us2020a", vars = "RELATE")
+#  new_extract <- add_to_extract(
+#    old_extract,
+#    samples = "us2020a",
+#    variables = "RELATE"
+#  )
 
 ## -----------------------------------------------------------------------------
 #  newly_submitted_extract <- submit_extract(new_extract)
@@ -109,9 +113,9 @@ cps_extract_definition <- define_extract_cps(
 
 ## -----------------------------------------------------------------------------
 #  second_most_recent_extract <- get_recent_extracts_info_list("usa")[[2]]
-#  revised_extract <- revise_extract_micro(
+#  revised_extract <- add_to_extract(
 #    second_most_recent_extract,
-#    samples_to_add = "us2010a"
+#    samples = "us2010a"
 #  )
 
 ## -----------------------------------------------------------------------------
@@ -123,11 +127,11 @@ cps_extract_definition <- define_extract_cps(
 #  recent_usa_extracts_tbl <- get_recent_extracts_info_tbl("usa")
 
 ## -----------------------------------------------------------------------------
-#  recent_usa_extracts %>%
+#  recent_usa_extracts_tbl %>%
 #    filter(grepl("occupation", description))
 
 ## -----------------------------------------------------------------------------
-#  recent_usa_extracts %>%
+#  recent_usa_extracts_tbl %>%
 #    filter(map_lgl(variables, ~"AGE" %in% .x))
 
 ## -----------------------------------------------------------------------------

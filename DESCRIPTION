@@ -1,11 +1,13 @@
 Package: ipumsr
 Title: Read 'IPUMS' Extract Files
-Version: 0.5.0
+Version: 0.5.1
 Authors@R: c(
   person("Greg Freedman Ellis", role = "aut"), 
   person("Derek Burk", email = "ipums+cran@umn.edu", role = c("aut", "cre")),
   person("Joe Grover", role = "ctb"),
   person("Finn Roberts", role = "ctb"),
+  person("Dan Ehrlich", role = "ctb"),
+  person("Renae Rodgers", role = "ctb"),
   person("Minnesota Population Center", email = "ipums@umn.edu", role = "cph")
   )
 Contact: ipums@umn.edu
@@ -19,20 +21,22 @@ License: Mozilla Public License 2.0
 Encoding: UTF-8
 Depends: R (>= 3.5.0)
 Imports: dplyr (>= 0.7.0), haven (>= 2.2.0), hipread (>= 0.2.0), purrr,
-        R6, raster, readr, rlang, tibble, tidyselect, xml2, zeallot,
-        jsonlite, httr
-RoxygenNote: 7.2.0
+        R6, readr, rlang, tibble, tidyselect, xml2, zeallot, jsonlite,
+        httr
+RoxygenNote: 7.2.1
 Suggests: DT, ggplot2, htmltools, knitr, rgdal, rmarkdown, rstudioapi,
         scales, sf, sp, shiny, testthat, covr, biglm, DBI, RSQLite,
-        dbplyr, vcr (>= 0.6.0), withr
+        dbplyr, vcr (>= 0.6.0), withr, raster
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-06-04 19:13:32 UTC; Derek
+Packaged: 2022-09-30 04:42:41 UTC; Derek
 Author: Greg Freedman Ellis [aut],
   Derek Burk [aut, cre],
   Joe Grover [ctb],
   Finn Roberts [ctb],
+  Dan Ehrlich [ctb],
+  Renae Rodgers [ctb],
   Minnesota Population Center [cph]
 Maintainer: Derek Burk <ipums+cran@umn.edu>
 Repository: CRAN
-Date/Publication: 2022-06-04 22:00:02 UTC
+Date/Publication: 2022-09-30 07:20:05 UTC
