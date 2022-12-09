@@ -334,6 +334,7 @@ submit_extract <- function(extract, api_key = Sys.getenv("IPUMS_API_KEY")) {
     collection = extract$collection,
     path = NULL,
     body = extract_to_request_json(extract),
+    api_key = api_key
   )
 
   extract <- extract_list_from_json(
@@ -516,7 +517,7 @@ wait_for_extract <- function(extract,
     }
     extract <- get_extract_info(extract, api_key)
 
-    is_downloadable <- is_extract_ready(extract)
+    is_downloadable <- is_extract_ready(extract, api_key)
 
     is_failed <- !(is_downloadable ||
                      extract$status %in% c("queued", "started", "produced"))
@@ -745,8 +746,6 @@ download_extract <- function(extract,
 #'   Use the [USA sample ID values](https://usa.ipums.org/usa-action/samples/sample_ids)
 #'   or the [CPS sample ID values](https://cps.ipums.org/cps-action/samples/sample_ids).
 #' @param variables Character vector of variables to add to the extract, if any.
-#' @param validate Logical value indicating whether to check the modified
-#'   extract structure for validity. Defaults to `TRUE`.
 #' @param ... Further arguments passed to methods.
 #'
 #' @family ipums_api
@@ -801,7 +800,6 @@ add_to_extract.usa_extract <- function(extract,
                                        samples = NULL,
                                        variables = NULL,
                                        data_format = NULL,
-                                       validate = TRUE,
                                        ...) {
 
   add_to_extract_micro(
@@ -810,9 +808,9 @@ add_to_extract.usa_extract <- function(extract,
     samples = samples,
     variables = variables,
     data_format = data_format,
-    validate = validate,
     ...
   )
+
 }
 
 
@@ -823,7 +821,6 @@ add_to_extract.cps_extract <- function(extract,
                                        samples = NULL,
                                        variables = NULL,
                                        data_format = NULL,
-                                       validate = TRUE,
                                        ...) {
 
   add_to_extract_micro(
@@ -832,9 +829,9 @@ add_to_extract.cps_extract <- function(extract,
     samples = samples,
     variables = variables,
     data_format = data_format,
-    validate = validate,
     ...
   )
+
 }
 
 
@@ -857,8 +854,6 @@ add_to_extract.cps_extract <- function(extract,
 #'   if any.
 #' @param variables Character vector of variables to remove from the extract,
 #'   if any.
-#' @param validate Logical value indicating whether to check the modified
-#'   extract structure for validity. Defaults to `TRUE`.
 #' @param ... Further arguments passed to methods.
 #'
 #' @family ipums_api
@@ -908,16 +903,15 @@ remove_from_extract <- function(extract, ...) {
 remove_from_extract.usa_extract <- function(extract,
                                             samples = NULL,
                                             variables = NULL,
-                                            validate = TRUE,
                                             ...) {
 
   remove_from_extract_micro(
     extract = extract,
     samples = samples,
     variables = variables,
-    validate = validate,
     ...
   )
+
 }
 
 
@@ -926,16 +920,15 @@ remove_from_extract.usa_extract <- function(extract,
 remove_from_extract.cps_extract <- function(extract,
                                             samples = NULL,
                                             variables = NULL,
-                                            validate = TRUE,
                                             ...) {
 
   remove_from_extract_micro(
     extract = extract,
     samples = samples,
     variables = variables,
-    validate = validate,
     ...
   )
+
 }
 
 
@@ -1559,7 +1552,8 @@ ipums_api_download_request <- function(url,
       )
     ),
     add_user_auth_header(api_key),
-    httr::write_disk(file_path, overwrite = TRUE)
+    httr::write_disk(file_path, overwrite = TRUE),
+    httr::progress()
   )
 
   if (httr::http_status(response)$category != "Success") {
@@ -1625,7 +1619,10 @@ ipums_api_json_request <- function(verb,
   )
 
   if (httr::http_status(res)$category != "Success") {
-    if (httr::status_code(res) == 400) {
+
+    status <- httr::status_code(res)
+
+    if (status == 400) {
       tryCatch(
         error_details <- parse_400_error(res),
         error = function(cond) {
@@ -1636,7 +1633,7 @@ ipums_api_json_request <- function(verb,
         }
       )
       stop(error_details, call. = FALSE)
-    } else if (httr::status_code(res) == 404) {
+    } else if (status == 404) {
       if (fostr_detect(path, "^extracts/\\d+$")) {
         extract_number <- as.numeric(fostr_split(path, "/")[[1]][[2]])
         most_recent_extract <- get_recent_extracts_info_list(
@@ -1652,17 +1649,14 @@ ipums_api_json_request <- function(verb,
         }
       }
       stop("URL not found", call. = FALSE)
-    } else if (httr::status_code(res) %in% 500:599) {
+    } else if (status %in% c(401, 403)) {
       stop(
-        sprintf(
-          "Extract API request failed: %s [%s]\n%s",
-          api_url,
-          httr::status_code(res),
-          httr::content(res, "text")
-        ),
+        "The provided API Key is either missing or invalid. ",
+        "Please provide your API key to the `api_key` argument or request ",
+        "a key at https://account.ipums.org/api_keys",
         call. = FALSE
       )
-    } else { # other non-success codes, e.g. 300s
+    } else { # other non-success codes, e.g. 300s or 500s
       stop(
         sprintf(
           "Extract API request failed: %s [%s]\n%s",
@@ -1775,10 +1769,20 @@ add_to_extract_micro <- function(extract,
                                  data_format = NULL,
                                  data_structure = NULL,
                                  rectangular_on = NULL,
-                                 validate = TRUE,
                                  ...) {
 
   extract <- copy_ipums_extract(extract)
+
+  dots <- rlang::list2(...)
+
+  if (length(dots) > 0) {
+    warning(
+      "The following fields were either not found in the provided extract ",
+      "or cannot be modified: `",
+      paste0(names(dots), collapse = "`, `"), "`",
+      call. = FALSE
+    )
+  }
 
   if (!is.null(data_structure) && data_structure != "rectangular") {
     stop(
@@ -1834,9 +1838,7 @@ add_to_extract_micro <- function(extract,
     modification = "replace"
   )
 
-  if (validate) {
-    extract <- validate_ipums_extract(extract)
-  }
+  extract <- validate_ipums_extract(extract)
 
   extract
 
@@ -1850,17 +1852,23 @@ add_to_extract_micro <- function(extract,
 remove_from_extract_micro <- function(extract,
                                       samples = NULL,
                                       variables = NULL,
-                                      validate = TRUE,
                                       ...) {
 
   extract <- copy_ipums_extract(extract)
 
-  extract <- validate_remove_fields(
-    extract,
-    bad_remove_fields = c("description", "data_format",
-                          "data_structure", "rectangular_on"),
-    ...
-  )
+
+  dots <- rlang::list2(...)
+
+  if (length(dots) > 0) {
+    warning(
+      "The following fields were either not found in the provided extract ",
+      "or cannot be removed: `",
+      paste0(names(dots), collapse = "`, `"), "`\n",
+      "See `add_to_extract()` to replace existing values in applicable extract ",
+      "fields.",
+      call. = FALSE
+    )
+  }
 
   to_remove <- list(
     samples = samples,
@@ -1890,9 +1898,20 @@ remove_from_extract_micro <- function(extract,
     modification = "remove"
   )
 
-  if (validate) {
-    extract <- validate_ipums_extract(extract)
-  }
+  # I believe the only way to produce an invalid extract from removal is
+  # to remove all fields of a certain value. This takes advantage of this fact
+  # to improve the validation error message.
+  tryCatch(
+    extract <- validate_ipums_extract(extract),
+    error = function(cond) {
+      stop(
+        conditionMessage(cond),
+        "\nTo replace existing values in an extract, first add new values ",
+        "with `add_to_extract()`, then remove existing ones.",
+        call. = FALSE
+      )
+    }
+  )
 
   extract
 
@@ -1974,60 +1993,6 @@ modify_flat_fields <- function(extract,
       }
     )
 
-  }
-
-  extract
-
-}
-
-#' Produce warnings for invalid extract revision requests
-#'
-#' Convenience function to throw more informative warnings on invalid extract
-#' revision specifications. Currently used to direct users to
-#' \code{add_to_extract()} when attempting to remove non-optional fields in
-#' \code{remove_from_extract()}. (Otherwise, users would face a potentially
-#' unexpected unused argument error)
-#'
-#' @param extract An extract object
-#' @param bad_remove_fields Character vector of names of fields that should
-#'   trigger warnings if user attempts to remove them from an extract
-#' @param ... Arbitrary selection of named arguments. Used to warn against use
-#'   of extract fields that do not exist in the extract.
-#'
-#' @noRd
-validate_remove_fields <- function(extract, bad_remove_fields, ...) {
-
-  dots <- rlang::list2(...)
-
-  if ("collection" %in% names(dots)) {
-    stop(
-      "Cannot modify collection of an existing extract. To create an extract",
-      " from a new collection, use the appropriate `define_extract_` function.",
-      call. = FALSE
-    )
-  }
-
-  tried_to_remove <- bad_remove_fields[bad_remove_fields %in% names(dots)]
-  invalid_fields <- names(dots)[!names(dots) %in% bad_remove_fields]
-
-  if (length(tried_to_remove) > 0) {
-    warning(
-      "The following fields cannot be removed from an object of class `",
-      paste0(extract$collection, "_extract"), "`: `",
-      paste0(tried_to_remove, collapse = "`, `"), "`.\nTo ",
-      "replace these values, use add_to_extract().",
-      call. = FALSE
-    )
-  }
-
-  if (length(invalid_fields) > 0) {
-    warning(
-      "The following were not recognized as valid fields for an object of ",
-      "class `", paste0(extract$collection, "_extract"), "`: `",
-      paste0(invalid_fields, collapse = "`, `"),
-      "`. These values will be ignored.",
-      call. = FALSE
-    )
   }
 
   extract

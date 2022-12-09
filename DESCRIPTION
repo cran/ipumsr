@@ -1,6 +1,6 @@
 Package: ipumsr
 Title: Read 'IPUMS' Extract Files
-Version: 0.5.1
+Version: 0.5.2
 Authors@R: c(
   person("Greg Freedman Ellis", role = "aut"), 
   person("Derek Burk", email = "ipums+cran@umn.edu", role = c("aut", "cre")),
@@ -29,7 +29,7 @@ Suggests: DT, ggplot2, htmltools, knitr, rgdal, rmarkdown, rstudioapi,
         dbplyr, vcr (>= 0.6.0), withr, raster
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-09-30 04:42:41 UTC; Derek
+Packaged: 2022-12-09 22:03:05 UTC; robe2037
 Author: Greg Freedman Ellis [aut],
   Derek Burk [aut, cre],
   Joe Grover [ctb],
@@ -39,4 +39,4 @@ Author: Greg Freedman Ellis [aut],
   Minnesota Population Center [cph]
 Maintainer: Derek Burk <ipums+cran@umn.edu>
 Repository: CRAN
-Date/Publication: 2022-09-30 07:20:05 UTC
+Date/Publication: 2022-12-09 22:20:02 UTC
