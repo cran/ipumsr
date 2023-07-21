@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Institute for Social Research and Data Innovation" />
+
+
+<title>Microdata API Requests</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Microdata API Requests</h1>
+<h4 class="author">Institute for Social Research and Data
+Innovation</h4>
+
+
+
+<p>This vignette details the options available for requesting data from
+IPUMS microdata projects via the IPUMS API.</p>
+<p>If you haven’t yet learned the basics of the IPUMS API workflow, you
+may want to start with the <a href="ipums-api.html">IPUMS API
+introduction</a>. The code below assumes you have registered and set up
+your API key as described there.</p>
+<div id="supported-microdata-collections" class="section level2">
+<h2>Supported microdata collections</h2>
+<p>IPUMS provides several data collections that are classified as
+microdata. Currently, the following microdata collections are supported
+by the IPUMS API (shown with the codes used to refer to them in
+ipumsr):</p>
+<ul>
+<li>IPUMS USA (<code>&quot;usa&quot;</code>)</li>
+<li>IPUMS CPS (<code>&quot;cps&quot;</code>)</li>
+<li>IPUMS International (<code>&quot;ipumsi&quot;</code>)</li>
+</ul>
+<p>API support will continue to be added for more collections in the
+future. See the <a href="https://developer.ipums.org/docs/apiprogram/">API
+documentation</a> for more information on upcoming additions to the
+API.</p>
+<p>In addition to microdata projects, the IPUMS API also supports IPUMS
+NHGIS data. For details about obtaining IPUMS NHGIS data using ipumsr,
+see the <a href="ipums-api-nhgis.html">NHGIS-specific vignette</a>.</p>
+<p>Before getting started, we’ll load ipumsr and <a href="https://dplyr.tidyverse.org/">dplyr</a>, which will be helpful for
+this demo:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+</div>
+<div id="basic-ipums-microdata-concepts" class="section level2">
+<h2>Basic IPUMS microdata concepts</h2>
+<p>Every microdata extract definition must contain a set of requested
+<em>samples</em> and <em>variables</em>.</p>
+<p>In an IPUMS microdata collection, a <em>sample</em> refers to a
+distinct combination of records and variables. A record is a set of
+values that describe the characteristics of a single unit of measurement
+(e.g. a single person or a single household), and <em>variables</em>
+define the characteristics that were measured.</p>
+<p>A single sample can contain multiple record types (e.g. person
+records, household records, or activity records, and more), each of
+which correspond to different units of measurement.</p>
+<p>Note that our usage of the term “sample” does not correspond
+perfectly to the statistical sense of a subset of individuals from a
+population. Many IPUMS samples are samples in the statistical sense, but
+some are “full-count” samples, meaning they contain all individuals in a
+population.</p>
+</div>
+<div id="ipums-microdata-metadata-forthcoming" class="section level2">
+<h2>IPUMS microdata metadata (forthcoming)</h2>
+<p>Of course, to request samples and variables, we have to know the
+codes that the API uses to refer to them. For samples, the IPUMS API
+uses special codes that don’t appear in the web-based extract builder.
+For variables, the API uses the same variable names that appear on the
+web.</p>
+<p>While the IPUMS API does not yet provide a comprehensive set of
+metadata endpoints for IPUMS microdata collections, users can use the
+<code>get_sample_info()</code> function to identify the codes used to
+refer to specific samples when communicating with the API.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>cps_samps <span class="ot">&lt;-</span> <span class="fu">get_sample_info</span>(<span class="st">&quot;cps&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">head</span>(cps_samps)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 2</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co">#&gt;   name        description         </span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;               </span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt; 1 cps1962_03s IPUMS-CPS, ASEC 1962</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt; 2 cps1963_03s IPUMS-CPS, ASEC 1963</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt; 3 cps1964_03s IPUMS-CPS, ASEC 1964</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt; 4 cps1965_03s IPUMS-CPS, ASEC 1965</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; 5 cps1966_03s IPUMS-CPS, ASEC 1966</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt; 6 cps1967_03s IPUMS-CPS, ASEC 1967</span></span></code></pre></div>
+<p>The values listed in the <code>name</code> column correspond to the
+code that you would use to request that sample when creating an extract
+definition to be submitted to the IPUMS API.</p>
+<p>We can use basic functions from dplyr to filter the metadata to
+samples of interest. For instance, to find all IPUMS International
+samples for Mexico, we could do the following:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>ipumsi_samps <span class="ot">&lt;-</span> <span class="fu">get_sample_info</span>(<span class="st">&quot;ipumsi&quot;</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>ipumsi_samps <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">&quot;Mexico&quot;</span>, description))</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 70 × 2</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;    name    description       </span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;             </span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;  1 mx1960a Mexico 1960       </span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt;  2 mx1970a Mexico 1970       </span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt;  3 mx1990a Mexico 1990       </span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;  4 mx1995a Mexico 1995       </span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;  5 mx2000a Mexico 2000       </span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;  6 mx2005a Mexico 2005       </span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;  7 mx2010a Mexico 2010       </span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt;  8 mx2015a Mexico 2015       </span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;  9 mx2005h Mexico 2005 Q1 LFS</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; 10 mx2005i Mexico 2005 Q2 LFS</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 60 more rows</span></span></code></pre></div>
+<p>IPUMS intends to add support for accessing variable metadata via API
+in the future. Until then, use the web-based extract builder for a given
+collection to find variable names and availability by sample. See the <a href="https://developer.ipums.org/docs/v2/workflows/explore_metadata/microdata-hp/">IPUMS
+API documentation</a> for links to the extract builder for each
+microdata collection with API support.</p>
+<p>Alternatively, if you have made an extract previously through the web
+interface, you can use <code>get_extract_info()</code> to identify the
+variable names it includes. See the <a href="ipums-api.html">IPUMS API
+introduction</a> for more details.</p>
+</div>
+<div id="defining-an-ipums-microdata-extract-request" class="section level2">
+<h2>Defining an IPUMS microdata extract request</h2>
+<p>Each IPUMS collection has its own extract definition function that is
+used to specify the parameters of a new extract request from scratch.
+These functions take the form <code>define_extract_*()</code>. For
+microdata collections, we have:</p>
+<ul>
+<li>IPUMS USA: <code>define_extract_usa()</code></li>
+<li>IPUMS CPS: <code>define_extract_cps()</code></li>
+<li>IPUMS International: <code>define_extract_ipumsi()</code></li>
+</ul>
+<p>When you define an extract request, you can specify the data to be
+included in the extract and indicate the desired format and layout.</p>
+<p>While each microdata collection has its own extract definition
+function, each uses the same syntax. The examples in this vignette use
+multiple collections, but the syntax they demonstrate can be applied to
+all of the supported microdata collections.</p>
+<p>A simple extract definition needs only to contain the names of the
+samples and variables to include in the request:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>cps_ext <span class="ot">&lt;-</span> <span class="fu">define_extract_cps</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example CPS extract&quot;</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>  <span class="at">samples =</span> <span class="fu">c</span>(<span class="st">&quot;cps2018_03s&quot;</span>, <span class="st">&quot;cps2019_03s&quot;</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">&quot;AGE&quot;</span>, <span class="st">&quot;SEX&quot;</span>, <span class="st">&quot;RACE&quot;</span>, <span class="st">&quot;STATEFIP&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>cps_ext</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS CPS extract </span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; Description: Example CPS extract</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) cps2018_03s, cps2019_03s</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; Variables: (4 total) AGE, SEX, RACE, STATEFIP</span></span></code></pre></div>
+<p>This produces an <code>ipums_extract</code> object containing the
+extract request specifications that is ready to be submitted to the
+IPUMS API.</p>
+<p>When you request a variable in your extract definition, the resulting
+data extract will include that variable for all requested samples where
+it is available. If you request a variable that is not available for any
+requested samples, the IPUMS API will throw an informative error when
+you try to submit your request.</p>
+<p>Beyond just specifying samples and variables, there are several
+additional options available to refine the data requested in a microdata
+extract request.</p>
+</div>
+<div id="detailed-variable-specifications" class="section level2">
+<h2>Detailed variable specifications</h2>
+<p>The IPUMS API supports several detailed specification options that
+can be applied to individual variables in an extract request: case
+selections, attached characteristics, and data quality flags.</p>
+<p>Before we describe each of these options in depth, we’ll introduce
+the syntax used to add them to your extract definition.</p>
+<div id="syntax" class="section level3">
+<h3>Syntax</h3>
+<p>To add any of these options to a variable, we need to introduce the
+<code>var_spec()</code> helper function.</p>
+<p><code>var_spec()</code> bundles all the selections for a given
+variable together into a single object (in this case, a
+<code>var_spec</code> object):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>var <span class="ot">&lt;-</span> <span class="fu">var_spec</span>(<span class="st">&quot;SEX&quot;</span>, <span class="at">case_selections =</span> <span class="st">&quot;2&quot;</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">str</span>(var)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; List of 3</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt;  $ name               : chr &quot;SEX&quot;</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt;  $ case_selections    : chr &quot;2&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt;  $ case_selection_type: chr &quot;general&quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;class&quot;)= chr [1:3] &quot;var_spec&quot; &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
+<p>To include this specification in our extract, we simply provide it to
+the <code>variables</code> argument of our extract definition. When
+multiple variables are included, pass a <code>list</code> of
+<code>var_spec</code> objects:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">define_extract_cps</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Case selection example&quot;</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="at">samples =</span> <span class="fu">c</span>(<span class="st">&quot;cps2018_03s&quot;</span>, <span class="st">&quot;cps2019_03s&quot;</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">list</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="fu">var_spec</span>(<span class="st">&quot;SEX&quot;</span>, <span class="at">case_selections =</span> <span class="st">&quot;2&quot;</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="fu">var_spec</span>(<span class="st">&quot;AGE&quot;</span>, <span class="at">attached_characteristics =</span> <span class="st">&quot;head&quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  )</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>)</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS CPS extract </span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt; Description: Case selection example</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) cps2018_03s, cps2019_03s</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt; Variables: (2 total) SEX, AGE</span></span></code></pre></div>
+<p>In fact, if you investigate our original extract object from above,
+you’ll notice that the variables have automatically been converted to
+<code>var_spec</code> objects, even though they were provided as
+character vectors:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">str</span>(cps_ext<span class="sc">$</span>variables)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; List of 4</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt;  $ AGE     :List of 1</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt;   ..$ name: chr &quot;AGE&quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;var_spec&quot; &quot;ipums_spec&quot; &quot;list&quot;</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt;  $ SEX     :List of 1</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co">#&gt;   ..$ name: chr &quot;SEX&quot;</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;var_spec&quot; &quot;ipums_spec&quot; &quot;list&quot;</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co">#&gt;  $ RACE    :List of 1</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="co">#&gt;   ..$ name: chr &quot;RACE&quot;</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;var_spec&quot; &quot;ipums_spec&quot; &quot;list&quot;</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co">#&gt;  $ STATEFIP:List of 1</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co">#&gt;   ..$ name: chr &quot;STATEFIP&quot;</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="co">#&gt;   ..- attr(*, &quot;class&quot;)= chr [1:3] &quot;var_spec&quot; &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
+<p>So, a <code>var_spec</code> object with no additional specifications
+will produce the default data for a given variable. That is, the
+following are equivalent:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">define_extract_cps</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example CPS extract&quot;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;cps2018_03s&quot;</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">&quot;AGE&quot;</span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>)</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="fu">define_extract_cps</span>(</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example CPS extract&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;cps2018_03s&quot;</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">var_spec</span>(<span class="st">&quot;AGE&quot;</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>)</span></code></pre></div>
+<p>Because all specified variables are converted to
+<code>var_spec</code> objects, you can also pass a list where some
+elements are <code>var_spec</code> objects and some are just variable
+names. This is convenient when you only have detailed specifications for
+a subset of variables:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">define_extract_cps</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Case selection example&quot;</span>,</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>  <span class="at">samples =</span> <span class="fu">c</span>(<span class="st">&quot;cps2018_03s&quot;</span>, <span class="st">&quot;cps2019_03s&quot;</span>),</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">list</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>    <span class="fu">var_spec</span>(<span class="st">&quot;SEX&quot;</span>, <span class="at">case_selections =</span> <span class="st">&quot;2&quot;</span>),</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>    <span class="st">&quot;AGE&quot;</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>  )</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>)</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS CPS extract </span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt; Description: Case selection example</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) cps2018_03s, cps2019_03s</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt; Variables: (2 total) SEX, AGE</span></span></code></pre></div>
+<p>(Samples are also converted to their own <code>samp_spec</code>
+objects, but as there currently aren’t any additional specifications
+available for samples, there is no reason to use anything other than a
+character vector in the <code>samples</code> argument.)</p>
+<p>Now that we’ve covered the basic syntax for including detailed
+variable specifications, we can describe the available options in more
+depth.</p>
+</div>
+<div id="case-selections" class="section level3">
+<h3>Case selections</h3>
+<p>Case selections allow us to limit the data to those records that
+match a particular value on the specified variable.</p>
+<p>For instance, the following specification would indicate that only
+records with a value of <code>&quot;27&quot;</code> (Minnesota) or
+<code>&quot;19&quot;</code> (Iowa) for the variable <code>&quot;STATEFIP&quot;</code> should
+be included:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>var <span class="ot">&lt;-</span> <span class="fu">var_spec</span>(<span class="st">&quot;STATEFIP&quot;</span>, <span class="at">case_selections =</span> <span class="fu">c</span>(<span class="st">&quot;27&quot;</span>, <span class="st">&quot;19&quot;</span>))</span></code></pre></div>
+<p>Some variables have versions with both general and detailed coding
+schemes. By default, case selections are interpreted to refer to the
+general codes:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>var<span class="sc">$</span>case_selection_type</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;general&quot;</span></span></code></pre></div>
+<p>For variables with detailed versions, you can also select on the
+detailed codes.</p>
+<p>For instance, the IPUMS USA variable RACE is available in both
+general and detailed versions. If you wanted to limit your extract to
+persons identifying as “Two major races”, you could do so by specifying
+a case selection of <code>&quot;8&quot;</code>. However, if you wanted to limit
+your extract to only persons identifying as “White and Chinese” or
+“White and Japanese”, you would need to specify <em>detailed</em> codes
+<code>&quot;811&quot;</code> and <code>&quot;812&quot;</code>.</p>
+<p>To include case selections for detailed codes, set
+<code>case_selection_type = &quot;detailed&quot;</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="co"># General case selection is the default</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">var_spec</span>(<span class="st">&quot;RACE&quot;</span>, <span class="at">case_selections =</span> <span class="st">&quot;8&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;RACE&quot;</span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; $case_selections</span></span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="co">#&gt; [1] &quot;8&quot;</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="co">#&gt; $case_selection_type</span></span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;general&quot;</span></span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a></span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co"># For detailed case selection, change the `case_selection_type`</span></span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="fu">var_spec</span>(</span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>  <span class="st">&quot;RACE&quot;</span>, </span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  <span class="at">case_selections =</span> <span class="fu">c</span>(<span class="st">&quot;811&quot;</span>, <span class="st">&quot;812&quot;</span>), </span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>  <span class="at">case_selection_type =</span> <span class="st">&quot;detailed&quot;</span></span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a>)</span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a><span class="co">#&gt; [1] &quot;RACE&quot;</span></span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="co">#&gt; $case_selections</span></span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a><span class="co">#&gt; [1] &quot;811&quot; &quot;812&quot;</span></span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a><span class="co">#&gt; $case_selection_type</span></span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a><span class="co">#&gt; [1] &quot;detailed&quot;</span></span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb12-30"><a href="#cb12-30" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb12-31"><a href="#cb12-31" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
+<p>As noted above, IPUMS intends to add support for accessing variable
+metadata via API in the future, such that users will be able to query
+variable coding schemes right from their R sessions. Until then, use the
+IPUMS web interface for a given collection to find general and detailed
+variable codes for the purposes of case selection. See the <a href="https://developer.ipums.org/docs/v2/workflows/explore_metadata/microdata-hp/">IPUMS
+API documentation</a> for relevant links.</p>
+<p>By default, case selection on person-level variables produces a data
+file that includes only those individuals who match the specified values
+for the specified variables. It’s also possible to use case selection to
+include matching individuals <em>and</em> all other members of their
+households, using the <code>case_select_who</code> parameter.</p>
+<p>The <code>case_select_who</code> parameter must be the same for all
+case selections in an extract, and thus is set at the extract level
+rather than the <code>var_spec</code> level. To include all household
+members of matching individuals, set
+<code>case_select_who = &quot;households&quot;</code> in the extract
+definition:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">define_extract_usa</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Household level case selection&quot;</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;us2021a&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">var_spec</span>(<span class="st">&quot;RACE&quot;</span>, <span class="at">case_selections =</span> <span class="st">&quot;8&quot;</span>),</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="at">case_select_who =</span> <span class="st">&quot;households&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>)</span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS USA extract </span></span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; Description: Household level case selection</span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us2021a</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; Variables: (1 total) RACE</span></span></code></pre></div>
+</div>
+<div id="attached-characteristics" class="section level3">
+<h3>Attached characteristics</h3>
+<p>IPUMS allows users to create variables that reflect the
+characteristics of other household members. To do so, use the
+<code>attached_characteristics</code> argument of
+<code>var_spec()</code>.</p>
+<p>For instance, to attach the spouse’s SEX value to a record:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">var_spec</span>(<span class="st">&quot;SEX&quot;</span>, <span class="at">attached_characteristics =</span> <span class="st">&quot;spouse&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;SEX&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="co">#&gt; $attached_characteristics</span></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;spouse&quot;</span></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
+<p>This will add a new variable (in this case, SEX_SP) to the output
+data that will contain the sex of a person’s spouse (if no such record
+exists, the value will be 0).</p>
+<p>Multiple attached characteristics can be attached for a single
+variable:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">var_spec</span>(<span class="st">&quot;AGE&quot;</span>, <span class="at">attached_characteristics =</span> <span class="fu">c</span>(<span class="st">&quot;mother&quot;</span>, <span class="st">&quot;father&quot;</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;AGE&quot;</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; $attached_characteristics</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;mother&quot; &quot;father&quot;</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
+<p>Acceptable values are <code>&quot;spouse&quot;</code>, <code>&quot;mother&quot;</code>,
+<code>&quot;father&quot;</code>, and <code>&quot;head&quot;</code>.</p>
+</div>
+<div id="data-quality-flags" class="section level3">
+<h3>Data quality flags</h3>
+<p>Some variables in the IPUMS have been edited for missing, illegible,
+and inconsistent values. Data quality flags indicate which values are
+edited or allocated.</p>
+<p>To include data quality flags for an individual variable, use the
+<code>data_quality_flags</code> argument to <code>var_spec()</code>:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">var_spec</span>(<span class="st">&quot;RACE&quot;</span>, <span class="at">data_quality_flags =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;RACE&quot;</span></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; $data_quality_flags</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
+<p>This will produce a new variable (QRACE) containing the data quality
+flag for the given variable.</p>
+<p>To add data quality flags for all variables that have them, set
+<code>data_quality_flags = TRUE</code> in your extract definition
+directly:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>usa_ext <span class="ot">&lt;-</span> <span class="fu">define_extract_usa</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Data quality flags&quot;</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;us2021a&quot;</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">list</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    <span class="fu">var_spec</span>(<span class="st">&quot;RACE&quot;</span>, <span class="at">case_selections =</span> <span class="st">&quot;8&quot;</span>),</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>    <span class="fu">var_spec</span>(<span class="st">&quot;AGE&quot;</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  ),</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>  <span class="at">data_quality_flags =</span> <span class="cn">TRUE</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>)</span></code></pre></div>
+<p>Each data quality flag corresponds to one or more variables, and the
+codes for each flag vary based on the sample. See the documentation for
+the IPUMS collection of interest for more information about data quality
+flag codes.</p>
+</div>
+</div>
+<div id="data-structure-and-file-format" class="section level2">
+<h2>Data structure and file format</h2>
+<p>By default, microdata extract definitions will request data in a
+rectangular structure and fixed-width file format.</p>
+<p>Rectangular data are data where only person records are included, and
+any household-level variables are converted to person-level variables by
+copying the values from the associated household record onto all
+household members.</p>
+<p>To instead create a hierarchical extract, which includes separate
+records for households and persons, set
+<code>data_structure = &quot;hierarchical&quot;</code> in your extract
+definition.</p>
+<p>See the <a href="ipums-read.html#hierarchical-extracts">IPUMS data
+reading vignette</a> for more information about loading hierarchical
+data into R.</p>
+<p>To request a file format other than fixed-width, adjust the
+<code>data_format</code> argument. Note that while you can request data
+in a variety of formats (Stata, SPSS, etc.), ipumsr’s
+<code>read_ipums_micro()</code> function only supports fixed-width and
+csv files.</p>
+</div>
+<div id="next-steps" class="section level2">
+<h2>Next steps</h2>
+<p>Once you have defined an extract request, you can submit the extract
+for processing:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>usa_ext_submitted <span class="ot">&lt;-</span> <span class="fu">submit_extract</span>(usa_ext)</span></code></pre></div>
+<p>The workflow for submitting and monitoring an extract request and
+downloading its files when complete is described in the <a href="ipums-api.html">IPUMS API introduction</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

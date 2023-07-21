@@ -10,11 +10,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Minnesota Population Center" />
+<meta name="author" content="Institute for Social Research and Data Innovation" />
 
-<meta name="date" content="2022-12-09" />
 
-<title>Value Labels</title>
+<title>Value Labels in IPUMS data</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -121,13 +120,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
   for (var i = 0; i < sheets.length; i++) {
     if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
     try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
+    var j = 0;
+    while (j < rules.length) {
       var rule = rules[j];
       // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -331,500 +337,599 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">Value Labels</h1>
-<h4 class="author">Minnesota Population Center</h4>
-<h4 class="date">2022-12-09</h4>
+<h1 class="title toc-ignore">Value Labels in IPUMS data</h1>
+<h4 class="author">Institute for Social Research and Data
+Innovation</h4>
 
 
 
-<div id="value-labels-in-the-ipumsr-package" class="section level1">
-<h1>Value labels in the ipumsr package</h1>
-<p>Integrated variables in IPUMS data often have value labels, which
-attach text labels to the values taken by a variable (for example the
-HEALTH variable has value labels: 1 = “Excellent”, 2 = “Very good”,
-etc.). The <code>ipumsr</code> package does import the labels, but not
-as factors, which may be how you were expecting them.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="fu">ipums_example</span>(<span class="st">&quot;cps_00015.xml&quot;</span>))</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ddi, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cps</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,883 × 13</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL HWTSUPP   STATEFIP ASECF…¹   MONTH PERNUM WTSUPP   AGE      EDUC</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;int+lbl&gt; &lt;int+l&gt; &lt;int+l&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int+lbl&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1  2016  24138   3249. 55 [Wisco… 1 [ASE… 3 [Mar…      1  3249.    54  73 [Hig…</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2  2016  24139   3154. 55 [Wisco… 1 [ASE… 3 [Mar…      1  3154.    54  73 [Hig…</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3  2016  24139   3154. 55 [Wisco… 1 [ASE… 3 [Mar…      2  3154.    52  73 [Hig…</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4  2016  24140   1652. 55 [Wisco… 1 [ASE… 3 [Mar…      1  1652.    38  60 [Gra…</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5  2016  24140   1652. 55 [Wisco… 1 [ASE… 3 [Mar…      2  1503.    15  10 [Gra…</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6  2016  24140   1652. 55 [Wisco… 1 [ASE… 3 [Mar…      3  1652.    38  73 [Hig…</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7  2016  24141   3049. 55 [Wisco… 1 [ASE… 3 [Mar…      1  3049.    85  30 [Gra…</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8  2016  24142   1637. 55 [Wisco… 1 [ASE… 3 [Mar…      1  1637.    27 111 [Bac…</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9  2016  24142   1637. 55 [Wisco… 1 [ASE… 3 [Mar…      2  1637.    27 111 [Bac…</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10  2016  24142   1637. 55 [Wisco… 1 [ASE… 3 [Mar…      3  1887.     2   1 [NIU…</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 10,873 more rows, 3 more variables: INCTOT &lt;dbl+lbl&gt;,</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   HEALTH &lt;int+lbl&gt;, MIGRATE1 &lt;int+lbl&gt;, and abbreviated variable name</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; #   ¹​ASECFLAG</span></span></code></pre></div>
-<p>The first clue that some of the variables are labelled is the
-<code>&lt;dbl+lbl&gt;</code> that appear below <code>STATEFIP</code>,
-<code>ASECFLAG</code> and other variables. The tibble package prints the
-variable’s type information below the variable name, and this “+lbl”
-indicates that the variable uses the <code>labelled</code> type. The
-function <code>is.labelled()</code> will also tell you if a variable is
-labelled.</p>
-<p>By default the ipumsr package now will attempt to show the value
-labels when printing out a data.frame (like the <code>&quot;[Wis~&quot;</code> on
-STATEFIP above, for Wisconsin). If your console supports colorful
-output, then the labels will be in a lighter gray than the values. You
-can turn off this printing behavior by setting the option
-<code>options(&quot;ipumsr.show_pillar_labels&quot; = FALSE)</code>)</p>
-<p>However, as you can see, there often isn’t enough space to see the
-labels when printing out a full data.frame. So, there are a few options
-to see the labels directly:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Printing the variable directly (or a subset)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cps<span class="sc">$</span>MONTH)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;integer&gt;[6]&gt;: Month</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 3 3 3 3 3 3</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  value     label</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      1   January</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      2  February</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      3     March</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      4     April</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      5       May</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      6      June</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      7      July</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      8    August</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      9 September</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     10   October</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     11  November</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     12  December</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Just get the labels</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MONTH)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co"># or if you&#39;re working interactively you can use ipums_view</span></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># ipums_view(ddi)</span></span></code></pre></div>
-</div>
-<div id="why-use-the-labelled-class-instead-of-base-rs-factors" class="section level1">
-<h1>Why use the labelled class instead of base R’s factors?</h1>
-<p>The usual way to connect numeric data to labels in R is in
-<code>factor</code> variables. Though this data type is more native to
-R, and more widely supported by R code, it was designed for efficient
-calculations in linear models, not as a general purpose value labeling
-system and so is missing important features that the value labels
-provided by IPUMS require.</p>
-<p>Factors only allow for integers to be mapped to a text label, and
-these integers have to be a count starting at 1. This doesn’t work for
-IPUMS data because often our variables have specific meanings for the
-codes. For example, the variable <code>AGE</code> uses the value to mean
-the actual age, but does have labels for age 0 and the top codes.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cps<span class="sc">$</span>AGE)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;integer&gt;[6]&gt;: Age</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  value               label</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      0        Under 1 year</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     90 90 (90+, 1988-2002)</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     99                 99+</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>AGE_FACTOR <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>AGE)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(cps<span class="sc">$</span>AGE_FACTOR)</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 84 Levels: Under 1 year 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 ... 99+</span></span></code></pre></div>
-<p>It may seem like the new <code>AGE_FACTOR</code> variable is okay,
-but it can be very confusing!</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(cps<span class="sc">$</span>AGE)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 35.0226</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># mean(cps$AGE_FACTOR) # error because data is a factor not numeric</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(cps<span class="sc">$</span>AGE_FACTOR)) <span class="co"># A common mistake</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 35.94836</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The &quot;more&quot; correct way, but NA because of the text labels</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(<span class="fu">as.character</span>(cps<span class="sc">$</span>AGE_FACTOR)))</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning in mean(as.numeric(as.character(cps$AGE_FACTOR))): NAs introduced by</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; coercion</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
-<p>Because the factor variable has to assign values starting at 1, but
-the AGE variable started at 0, most values were 1 higher than they
-should have been. Not all values are 1 higher though, because not all
-values exist in the data, so 85, 90, and 99 are 82, 83 and 84
-respectively.</p>
-<p>Other variables have special meanings behind certain codes. For
-example, often missing or NIU values are indicated in IPUMS by values
-starting with the number 9 that are offset from the typical values. R’s
-factors do not allow for this separation, so the missing codes will be
-harder to distinguish.</p>
-<p>Factors also require that every value be labelled, which is not
-always true in IPUMS data. In the AGE variable, the only values with
-labels are 0, 90 and 99. For all other values, there is not additional
-label information.</p>
-</div>
-<div id="is-the-labelled-class-a-panacea-hint-no" class="section level1">
-<h1>Is the labelled class a panacea? (Hint: no)</h1>
-<p>Though the labelled class does express all of the meaning provided by
-IPUMS value labels into R, many R functions cannot use them or even
-actively remove them from the data.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>HEALTH)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     val lbl      </span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;    </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1 Excellent</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     2 Very good</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     3 Good     </span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     4 Fair     </span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     5 Poor</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>HEALTH2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(cps<span class="sc">$</span>HEALTH <span class="sc">&gt;</span> <span class="dv">3</span>, <span class="dv">3</span>, cps<span class="sc">$</span>HEALTH)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(HEALTH2)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 2 variables: val &lt;dbl&gt;, lbl &lt;chr&gt;</span></span></code></pre></div>
-<p>Therefore, your first task when importing an IPUMS data set will
-usually be to convert the labelled values to other data structures. The
-bad news is that there’s no good automatic way to do this; a lot depends
-on how you plan to use the variables in your analysis and your
-preferences.</p>
-<p>The good news is that the ipumsr package provides several functions
-to make this process easier.</p>
-<p>I think it is easiest to learn them by seeing them in action, so see
-below for a workflow for bringing in the CPS example extract. For your
-reference, here is a list of the functions:</p>
+<div id="ipums-variable-metadata" class="section level2">
+<h2>IPUMS Variable Metadata</h2>
+<p>IPUMS data come with three primary types of variable-level
+metadata:</p>
 <ul>
-<li><code>as_factor()</code> (reexported from the haven package)</li>
-<li><code>zap_labels()</code> (also from haven)</li>
-<li><code>lbl_na_if()</code></li>
-<li><code>lbl_collapse()</code></li>
-<li><code>lbl_relabel()</code></li>
-<li><code>lbl_add()</code></li>
-<li><code>lbl_add_vals()</code></li>
+<li><p><strong><em>Variable labels</em></strong> are succinct labels
+that serve as human-readable variable names (in contrast to more
+esoteric column names).</p></li>
+<li><p><strong><em>Variable descriptions</em></strong> are extended text
+descriptions of the contents of a variable. These provide more
+information about what a given variable measures.</p></li>
+<li><p><strong><em>Value labels</em></strong> link particular data
+values to more meaningful text labels. For instance, the
+<code>HEALTH</code> variable has data values including 1 and 2, but
+these are actually stand-ins for “Excellent” and “Very good” health.
+This mapping would be contained in a value-label pair that includes a
+value and its associated label.</p></li>
 </ul>
+<p>The rest of this article will focus on value labels; for more about
+variable labels and descriptions, see
+<code>vignette(&quot;ipums&quot;)</code>.</p>
 </div>
-<div id="workflow-example-using-ipumsr-functions" class="section level1">
-<h1>Workflow example using ipumsr functions</h1>
-<div id="as_factor" class="section level2">
-<h2><code>as_factor()</code></h2>
-<p>The HEALTH variable is structured just like a factor and so can be
-converted directly. The <code>as_factor()</code> function is the easiest
-way to do so.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>HEALTH)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     val lbl      </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;    </span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     1 Excellent</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     2 Very good</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     3 Good     </span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     4 Fair     </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     5 Poor</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>HEALTH <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>HEALTH)</span></code></pre></div>
-<p>The ASECFLAG and MONTH variables can also be converted directly
-(these were included by default by the IPUMS extract engine, but aren’t
-useful here because this data set only has respondents from ASEC in
-March)</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>ASECFLAG <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>ASECFLAG)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>MONTH <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>MONTH)</span></code></pre></div>
-<p><code>as_factor</code> works on data.frames by converting every
-labelled variable to a factor. However, this can create confusing
-variables like AGE_FACTOR from above, so this isn’t the best thing to do
-right away.</p>
+<div id="value-labels" class="section level2">
+<h2>Value labels</h2>
+<p>ipumsr uses the <code>labelled</code> <a href="https://haven.tidyverse.org/reference/labelled.html">class</a>
+from the <a href="https://haven.tidyverse.org/index.html">haven</a>
+package to handle value labels.</p>
+<p>You can see this in the column data types when loading IPUMS data.
+Note that <code>&lt;int+lbl&gt;</code> appears below
+<code>STATEFIP</code>, <code>ASECFLAG</code>, and other variables:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="fu">ipums_example</span>(<span class="st">&quot;cps_00160.xml&quot;</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ddi, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>cps</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,883 × 15</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL MONTH      CPSID ASECFLAG ASECWTH STATEFIP PERNUM  CPSIDP ASECWT</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int+lb&gt;   &lt;dbl&gt; &lt;int+lb&gt;   &lt;dbl&gt; &lt;int+lb&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  1  2016  24138 3 [Marc… 2.02e13 1 [ASEC]   3249. 55 [Wis…      1 2.02e13  3249.</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  2  2016  24139 3 [Marc… 2.02e13 1 [ASEC]   3154. 55 [Wis…      1 2.02e13  3154.</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  3  2016  24139 3 [Marc… 2.02e13 1 [ASEC]   3154. 55 [Wis…      2 2.02e13  3154.</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  4  2016  24140 3 [Marc… 2.02e13 1 [ASEC]   1652. 55 [Wis…      1 2.02e13  1652.</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt;  5  2016  24140 3 [Marc… 2.02e13 1 [ASEC]   1652. 55 [Wis…      2 2.02e13  1503.</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt;  6  2016  24140 3 [Marc… 2.02e13 1 [ASEC]   1652. 55 [Wis…      3 2.02e13  1652.</span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt;  7  2016  24141 3 [Marc… 2.02e13 1 [ASEC]   3049. 55 [Wis…      1 2.02e13  3049.</span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt;  8  2016  24142 3 [Marc… 2.02e13 1 [ASEC]   1637. 55 [Wis…      1 2.02e13  1637.</span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt;  9  2016  24142 3 [Marc… 2.02e13 1 [ASEC]   1637. 55 [Wis…      2 2.02e13  1637.</span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; 10  2016  24142 3 [Marc… 2.02e13 1 [ASEC]   1637. 55 [Wis…      3 2.02e13  1887.</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 10,873 more rows</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; # ℹ 5 more variables: AGE &lt;int+lbl&gt;, EDUC &lt;int+lbl&gt;, INCTOT &lt;dbl+lbl&gt;,</span></span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; #   MIGRATE1 &lt;int+lbl&gt;, HEALTH &lt;int+lbl&gt;</span></span></code></pre></div>
+<p>This indicates that the data contained in these columns are integers
+but include value labels. You can use the function
+<code>is.labelled()</code> to determine if a variable is indeed
+labelled:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">is.labelled</span>(cps<span class="sc">$</span>STATEFIP)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>Some of the labels are actually printed inline alongside their data
+values, but it can be easier to see them by isolating them:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Labels print when accessing the column</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">head</span>(cps<span class="sc">$</span>MONTH)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;integer&gt;[6]&gt;: Month</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; [1] 3 3 3 3 3 3</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt;  value     label</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;      1   January</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt;      2  February</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt;      3     March</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;      4     April</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;      5       May</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt;      6      June</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt;      7      July</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt;      8    August</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt;      9 September</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt;     10   October</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;     11  November</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;     12  December</span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co"># Get labels alone</span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MONTH)</span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span></code></pre></div>
 </div>
-<div id="zap_labels" class="section level2">
-<h2><code>zap_labels()</code></h2>
-<p>I may decide that for my analysis, the AGE variable is most useful as
-the numeric values. The <code>zap_labels()</code> function removes the
-labels.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>AGE <span class="ot">&lt;-</span> <span class="fu">zap_labels</span>(cps<span class="sc">$</span>AGE)</span></code></pre></div>
-<p>The top-codes (which are only available on the CPS website) indicate
-that the value 80 actually indicates 80-84 and 85 indicates 85+, so
-another option would be to convert them to a factor with age ranges.</p>
-</div>
-<div id="lbl_clean" class="section level2">
-<h2><code>lbl_clean()</code></h2>
-<p>This extract only contains data from a few states and I don’t want
-the factor to have a level for the unused ones. The
-<code>lbl_clean()</code> function keeps only labels for values in the
-current data set and returns a labelled variable which we can convert to
-a factor.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>STATEFIP)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 75 × 2</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      val lbl                 </span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;               </span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1     1 Alabama             </span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2     2 Alaska              </span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3     4 Arizona             </span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4     5 Arkansas            </span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5     6 California          </span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6     8 Colorado            </span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7     9 Connecticut         </span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8    10 Delaware            </span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9    11 District of Columbia</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    12 Florida             </span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 65 more rows</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>STATEFIP <span class="ot">&lt;-</span> <span class="fu">lbl_clean</span>(cps<span class="sc">$</span>STATEFIP)</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>STATEFIP)</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     val lbl         </span></span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;       </span></span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1    19 Iowa        </span></span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2    27 Minnesota   </span></span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3    38 North Dakota</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4    46 South Dakota</span></span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5    55 Wisconsin</span></span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>STATEFIP <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>STATEFIP)</span></code></pre></div>
-</div>
-<div id="lbl_na_if" class="section level2">
-<h2><code>lbl_na_if()</code></h2>
-<p>The INCTOT variable has 2 labelled values that are not actually
-incomes: 99999998 indicates “Missing” and 99999999 indicate “Not in
-Universe”. On the CPS website, the Universe tab indicates that the
-Universe for 2016 is respondents age 15+. Let’s say for my analysis, I
-can treat these values as missing.</p>
-<p>The <code>lbl_na_if()</code> function takes the variable and a
-function that refers to .val and .lbl (the values and labels
-respectively) and returns an indicator of whether to set those values to
-NA and remove the label. You can also use the <code>~</code> notation
-from the purrr package to create succinct anonymous functions.</p>
-<p>The .val and .lbl only refer to values that already have labels, they
-do not apply to unlabeled values. See the <code>lbl_add()</code> and
-<code>lbl_add_vals()</code> functions below for working with unlabeled
-values.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Caution: R defaults to printing large numbers like 99999999 in rounded </span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># exponential format (1e+08) but that&#39;s not how they are actually stored</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>INCTOT)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        val lbl                      </span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;                    </span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1 99999998 Missing.                 </span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2 99999999 N.I.U. (Not in Universe).</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="co"># All of these are equivalent</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>INCTOT1 <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="sc">~</span>.val <span class="sc">&gt;=</span> <span class="dv">99999990</span>)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>INCTOT2 <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="sc">~</span>.lbl <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Missing.&quot;</span>, <span class="st">&quot;N.I.U. (Not in Universe).&quot;</span>))</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>INCTOT3 <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="cf">function</span>(.val, .lbl) {</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  is_missing <span class="ot">&lt;-</span> .val <span class="sc">==</span> <span class="dv">99999998</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  is_niu <span class="ot">&lt;-</span> .lbl <span class="sc">==</span> <span class="st">&quot;N.I.U. (Not in Universe).&quot;</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(is_missing <span class="sc">|</span> is_niu)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Change to a factor in the original cps data.frame</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>INCTOT <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="sc">~</span>.val <span class="sc">&gt;=</span> <span class="dv">9999990</span>)</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>INCTOT <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>INCTOT)</span></code></pre></div>
-</div>
-<div id="lbl_collapse" class="section level2">
-<h2><code>lbl_collapse()</code></h2>
-<p>The EDUC variable provides an example of a common IPUMS practice of
-grouping categories together by the starting digits. For example, the
-value 10 indicates “Grades 1, 2, 3, or 4”, and 11 - “Grade 1”, 12 -
-“Grade 2”, etc.</p>
-<p>Let’s say that I only care about those more general categories
-provided by the first 2 digits. The <code>lbl_collapse()</code> function
-allows me to provide a function that takes .val and .lbl and returns the
-value to assign it to. If that code is already used, then the all of the
-values assigned to it will get that label, otherwise the label of the
-smallest value is used. Just like with <code>lbl_na_if()</code>, the
-purrr-style compact syntax using <code>~</code> functions is
-supported.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>EDUC)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 36 × 2</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      val lbl                 </span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;               </span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1     0 NIU or no schooling </span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2     1 NIU or blank        </span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3     2 None or preschool   </span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4    10 Grades 1, 2, 3, or 4</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5    11 Grade 1             </span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6    12 Grade 2             </span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7    13 Grade 3             </span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8    14 Grade 4             </span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9    20 Grades 5 or 6       </span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10    21 Grade 5             </span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # … with 26 more rows</span></span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="co"># %/% is integer division, which divides by the number but doesn&#39;t keep the remainder</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>EDUC <span class="ot">&lt;-</span> <span class="fu">lbl_collapse</span>(cps<span class="sc">$</span>EDUC, <span class="sc">~</span>.val <span class="sc">%/%</span> <span class="dv">10</span>)</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>EDUC)</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 14 × 2</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;      val lbl                 </span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;               </span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1     0 NIU or no schooling </span></span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2     1 Grades 1, 2, 3, or 4</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3     2 Grades 5 or 6       </span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4     3 Grades 7 or 8       </span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5     4 Grade 9             </span></span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6     5 Grade 10            </span></span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7     6 Grade 11            </span></span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8     7 Grade 12            </span></span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9     8 1 year of college   </span></span>
-<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10     9 2 years of college  </span></span>
-<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 11    10 3 years of college  </span></span>
-<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 12    11 4 years of college  </span></span>
-<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 13    12 5+ years of college </span></span>
-<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 14    99 Missing/Unknown</span></span>
-<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>EDUC <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>EDUC)</span></code></pre></div>
-</div>
-<div id="lbl_relabel" class="section level2">
-<h2><code>lbl_relabel()</code></h2>
-<p>Sometimes you may wish to move the labels into new categories. For
-example, the categories in MIGRATE1 may not quite map what I want to use
-in my analysis.</p>
-<p>The <code>lbl_relabel()</code> function provides a more flexible way
-to group existing labelled values into new ones. It takes a two-sided
-formula, where the left-hand side is a label (defined with the
-<code>lbl()</code> function) and the right hand side is an expression
-that can use .val and .lbl to evaluate to a logical indicating which
-values should be assigned to this label.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MIGRATE1)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 8 × 2</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     val lbl                                 </span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;                               </span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0 NIU                                 </span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1 Same house                          </span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     2 Different house, place not reported </span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     3 Moved within county                 </span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5     4 Moved within state, different county</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6     5 Moved between states                </span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 7     6 Abroad                              </span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8     9 Unknown</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>MIGRATE1 <span class="ot">&lt;-</span> <span class="fu">lbl_relabel</span>(</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  cps<span class="sc">$</span>MIGRATE1,</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;NIU / Missing / Unknown&quot;</span>) <span class="sc">~</span> .val <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">9</span>),</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Stayed in state&quot;</span>) <span class="sc">~</span> .val <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MIGRATE1)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 2</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     val lbl                    </span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;                  </span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1     0 NIU / Missing / Unknown</span></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2     1 Stayed in state        </span></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3     5 Moved between states   </span></span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4     6 Abroad</span></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>cps<span class="sc">$</span>MIGRATE1 <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>MIGRATE1)</span></code></pre></div>
-</div>
-<div id="lbl_add-and-lbl_add_vals" class="section level2">
-<h2><code>lbl_add()</code> and <code>lbl_add_vals()</code></h2>
-<p>These functions allow you to create labels for values that aren’t
-already labelled. It’s harder to come up with real world examples of
-when these functions would be useful, but just in case you come across
-such a situation, here’s how they work.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">labelled</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">105</span>, <span class="dv">990</span>, <span class="dv">999</span>, <span class="dv">230</span>),</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">`</span><span class="at">Unknown</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">990</span>, <span class="at">NIU =</span> <span class="dv">999</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lbl_add</span>(x, <span class="fu">lbl</span>(<span class="dv">100</span>, <span class="st">&quot;$100&quot;</span>), <span class="fu">lbl</span>(<span class="dv">105</span>, <span class="st">&quot;$105&quot;</span>), <span class="fu">lbl</span>(<span class="dv">200</span>, <span class="st">&quot;$200&quot;</span>), <span class="fu">lbl</span>(<span class="dv">230</span>, <span class="st">&quot;$230&quot;</span>))</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[6]&gt;</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100 200 105 990 999 230</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  value   label</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    100    $100</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    105    $105</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    200    $200</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    230    $230</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    990 Unknown</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    999     NIU</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lbl_add_vals</span>(x, <span class="sc">~</span><span class="fu">paste0</span>(<span class="st">&quot;$&quot;</span>, .))</span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[6]&gt;</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 100 200 105 990 999 230</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  value   label</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    100    $100</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    105    $105</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    200    $200</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    230    $230</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    990 Unknown</span></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    999     NIU</span></span></code></pre></div>
-</div>
-<div id="ready-for-analysis" class="section level2">
-<h2>Ready for analysis</h2>
-<p>And now, after converting all those labels to factors, I’m ready for
-analysis! If you think of any other helper functions that would be
-useful for dealing with labels please let us know by filing an issue on
-<a href="https://github.com/ipums/ipumsr/issues">github</a>.</p>
+<div id="labelled-vs.-factor" class="section level2">
+<h2><code>labelled</code> vs. <code>factor</code></h2>
+<p>Base R already supports the linking of numeric data to categories
+using its <code>factor</code> data type. While factors may be more
+familiar, they were designed to support efficient calculations in linear
+models, not as a human-readable labeling system for interpreting and
+processing data.</p>
+<p>Compared to factors, <code>labelled</code> vectors have two main
+properties that make them more suitable for working with IPUMS data:</p>
+<ul>
+<li>They don’t require that all values be labelled</li>
+<li>They don’t require values to be assigned to increasing integers
+starting at 1</li>
+</ul>
+<p>Consider the case of the <code>AGE</code> variable. For many IPUMS
+products, <code>AGE</code> provides a person’s age in years, but certain
+special values have other interpretations:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">head</span>(cps<span class="sc">$</span>AGE)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;integer&gt;[6]&gt;: Age</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; [1] 54 54 52 38 15 38</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt;  value               label</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt;      0        Under 1 year</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt;     90 90 (90+, 1988-2002)</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt;     99                 99+</span></span></code></pre></div>
+<p>As you can see, the 0 value represents all ages less than 1, and the
+90 and 99 values actually represent ranges of ages. Coercing
+<code>AGE</code> to a factor would convert all values of 0 to 1, because
+factors always assign values starting at 1:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>cps<span class="sc">$</span>AGE_FACTOR <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>AGE)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>age0_factor <span class="ot">&lt;-</span> cps[cps<span class="sc">$</span>AGE <span class="sc">==</span> <span class="dv">0</span>, ]<span class="sc">$</span>AGE_FACTOR</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># The levels look the same</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="fu">unique</span>(age0_factor)</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; [1] Under 1 year</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; 84 Levels: Under 1 year 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 ... 99+</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co"># But the values have changed</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">as.numeric</span>(age0_factor))</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span></code></pre></div>
+<p>Additionally, because not all values exist in the data, high values,
+like 85, 90, and 99 have been mapped to lower values:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>age85_factor <span class="ot">&lt;-</span> cps[cps<span class="sc">$</span>AGE <span class="sc">==</span> <span class="dv">85</span>, ]<span class="sc">$</span>AGE_FACTOR</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">unique</span>(<span class="fu">as.numeric</span>(age85_factor))</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; [1] 82</span></span></code></pre></div>
+<p>These different representations lead to inconsistencies in calculated
+values:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">mean</span>(cps<span class="sc">$</span>AGE)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; [1] 35.0226</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">as.numeric</span>(cps<span class="sc">$</span>AGE_FACTOR))</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; [1] 35.94836</span></span></code></pre></div>
+<div id="cautions-regarding-labelled-variables" class="section level3">
+<h3>Cautions regarding <code>labelled</code> variables</h3>
+<p>While <code>labelled</code> variables provide the benefits described
+above, they also present challenges.</p>
+<p>For example, you may have noticed that <em>both</em> of the means
+calculated above are suspect.</p>
+<p>In the case of <code>AGE_FACTOR</code>, the values have been remapped
+during conversion and several are inconsistent with the original
+data.</p>
+<p>In the case of <code>AGE</code>, we have considered all people over
+90 to be exactly 90, and all people over 99 to be exactly
+99—<code>labelled</code> variables don’t ensure that calculations are
+correct any more than factors do!</p>
+<p>Furthermore, many R functions ignore value labels or even actively
+remove them from the data:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>HEALTH)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co">#&gt;     val lbl      </span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;    </span></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co">#&gt; 1     1 Excellent</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a><span class="co">#&gt; 2     2 Very good</span></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co">#&gt; 3     3 Good     </span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co">#&gt; 4     4 Fair     </span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="co">#&gt; 5     5 Poor</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>HEALTH2 <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(cps<span class="sc">$</span>HEALTH <span class="sc">&gt;</span> <span class="dv">3</span>, <span class="dv">3</span>, cps<span class="sc">$</span>HEALTH)</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(HEALTH2)</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 variables: val &lt;dbl&gt;, lbl &lt;chr&gt;</span></span></code></pre></div>
+<p>So, <code>labelled</code> vectors are not intended for use throughout
+the entire analysis process. Instead, they should be used during the
+initial data preparation process to convert raw data into values that
+are more meaningful. These can then be converted to other variable types
+(often factors) for analysis.</p>
+<p>Unfortunately, this isn’t a process that can typically be automated,
+as it depends primarily on the research questions the data will be used
+to address. However, ipumsr provides several functions to manipulate
+value labels to make this process easier.</p>
 </div>
 </div>
-<div id="more-detail-on-how-the-lbl_-functions-work" class="section level1">
-<h1>More detail on how the lbl_* functions work</h1>
-<p>One implementation detail that may help you understand the lbl_*
-functions better is that the value labels are stored separately from the
-actual data. This can be important because it allows for values to exist
-in the data without labels (such as the non-special codes in the INCTOT
-variable from the example above) and also for value labels to exist even
-if they don’t exist in the data (like the STATEFIPS that we didn’t
-include in our extract).</p>
-<p>The <code>.val</code> and <code>.lbl</code> pronouns that are usable
-in functions like <code>lbl_na_if()</code>, <code>lbl_collapse()</code>
-and <code>lbl_relabel()</code> only include these labelled values,
-<em>not</em> all values in the dataset. Though this makes many
-calculations simpler, because only the labelled values are considered,
-it can be confusing when you want to work with the unlabeled values.</p>
-<p>For example, considering the INCTOT variable, if there are unlabeled
-values that you want to set to NA, you cannot use
-<code>lbl_na_if()</code> directly.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reload cps data so that INCTOT is a labelled class again</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ddi, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Try to set all values above 1000000 to NA</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="sc">~</span>.val <span class="sc">&gt;</span> <span class="dv">1000000</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">zap_labels</span>(test1)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(test1, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 1230006</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Didn&#39;t work</span></span></code></pre></div>
-<p>Instead you should add the value labels with
-<code>lbl_add_vals()</code> (or you could use a function that doesn’t
-use the labels, such as <code>dplyr::na_if()</code>)</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">lbl_add_vals</span>(cps<span class="sc">$</span>INCTOT)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(test2, <span class="sc">~</span>.val <span class="sc">&gt;</span> <span class="dv">1000000</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>test2 <span class="ot">&lt;-</span> <span class="fu">zap_labels</span>(test2)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(test2, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 990003</span></span></code></pre></div>
+<div id="prepping-data-with-value-labels" class="section level2">
+<h2>Prepping data with value labels</h2>
+<div id="convert-labelled-values-to-other-data-types" class="section level3">
+<h3>Convert labelled values to other data types</h3>
+<p>Use <code>as_factor()</code> once labels have the correct categories
+and need no further manipulation. For instance, <code>MONTH</code>
+already has sensible categories, so we can convert it to a factor right
+away:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MONTH)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
+<span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a>cps<span class="sc">$</span>MONTH <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps<span class="sc">$</span>MONTH)</span></code></pre></div>
+<p><code>as_factor()</code> can also convert all <code>labelled</code>
+variables in a data frame to factors at once. If you prefer to work with
+factors, you can do this conversion immediately after loading data, and
+then prepare these variables using techniques you would use for
+factors.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">as_factor</span>(cps)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># ... further preparation of variables as factors</span></span></code></pre></div>
+<p>If you prefer to handle these variables in <code>labelled</code>
+format, you can use the <code>lbl_*</code> helpers first, then call
+<code>as_factor()</code> on the entire data frame.</p>
+<p>Some variables may be more appropriate to use as numeric values
+rather than factors. In these cases, you can simply remove the labels
+with <code>zap_labels()</code>.</p>
+<p><code>INCTOT</code>, which measures personal income, fits this
+description:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>inctot_num <span class="ot">&lt;-</span> <span class="fu">zap_labels</span>(cps<span class="sc">$</span>INCTOT)</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="fu">typeof</span>(inctot_num)</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;double&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(inctot_num)</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 variables: val &lt;dbl&gt;, lbl &lt;chr&gt;</span></span></code></pre></div>
+<p>Note that labelled values are not generally intended to be
+interpreted as numeric values, so <code>zap_labels()</code> should only
+be used after labels have been properly handled. For example, in
+<code>INCTOT</code>, labelled values used to identify missing values are
+encoded with large numbers:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>INCTOT)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt;         val lbl                      </span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;                    </span></span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; 1 999999998 Missing. (1962-1964 only)</span></span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="co">#&gt; 2 999999999 N.I.U.</span></span></code></pre></div>
+<p>Treating these as legitimate observations will significantly skew any
+calculations with this variable if not first converted to
+<code>NA</code>.</p>
 </div>
-<div id="other-resources" class="section level1">
-<h1>Other resources</h1>
-<p>The haven package vignette ‘semantics’ has some more details about
-the motivation and implementation of the labelled class. You can view it
-by running the command:
-<code>vignette(&quot;semantics&quot;, package = &quot;haven&quot;)</code></p>
+<div id="create-missing-values-based-on-value-labels" class="section level3">
+<h3>Create missing values based on value labels</h3>
+<p>Many IPUMS variables use labelled values to identify missing data.
+This allows for more detail about why certain observations were missing
+than would be available were values loaded as <code>NA</code>.</p>
+<p>As we saw with <code>INCTOT</code>, value labels were used to
+identify two types of missing data: those that are legitimately missing
+and those that are not in the universe of observations.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>INCTOT)</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="co">#&gt;         val lbl                      </span></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;                    </span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a><span class="co">#&gt; 1 999999998 Missing. (1962-1964 only)</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a><span class="co">#&gt; 2 999999999 N.I.U.</span></span></code></pre></div>
+<p>To convert one or both of these labelled values to <code>NA</code>,
+use <code>lbl_na_if()</code>. To use <code>lbl_na_if()</code>, you must
+supply a function to handle the conversion. The function should take a
+value-label pair as its input and output <code>TRUE</code> for those
+pairs whose values should be converted to <code>NA</code>.</p>
+<div id="syntax" class="section level4">
+<h4>Syntax for value label functions</h4>
+<p>Several <code>lbl_*</code> helper functions, including
+<code>lbl_na_if()</code>, require a user-defined function to handle
+recoding of value-label pairs. ipumsr provides a syntax to easily
+reference the values and labels in this user-defined function:</p>
+<ul>
+<li><p>The <code>.val</code> argument references the
+<em>values</em></p></li>
+<li><p>The <code>.lbl</code> argument references the
+<em>labels</em></p></li>
+</ul>
+<p>For instance, to convert all values equal to <code>999999999</code>
+to <code>NA</code>, we can provide a function that uses the
+<code>.val</code> argument:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Convert to NA using function that returns TRUE for all labelled values equal to 99999999</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>inctot_na <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  cps<span class="sc">$</span>INCTOT,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="cf">function</span>(.val, .lbl) .val <span class="sc">==</span> <span class="dv">999999999</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co"># All 99999999 values have been converted to NA</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="fu">any</span>(inctot_na <span class="sc">==</span> <span class="dv">999999999</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; [1] FALSE</span></span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co"># And the label has been removed:</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(inctot_na)</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; # A tibble: 1 × 2</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;         val lbl                      </span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;       &lt;dbl&gt; &lt;chr&gt;                    </span></span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt; 1 999999998 Missing. (1962-1964 only)</span></span></code></pre></div>
+<p>We could achieve the same result by referencing the labels
+themselves:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Convert to NA for labels that contain &quot;N.I.U.&quot;</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>inctot_na2 <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  cps<span class="sc">$</span>INCTOT,</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  <span class="cf">function</span>(.val, .lbl) <span class="fu">grepl</span>(<span class="st">&quot;N.I.U.&quot;</span>, .lbl)</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>)</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co"># Same result</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="fu">all</span>(inctot_na2 <span class="sc">==</span> inctot_na, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p>You can also specify the function using a one-sided formula:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="sc">~</span> .val <span class="sc">==</span> <span class="dv">999999999</span>)</span></code></pre></div>
+<p>Note that <code>.val</code> only refers to <em>labelled</em>
+values—unlabelled values are not affected:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">lbl_na_if</span>(cps<span class="sc">$</span>INCTOT, <span class="sc">~</span> .val <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="co"># Unlabelled values greater than the cutoff are still present:</span></span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">which</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>))</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="co">#&gt; [1] 7501</span></span></code></pre></div>
+<p>To convert unlabelled values to <code>NA</code>, use
+<code>dplyr::na_if()</code> instead.</p>
+</div>
+</div>
+<div id="relabel-values" class="section level3">
+<h3>Relabel values</h3>
+<p><code>lbl_relabel()</code> can be used to create new value-label
+pairs, often to recombine existing labels into more general categories.
+It takes a two-sided formula to handle the relabeling:</p>
+<ul>
+<li><p>On the left-hand side, use the <code>lbl()</code> helper to
+define a new value-label pair.</p></li>
+<li><p>On the right-hand side, provide a function that returns
+<code>TRUE</code> for those value-label pairs that should be relabelled
+with the new value-label pair from the left-hand side.</p></li>
+</ul>
+<p>The function again uses the <code>.val</code> and <code>.lbl</code>
+<a href="#syntax">syntax</a> mentioned above to refer to values and
+labels, respectively.</p>
+<p>For instance, we could reclassify the categories in
+<code>MIGRATE1</code> such that all migration within a state is captured
+in a single category:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MIGRATE1)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 8 × 2</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co">#&gt;     val lbl                                 </span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;                               </span></span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co">#&gt; 1     0 NIU                                 </span></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co">#&gt; 2     1 Same house                          </span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="co">#&gt; 3     2 Different house, place not reported </span></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a><span class="co">#&gt; 4     3 Moved within county                 </span></span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="co">#&gt; 5     4 Moved within state, different county</span></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; 6     5 Moved between states                </span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; 7     6 Abroad                              </span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; 8     9 Unknown</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>cps<span class="sc">$</span>MIGRATE1 <span class="ot">&lt;-</span> <span class="fu">lbl_relabel</span>(</span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>  cps<span class="sc">$</span>MIGRATE1,</span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">0</span>, <span class="st">&quot;NIU / Missing / Unknown&quot;</span>) <span class="sc">~</span> .val <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">9</span>),</span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Stayed in state&quot;</span>) <span class="sc">~</span> .val <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a>)</span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MIGRATE1)</span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="co">#&gt; # A tibble: 4 × 2</span></span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="co">#&gt;     val lbl                    </span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;chr&gt;                  </span></span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co">#&gt; 1     0 NIU / Missing / Unknown</span></span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co">#&gt; 2     1 Stayed in state        </span></span>
+<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co">#&gt; 3     5 Moved between states   </span></span>
+<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt; 4     6 Abroad</span></span></code></pre></div>
+<p>Many IPUMS variables include detailed labels that are grouped
+together into more general categories. These are often encoded with
+multi-digit values, where the starting digit refers to the larger
+category.</p>
+<p>For instance, the <code>EDUC</code> variable contains categories for
+individual grades as well as categories for multiple grade groups:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>EDUC), <span class="dv">15</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 15 × 2</span></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="co">#&gt;      val lbl                 </span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;               </span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co">#&gt;  1     0 NIU or no schooling </span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co">#&gt;  2     1 NIU or blank        </span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt;  3     2 None or preschool   </span></span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt;  4    10 Grades 1, 2, 3, or 4</span></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt;  5    11 Grade 1             </span></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt;  6    12 Grade 2             </span></span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt;  7    13 Grade 3             </span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt;  8    14 Grade 4             </span></span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a><span class="co">#&gt;  9    20 Grades 5 or 6       </span></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co">#&gt; 10    21 Grade 5             </span></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co">#&gt; 11    22 Grade 6             </span></span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt; 12    30 Grades 7 or 8       </span></span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co">#&gt; 13    31 Grade 7             </span></span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co">#&gt; 14    32 Grade 8             </span></span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a><span class="co">#&gt; 15    40 Grade 9</span></span></code></pre></div>
+<p>You could use <code>lbl_relabel()</code> to collapse the detailed
+categories into the more general ones, but you would have to define new
+value labels for all the categories. Instead, you could use
+<code>lbl_collapse()</code>.</p>
+<p><code>lbl_collapse()</code> uses a function that takes
+<code>.val</code> and <code>.lbl</code> <a href="#syntax">arguments</a>
+and returns the new value each input value should be assigned to. The
+label of the lowest original value is used for each collapsed group. To
+group by the tens digit, use the integer division operator
+<code>%/%</code>:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="co"># %/% refers to integer division, which divides but discards the remainder</span></span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%/%</span> <span class="dv">10</span></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="dv">11</span> <span class="sc">%/%</span> <span class="dv">10</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt; [1] 1</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co"># Convert to groups by tens digit</span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>cps<span class="sc">$</span>EDUC2 <span class="ot">&lt;-</span> <span class="fu">lbl_collapse</span>(cps<span class="sc">$</span>EDUC, <span class="sc">~</span> .val <span class="sc">%/%</span> <span class="dv">10</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>EDUC2)</span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">#&gt; # A tibble: 14 × 2</span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt;      val lbl                 </span></span>
+<span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a><span class="co">#&gt;  1     0 NIU or no schooling </span></span>
+<span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a><span class="co">#&gt;  2     1 Grades 1, 2, 3, or 4</span></span>
+<span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a><span class="co">#&gt;  3     2 Grades 5 or 6       </span></span>
+<span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a><span class="co">#&gt;  4     3 Grades 7 or 8       </span></span>
+<span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="co">#&gt;  5     4 Grade 9             </span></span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">#&gt;  6     5 Grade 10            </span></span>
+<span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="co">#&gt;  7     6 Grade 11            </span></span>
+<span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a><span class="co">#&gt;  8     7 Grade 12            </span></span>
+<span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a><span class="co">#&gt;  9     8 1 year of college   </span></span>
+<span id="cb20-23"><a href="#cb20-23" tabindex="-1"></a><span class="co">#&gt; 10     9 2 years of college  </span></span>
+<span id="cb20-24"><a href="#cb20-24" tabindex="-1"></a><span class="co">#&gt; 11    10 3 years of college  </span></span>
+<span id="cb20-25"><a href="#cb20-25" tabindex="-1"></a><span class="co">#&gt; 12    11 4 years of college  </span></span>
+<span id="cb20-26"><a href="#cb20-26" tabindex="-1"></a><span class="co">#&gt; 13    12 5+ years of college </span></span>
+<span id="cb20-27"><a href="#cb20-27" tabindex="-1"></a><span class="co">#&gt; 14    99 Missing/Unknown</span></span></code></pre></div>
+<div id="relabeling-caveats" class="section level4">
+<h4>Relabeling caveats</h4>
+<p>It is always worth checking that the new labels make sense based on
+your research question. For instance, in the above example, both
+<code>&quot;12th grade, no diploma&quot;</code> and
+<code>&quot;High school diploma or equivalent&quot;</code> are collapsed to a
+single group as they both have values in the 70s. This may be suitable
+for your purposes, but for more control, it is best to use
+<code>lbl_relabel()</code>.</p>
+<p>Note that <code>lbl_relabel()</code> and <code>lbl_collapse()</code>
+only operate on <em>labelled</em> values, and are therefore designed for
+use with fully <code>labelled</code> vectors. That is, if you attempt to
+relabel a vector that has some unlabelled values, they will be converted
+to <code>NA</code>.</p>
+<p>To avoid this, you can add labels for all values using
+<code>lbl_add_vals()</code> before relabeling (see <a href="#lbl_add">below</a>). In general, this shouldn’t be necessary, as
+most partially-labelled vectors only include labels with ancillary
+information, like missing value indicators. These can typically be
+handled by other helpers, like <code>lbl_na_if()</code>, without
+requiring relabeling.</p>
+</div>
+</div>
+<div id="remove-unused-value-labels" class="section level3">
+<h3>Remove unused value labels</h3>
+<p>Some variables may contain labels for values that don’t appear in the
+data. Unused levels still appear in factor representations of these
+variables, so it is often beneficial to remove them with
+<code>lbl_clean()</code>:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>STATEFIP)</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 75 × 2</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="co">#&gt;      val lbl                 </span></span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;               </span></span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="co">#&gt;  1     1 Alabama             </span></span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="co">#&gt;  2     2 Alaska              </span></span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="co">#&gt;  3     4 Arizona             </span></span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="co">#&gt;  4     5 Arkansas            </span></span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="co">#&gt;  5     6 California          </span></span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="co">#&gt;  6     8 Colorado            </span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="co">#&gt;  7     9 Connecticut         </span></span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="co">#&gt;  8    10 Delaware            </span></span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a><span class="co">#&gt;  9    11 District of Columbia</span></span>
+<span id="cb21-14"><a href="#cb21-14" tabindex="-1"></a><span class="co">#&gt; 10    12 Florida             </span></span>
+<span id="cb21-15"><a href="#cb21-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 65 more rows</span></span>
+<span id="cb21-16"><a href="#cb21-16" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(<span class="fu">lbl_clean</span>(cps<span class="sc">$</span>STATEFIP))</span>
+<span id="cb21-18"><a href="#cb21-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 2</span></span>
+<span id="cb21-19"><a href="#cb21-19" tabindex="-1"></a><span class="co">#&gt;     val lbl         </span></span>
+<span id="cb21-20"><a href="#cb21-20" tabindex="-1"></a><span class="co">#&gt;   &lt;int&gt; &lt;chr&gt;       </span></span>
+<span id="cb21-21"><a href="#cb21-21" tabindex="-1"></a><span class="co">#&gt; 1    19 Iowa        </span></span>
+<span id="cb21-22"><a href="#cb21-22" tabindex="-1"></a><span class="co">#&gt; 2    27 Minnesota   </span></span>
+<span id="cb21-23"><a href="#cb21-23" tabindex="-1"></a><span class="co">#&gt; 3    38 North Dakota</span></span>
+<span id="cb21-24"><a href="#cb21-24" tabindex="-1"></a><span class="co">#&gt; 4    46 South Dakota</span></span>
+<span id="cb21-25"><a href="#cb21-25" tabindex="-1"></a><span class="co">#&gt; 5    55 Wisconsin</span></span></code></pre></div>
+</div>
+<div id="lbl_add" class="section level3">
+<h3>Add new labels</h3>
+<p>As mentioned above, value labels are intended to be used as an
+intermediate data structure for preparing newly-imported data. As such,
+you’re not likely to need to add new labels, but if you do, use
+<code>lbl_add()</code>, <code>lbl_add_vals()</code>, or
+<code>lbl_define()</code>.</p>
+<p><code>lbl_add()</code> takes an arbitrary number of
+<code>lbl()</code> placeholders that will be added to a given
+<code>labelled</code> vector:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> haven<span class="sc">::</span><span class="fu">labelled</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">105</span>, <span class="dv">990</span>, <span class="dv">999</span>, <span class="dv">230</span>),</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">`</span><span class="at">Unknown</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">990</span>, <span class="at">NIU =</span> <span class="dv">999</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>)</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="fu">lbl_add</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>  x,</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">100</span>, <span class="st">&quot;$100&quot;</span>),</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">105</span>, <span class="st">&quot;$105&quot;</span>),</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">200</span>, <span class="st">&quot;$200&quot;</span>),</span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">230</span>, <span class="st">&quot;$230&quot;</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a>)</span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[6]&gt;</span></span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="co">#&gt; [1] 100 200 105 990 999 230</span></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
+<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co">#&gt;  value   label</span></span>
+<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a><span class="co">#&gt;    100    $100</span></span>
+<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a><span class="co">#&gt;    105    $105</span></span>
+<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co">#&gt;    200    $200</span></span>
+<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co">#&gt;    230    $230</span></span>
+<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a><span class="co">#&gt;    990 Unknown</span></span>
+<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a><span class="co">#&gt;    999     NIU</span></span></code></pre></div>
+<p><code>lbl_add_vals()</code> adds labels for all unlabelled values in
+a <code>labelled</code> vector with an optional labeller function. (This
+can be useful if you wish to operate on a partially labelled vector with
+a function that requires labelled input, like
+<code>lbl_relabel()</code>.)</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="co"># `.` refers to each label value</span></span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="fu">lbl_add_vals</span>(x, <span class="sc">~</span> <span class="fu">paste0</span>(<span class="st">&quot;$&quot;</span>, .))</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[6]&gt;</span></span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="co">#&gt; [1] 100 200 105 990 999 230</span></span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="co">#&gt;  value   label</span></span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="co">#&gt;    100    $100</span></span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="co">#&gt;    105    $105</span></span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="co">#&gt;    200    $200</span></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co">#&gt;    230    $230</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a><span class="co">#&gt;    990 Unknown</span></span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a><span class="co">#&gt;    999     NIU</span></span></code></pre></div>
+<p><code>lbl_define()</code> makes a <code>labelled</code> vector out of
+an unlabelled one. Use the same syntax as is used for
+<code>lbl_relabel()</code> to define new labels based on the unlabelled
+values:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">16</span>, <span class="dv">18</span>, <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">25</span>, <span class="dv">27</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a><span class="co"># Group age values into two label groups.</span></span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a><span class="co"># Values not captured by the right hand side functions remain unlabelled</span></span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a><span class="fu">lbl_define</span>(</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  age,</span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">1</span>, <span class="st">&quot;Pre-college age&quot;</span>) <span class="sc">~</span> .val <span class="sc">&lt;</span> <span class="dv">18</span>,</span>
+<span id="cb24-8"><a href="#cb24-8" tabindex="-1"></a>  <span class="fu">lbl</span>(<span class="dv">2</span>, <span class="st">&quot;College age&quot;</span>) <span class="sc">~</span> .val <span class="sc">&gt;=</span> <span class="dv">18</span> <span class="sc">&amp;</span> .val <span class="sc">&lt;=</span> <span class="dv">22</span></span>
+<span id="cb24-9"><a href="#cb24-9" tabindex="-1"></a>)</span>
+<span id="cb24-10"><a href="#cb24-10" tabindex="-1"></a><span class="co">#&gt; &lt;labelled&lt;double&gt;[8]&gt;</span></span>
+<span id="cb24-11"><a href="#cb24-11" tabindex="-1"></a><span class="co">#&gt; [1]  1  1  1  2  2  2 25 27</span></span>
+<span id="cb24-12"><a href="#cb24-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb24-13"><a href="#cb24-13" tabindex="-1"></a><span class="co">#&gt; Labels:</span></span>
+<span id="cb24-14"><a href="#cb24-14" tabindex="-1"></a><span class="co">#&gt;  value           label</span></span>
+<span id="cb24-15"><a href="#cb24-15" tabindex="-1"></a><span class="co">#&gt;      1 Pre-college age</span></span>
+<span id="cb24-16"><a href="#cb24-16" tabindex="-1"></a><span class="co">#&gt;      2     College age</span></span></code></pre></div>
+<p>Once all labelled variables have been appropriately converted to
+factors or numeric values, the data can move forward in the processing
+pipeline.</p>
+</div>
+</div>
+<div id="other-resources" class="section level2">
+<h2>Other resources</h2>
+<p>The <a href="https://haven.tidyverse.org/index.html">haven</a>
+package, which underlies ipumsr’s handling of value labels, provides
+more details on the <code>labelled</code> class. See
+<code>vignette(&quot;semantics&quot;, package = &quot;haven&quot;)</code>.</p>
 <p>The <a href="http://larmarange.github.io/labelled/articles/intro_labelled.html">labelled</a>
-package provides other methods for manipulating value labels. It is not
-installed by ipumsr, but is available on CRAN via the following command:
-<code>install.packages(&quot;labelled&quot;)</code></p>
+package provides other methods for manipulating value labels, some of
+which overlap those provided by ipumsr.</p>
 <p>The <a href="https://juba.github.io/questionr/">questionr</a> package
-includes great functions for exploring <code>labelled</code> variables.
-In particular, the functions <code>describe</code>, <code>freq</code>
-and <code>lookfor</code> all print out to console information about the
-variable using the value labels. It is also not installed by ipumsr, but
-can be installed from CRAN using:
-<code>install.packages(&quot;questionr&quot;)</code></p>
+includes functions for exploring <code>labelled</code> variables. In
+particular, the functions <code>describe</code>, <code>freq</code> and
+<code>lookfor</code> all print out to console information about the
+variable using the value labels.</p>
 <p>Finally, the <a href="https://cran.r-project.org/package=foreign">foreign</a> and <a href="https://cran.r-project.org/package=prettyR">prettyR</a> packages
-don’t use the <code>labelled</code> class data structure from haven
-(which ipumsr uses), but do have very similar concepts for attaching
-value labels. Code designed for these packages could be adapted for use
-with the haven labelled class without too much difficulty.</p>
+don’t use the <code>labelled</code> class, but provide similar
+functionality for handling value labels, which could be adapted for use
+with <code>labelled</code> vectors.</p>
 </div>
 
 

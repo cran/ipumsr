@@ -1,0 +1,164 @@
+http_interactions:
+- request:
+    method: get
+    uri: https://api.ipums.org/metadata/nhgis/datasets/2010_SF1a/data_tables/P8?collection=nhgis&version=2
+    body:
+      encoding: ''
+      string: ''
+    headers:
+      Accept: application/json, text/xml, application/xml, */*
+      Authorization: <<<IPUMS_API_KEY>>>
+      Content-Type: application/json
+  response:
+    status:
+      status_code: 200
+      category: Success
+      reason: OK
+      message: 'Success: (200) OK'
+    headers:
+      cache-control: max-age=0, private, must-revalidate
+      content-type: application/json; charset=utf-8
+      date: Wed, 26 Apr 2023 22:05:47 GMT
+      etag: W/"79ddde730abc0266e0270ba2b33392b7"
+      referrer-policy: strict-origin-when-cross-origin
+      server: nginx/1.18.0
+      vary: Origin
+      x-content-type-options: nosniff
+      x-download-options: noopen
+      x-frame-options: SAMEORIGIN
+      x-permitted-cross-domain-policies: none
+      x-ratelimit-limit: '-1'
+      x-ratelimit-remaining: '0'
+      x-ratelimit-reset: '0'
+      x-request-id: ea76c21a-22ed-4dec-acbf-dbd532c086b8
+      x-runtime: '0.008963'
+      x-xss-protection: '0'
+      content-length: '10240'
+    body:
+      encoding: ''
+      file: no
+      string: '{"name":"P8","description":"Race","universe":"Total population","nhgisCode":"H72","sequence":8,"datasetName":"2010_SF1a","variables":[{"description":"Total","nhgisCode":"H72001"},{"description":"Population
+        of one race","nhgisCode":"H72002"},{"description":"Population of one race:
+        White alone","nhgisCode":"H72003"},{"description":"Population of one race:
+        Black or African American alone","nhgisCode":"H72004"},{"description":"Population
+        of one race: American Indian and Alaska Native alone","nhgisCode":"H72005"},{"description":"Population
+        of one race: Asian alone","nhgisCode":"H72006"},{"description":"Population
+        of one race: Native Hawaiian and Other Pacific Islander alone","nhgisCode":"H72007"},{"description":"Population
+        of one race: Some Other Race alone","nhgisCode":"H72008"},{"description":"Two
+        or More Races","nhgisCode":"H72009"},{"description":"Two or More Races: Population
+        of two races","nhgisCode":"H72010"},{"description":"Two or More Races: Population
+        of two races: White; Black or African American","nhgisCode":"H72011"},{"description":"Two
+        or More Races: Population of two races: White; American Indian and Alaska
+        Native","nhgisCode":"H72012"},{"description":"Two or More Races: Population
+        of two races: White; Asian","nhgisCode":"H72013"},{"description":"Two or More
+        Races: Population of two races: White; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72014"},{"description":"Two
+        or More Races: Population of two races: White; Some Other Race","nhgisCode":"H72015"},{"description":"Two
+        or More Races: Population of two races: Black or African American; American
+        Indian and Alaska Native","nhgisCode":"H72016"},{"description":"Two or More
+        Races: Population of two races: Black or African American; Asian","nhgisCode":"H72017"},{"description":"Two
+        or More Races: Population of two races: Black or African American; Native
+        Hawaiian and Other Pacific Islander","nhgisCode":"H72018"},{"description":"Two
+        or More Races: Population of two races: Black or African American; Some Other
+        Race","nhgisCode":"H72019"},{"description":"Two or More Races: Population
+        of two races: American Indian and Alaska Native; Asian","nhgisCode":"H72020"},{"description":"Two
+        or More Races: Population of two races: American Indian and Alaska Native;
+        Native Hawaiian and Other Pacific Islander","nhgisCode":"H72021"},{"description":"Two
+        or More Races: Population of two races: American Indian and Alaska Native;
+        Some Other Race","nhgisCode":"H72022"},{"description":"Two or More Races:
+        Population of two races: Asian; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72023"},{"description":"Two
+        or More Races: Population of two races: Asian; Some Other Race","nhgisCode":"H72024"},{"description":"Two
+        or More Races: Population of two races: Native Hawaiian and Other Pacific
+        Islander; Some Other Race","nhgisCode":"H72025"},{"description":"Two or More
+        Races: Population of three races","nhgisCode":"H72026"},{"description":"Two
+        or More Races: Population of three races: White; Black or African American;
+        American Indian and Alaska Native","nhgisCode":"H72027"},{"description":"Two
+        or More Races: Population of three races: White; Black or African American;
+        Asian","nhgisCode":"H72028"},{"description":"Two or More Races: Population
+        of three races: White; Black or African American; Native Hawaiian and Other
+        Pacific Islander","nhgisCode":"H72029"},{"description":"Two or More Races:
+        Population of three races: White; Black or African American; Some Other Race","nhgisCode":"H72030"},{"description":"Two
+        or More Races: Population of three races: White; American Indian and Alaska
+        Native; Asian","nhgisCode":"H72031"},{"description":"Two or More Races: Population
+        of three races: White; American Indian and Alaska Native; Native Hawaiian
+        and Other Pacific Islander","nhgisCode":"H72032"},{"description":"Two or More
+        Races: Population of three races: White; American Indian and Alaska Native;
+        Some Other Race","nhgisCode":"H72033"},{"description":"Two or More Races:
+        Population of three races: White; Asian; Native Hawaiian and Other Pacific
+        Islander","nhgisCode":"H72034"},{"description":"Two or More Races: Population
+        of three races: White; Asian; Some Other Race","nhgisCode":"H72035"},{"description":"Two
+        or More Races: Population of three races: White; Native Hawaiian and Other
+        Pacific Islander; Some Other Race","nhgisCode":"H72036"},{"description":"Two
+        or More Races: Population of three races: Black or African American; American
+        Indian and Alaska Native; Asian","nhgisCode":"H72037"},{"description":"Two
+        or More Races: Population of three races: Black or African American; American
+        Indian and Alaska Native; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72038"},{"description":"Two
+        or More Races: Population of three races: Black or African American; American
+        Indian and Alaska Native; Some Other Race","nhgisCode":"H72039"},{"description":"Two
+        or More Races: Population of three races: Black or African American; Asian;
+        Native Hawaiian and Other Pacific Islander","nhgisCode":"H72040"},{"description":"Two
+        or More Races: Population of three races: Black or African American; Asian;
+        Some Other Race","nhgisCode":"H72041"},{"description":"Two or More Races:
+        Population of three races: Black or African American; Native Hawaiian and
+        Other Pacific Islander; Some Other Race","nhgisCode":"H72042"},{"description":"Two
+        or More Races: Population of three races: American Indian and Alaska Native;
+        Asian; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72043"},{"description":"Two
+        or More Races: Population of three races: American Indian and Alaska Native;
+        Asian; Some Other Race","nhgisCode":"H72044"},{"description":"Two or More
+        Races: Population of three races: American Indian and Alaska Native; Native
+        Hawaiian and Other Pacific Islander; Some Other Race","nhgisCode":"H72045"},{"description":"Two
+        or More Races: Population of three races: Asian; Native Hawaiian and Other
+        Pacific Islander; Some Other Race","nhgisCode":"H72046"},{"description":"Two
+        or More Races: Population of four races","nhgisCode":"H72047"},{"description":"Two
+        or More Races: Population of four races: White; Black or African American;
+        American Indian and Alaska Native; Asian","nhgisCode":"H72048"},{"description":"Two
+        or More Races: Population of four races: White; Black or African American;
+        American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72049"},{"description":"Two
+        or More Races: Population of four races: White; Black or African American;
+        American Indian and Alaska Native; Some Other Race","nhgisCode":"H72050"},{"description":"Two
+        or More Races: Population of four races: White; Black or African American;
+        Asian; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72051"},{"description":"Two
+        or More Races: Population of four races: White; Black or African American;
+        Asian; Some Other Race","nhgisCode":"H72052"},{"description":"Two or More
+        Races: Population of four races: White; Black or African American; Native
+        Hawaiian and Other Pacific Islander; Some Other Race","nhgisCode":"H72053"},{"description":"Two
+        or More Races: Population of four races: White; American Indian and Alaska
+        Native; Asian; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72054"},{"description":"Two
+        or More Races: Population of four races: White; American Indian and Alaska
+        Native; Asian; Some Other Race","nhgisCode":"H72055"},{"description":"Two
+        or More Races: Population of four races: White; American Indian and Alaska
+        Native; Native Hawaiian and Other Pacific Islander; Some Other Race","nhgisCode":"H72056"},{"description":"Two
+        or More Races: Population of four races: White; Asian; Native Hawaiian and
+        Other Pacific Islander; Some Other Race","nhgisCode":"H72057"},{"description":"Two
+        or More Races: Population of four races: Black or African American; American
+        Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander","nhgisCode":"H72058"},{"description":"Two
+        or More Races: Population of four races: Black or African American; American
+        Indian and Alaska Native; Asian; Some Other Race","nhgisCode":"H72059"},{"description":"Two
+        or More Races: Population of four races: Black or African American; American
+        Indian and Alaska Native; Native Hawaiian and Other Pacific Islander; Some
+        Other Race","nhgisCode":"H72060"},{"description":"Two or More Races: Population
+        of four races: Black or African American; Asian; Native Hawaiian and Other
+        Pacific Islander; Some Other Race","nhgisCode":"H72061"},{"description":"Two
+        or More Races: Population of four races: American Indian and Alaska Native;
+        Asian; Native Hawaiian and Other Pacific Islander; Some Other Race","nhgisCode":"H72062"},{"description":"Two
+        or More Races: Population of five races","nhgisCode":"H72063"},{"description":"Two
+        or More Races: Population of five races: White; Black or African American;
+        American Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific
+        Islander","nhgisCode":"H72064"},{"description":"Two or More Races: Population
+        of five races: White; Black or African American; American Indian and Alaska
+        Native; Asian; Some Other Race","nhgisCode":"H72065"},{"description":"Two
+        or More Races: Population of five races: White; Black or African American;
+        American Indian and Alaska Native; Native Hawaiian and Other Pacific Islander;
+        Some Other Race","nhgisCode":"H72066"},{"description":"Two or More Races:
+        Population of five races: White; Black or African American; Asian; Native
+        Hawaiian and Other Pacific Islander; Some Other Race","nhgisCode":"H72067"},{"description":"Two
+        or More Races: Population of five races: White; American Indian and Alaska
+        Native; Asian; Native Hawaiian and Other Pacific Islander; Some Other Race","nhgisCode":"H72068"},{"description":"Two
+        or More Races: Population of five races: Black or African American; American
+        Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander;
+        Some Other Race","nhgisCode":"H72069"},{"description":"Two or More Races:
+        Population of six races","nhgisCode":"H72070"},{"description":"Two or More
+        Races: Population of six races: White; Black or African American; American
+        Indian and Alaska Native; Asian; Native Hawaiian and Other Pacific Islander;
+        Some Other Race","nhgisCode":"H72071"}]}'
+  recorded_at: 2023-04-26 22:05:47 GMT
+  recorded_with: vcr/1.2.0, webmockr/0.9.0

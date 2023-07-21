@@ -1,81 +1,69 @@
-## ---- echo = FALSE------------------------------------------------------------
+## ---- eval=FALSE--------------------------------------------------------------
+#  # To run the full vignette, you'll also need the following packages. If they
+#  # aren't installed already, do so with:
+#  install.packages("biglm")
+#  install.packages("DBI")
+#  install.packages("RSQLite")
+#  install.packages("dbplyr")
+
+## ---- include=FALSE-----------------------------------------------------------
+installed_biglm <- requireNamespace("biglm")
+
+installed_db_pkgs <- requireNamespace("DBI") &
+  requireNamespace("RSQLite") &
+  requireNamespace("dbplyr")
+
+## ---- echo=FALSE--------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- message = FALSE---------------------------------------------------------
+## ---- eval=TRUE, message=FALSE------------------------------------------------
 library(ipumsr)
 library(dplyr)
 
-# To run the full vignette you'll also need the following packages:
-installed_biglm <- requireNamespace("biglm")
-installed_db_pkgs <- requireNamespace("DBI") & 
-  requireNamespace("RSQLite") & 
-  requireNamespace("dbplyr")
-
-# Change these filepaths to the filepaths of your downloaded extract
-cps_ddi_file <- "cps_00001.xml"
-cps_data_file <- "cps_00001.dat"
-
-## ---- echo = FALSE------------------------------------------------------------
-# If files doesn't exist, check if ipumsexamples is installed
-if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
-  ipumsexamples_ddi <- system.file("extdata", "cps_00011.xml", package = "ipumsexamples")
-  ipumsexamples_data <- system.file("extdata", "cps_00011.dat.gz", package = "ipumsexamples")
-  if (file.exists(ipumsexamples_ddi)) cps_ddi_file <- ipumsexamples_ddi
-  if (file.exists(ipumsexamples_data)) cps_data_file <- ipumsexamples_data
-}
-
-# But if they still don't exist, give an error message
-if (!file.exists(cps_ddi_file) | !file.exists(cps_data_file)) {
-  message(paste0(
-    "Could not find CPS data and so could not run vignette.\n\n",
-    "If you tried to download the data following the instructions above, please make" , 
-    "sure that the filenames are correct: ", 
-    "\nddi - ", cps_ddi_file, "\ndata - ", cps_data_file, "\nAnd that you are in ",
-    "the correct directory if you are using a relative path:\nCurrent directory - ", 
-    getwd(), "\n\n",
-    "The data is also available on github. You can install it using the following ",
-    "commands: \n",
-    "  if (!require(devtools)) install.packages('devtools')\n",
-    "  devtools::install_github('ipums/ipumsr/ipumsexamples')\n",
-    "After installation, the data should be available for this vignette.\n\n"
-  ))
-  
-  installed_biglm <- FALSE
-  installed_db_pkgs <- FALSE
-  
-  knitr::opts_chunk$set(eval = FALSE)
-}
+## -----------------------------------------------------------------------------
+define_extract_usa(
+  description = "2013 ACS Data for Married Women",
+  samples = "us2013a",
+  variables = list(
+    var_spec("MARST", case_selections = "1"),
+    var_spec("SEX", case_selections = "2")
+  )
+)
 
 ## -----------------------------------------------------------------------------
-read_ipums_micro(
-  cps_ddi_file, data_file = cps_data_file, verbose = FALSE
-) %>%
+cps_ddi_file <- ipums_example("cps_00097.xml")
+
+## -----------------------------------------------------------------------------
+read_ipums_micro(cps_ddi_file, verbose = FALSE) %>%
   mutate(
     HEALTH = as_factor(HEALTH),
-    AT_WORK = EMPSTAT %>% 
+    AT_WORK = as_factor(
       lbl_relabel(
-        lbl(1, "Yes") ~ .lbl == "At work", 
+        EMPSTAT,
+        lbl(1, "Yes") ~ .lbl == "At work",
         lbl(0, "No") ~ .lbl != "At work"
-      ) %>% 
-      as_factor()
+      )
+    )
   ) %>%
   group_by(HEALTH, AT_WORK) %>%
   summarize(n = n(), .groups = "drop")
 
 ## -----------------------------------------------------------------------------
 cb_function <- function(x, pos) {
-  x %>% mutate(
-    HEALTH = as_factor(HEALTH),
-    AT_WORK = EMPSTAT %>% 
-      lbl_relabel(
-        lbl(1, "Yes") ~ .lbl == "At work", 
-        lbl(0, "No") ~ .lbl != "At work"
-      ) %>% 
-      as_factor()
-  ) %>%
+  x %>%
+    mutate(
+      HEALTH = as_factor(HEALTH),
+      AT_WORK = as_factor(
+        lbl_relabel(
+          EMPSTAT,
+          lbl(1, "Yes") ~ .lbl == "At work",
+          lbl(0, "No") ~ .lbl != "At work"
+        )
+      )
+    ) %>%
     group_by(HEALTH, AT_WORK) %>%
     summarize(n = n(), .groups = "drop")
 }
@@ -85,105 +73,115 @@ cb <- IpumsDataFrameCallback$new(cb_function)
 
 ## -----------------------------------------------------------------------------
 chunked_tabulations <- read_ipums_micro_chunked(
-  cps_ddi_file, data_file = cps_data_file, verbose = FALSE,
-  callback = cb, chunk_size = 1000
+  cps_ddi_file,
+  callback = cb,
+  chunk_size = 1000,
+  verbose = FALSE
 )
+
+chunked_tabulations
 
 ## -----------------------------------------------------------------------------
 chunked_tabulations %>%
-  group_by(HEALTH, AT_WORK) %>% 
+  group_by(HEALTH, AT_WORK) %>%
   summarize(n = sum(n), .groups = "drop")
 
 ## -----------------------------------------------------------------------------
-# Read in data
-data <- read_ipums_micro(
-  cps_ddi_file, data_file = cps_data_file, verbose = FALSE
-)
+data <- read_ipums_micro(cps_ddi_file, verbose = FALSE) %>%
+  mutate(
+    HEALTH = as_factor(HEALTH),
+    AHRSWORKT = lbl_na_if(AHRSWORKT, ~ .lbl == "NIU (Not in universe)"),
+    AT_WORK = as_factor(
+      lbl_relabel(
+        EMPSTAT,
+        lbl(1, "Yes") ~ .lbl == "At work",
+        lbl(0, "No") ~ .lbl != "At work"
+      )
+    )
+  ) %>%
+  filter(AT_WORK == "Yes")
 
-# Prepare data for model
-# (age has been capped at 99, which we assume is high enough to not
-#  cause any problems so we leave it.)
-data <- data %>%
-   mutate(
-      HEALTH = as_factor(HEALTH),
-      AHRSWORKT = lbl_na_if(AHRSWORKT, ~.lbl == "NIU (Not in universe)"),
-      AT_WORK = EMPSTAT %>% 
-        lbl_relabel(
-          lbl(1, "Yes") ~ .lbl == "At work", 
-          lbl(0, "No") ~ .lbl != "At work"
-        ) %>% 
-        as_factor()
-    ) %>%
-    filter(AT_WORK == "Yes")
-
-# Run regression
-model <- lm(AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data)
+## -----------------------------------------------------------------------------
+model <- lm(AHRSWORKT ~ AGE + I(AGE^2) + HEALTH, data = data)
 summary(model)
 
-## ---- eval = installed_biglm--------------------------------------------------
+## ---- eval=installed_biglm----------------------------------------------------
+library(biglm)
+
 biglm_cb <- IpumsBiglmCallback$new(
   model = AHRSWORKT ~ AGE + I(AGE^2) + HEALTH,
   prep = function(x, pos) {
-    x %>% 
+    x %>%
       mutate(
         HEALTH = as_factor(HEALTH),
-        AHRSWORKT = lbl_na_if(AHRSWORKT, ~.lbl == "NIU (Not in universe)"),
-        AT_WORK = EMPSTAT %>% 
+        AHRSWORKT = lbl_na_if(AHRSWORKT, ~ .lbl == "NIU (Not in universe)"),
+        AT_WORK = as_factor(
           lbl_relabel(
-            lbl(1, "Yes") ~ .lbl == "At work", 
+            EMPSTAT,
+            lbl(1, "Yes") ~ .lbl == "At work",
             lbl(0, "No") ~ .lbl != "At work"
-          ) %>% 
-          as_factor()
+          )
+        )
       ) %>%
       filter(AT_WORK == "Yes")
   }
 )
 
-## ---- eval = installed_biglm--------------------------------------------------
+## ---- eval=installed_biglm----------------------------------------------------
 chunked_model <- read_ipums_micro_chunked(
-  cps_ddi_file, data_file = cps_data_file, verbose = FALSE,
-  callback = biglm_cb, chunk_size = 1000
+  cps_ddi_file,
+  callback = biglm_cb,
+  chunk_size = 1000,
+  verbose = FALSE
 )
 
 summary(chunked_model)
 
 ## -----------------------------------------------------------------------------
-# Subset only those in "Poor" health
-chunked_subset <- read_ipums_micro_chunked(
-  cps_ddi_file, data_file = cps_data_file, verbose = FALSE,
-  callback = IpumsDataFrameCallback$new(function(x, pos) {
-    filter(x, HEALTH == 5)
-  }), 
-  chunk_size = 1000
-)
+data <- read_ipums_micro_yield(cps_ddi_file, verbose = FALSE)
 
 ## -----------------------------------------------------------------------------
-data <- read_ipums_micro_yield(
-  cps_ddi_file, 
-  data_file = cps_data_file, 
-  verbose = FALSE
-)
+# Return the first 10 rows of data
+data$yield(10)
+
+## -----------------------------------------------------------------------------
+# Return the next 10 rows of data
+data$yield(10)
+
+## -----------------------------------------------------------------------------
+data$cur_pos
+
+## -----------------------------------------------------------------------------
+data$is_done()
+
+## -----------------------------------------------------------------------------
+data$reset()
 
 ## -----------------------------------------------------------------------------
 yield_results <- tibble(
-  HEALTH = factor(levels = c("Excellent", "Very good", "Good", "Fair", "Poor")), 
+  HEALTH = factor(levels = c("Excellent", "Very good", "Good", "Fair", "Poor")),
   AT_WORK = factor(levels = c("No", "Yes")),
   n = integer(0)
 )
+
+## -----------------------------------------------------------------------------
 while (!data$is_done()) {
-  new <- data$yield(n = 1000) %>% 
+  # Yield new data and process
+  new <- data$yield(n = 1000) %>%
     mutate(
       HEALTH = as_factor(HEALTH),
-      AT_WORK = EMPSTAT %>% 
+      AT_WORK = as_factor(
         lbl_relabel(
-          lbl(1, "Yes") ~ .lbl == "At work", 
+          EMPSTAT,
+          lbl(1, "Yes") ~ .lbl == "At work",
           lbl(0, "No") ~ .lbl != "At work"
-        ) %>% 
-        as_factor()
+        )
+      )
     ) %>%
     group_by(HEALTH, AT_WORK) %>%
-    summarize(n = n())
-  
+    summarize(n = n(), .groups = "drop")
+
+  # Combine the new yield with the previously processed yields
   yield_results <- bind_rows(yield_results, new) %>%
     group_by(HEALTH, AT_WORK) %>%
     summarize(n = sum(n), .groups = "drop")
@@ -192,38 +190,36 @@ while (!data$is_done()) {
 yield_results
 
 ## -----------------------------------------------------------------------------
-data <- read_ipums_micro_yield(
-  cps_ddi_file, 
-  data_file = cps_data_file, 
-  verbose = FALSE
-)
+data$reset()
 
 ## -----------------------------------------------------------------------------
 get_model_data <- function(reset) {
   if (reset) {
     data$reset()
   } else {
-    yield <- data$yield(n = 1000) # Set n pretty low for example
-    if (is.null(yield)) return(yield)
-    out <- yield %>%
+    yield <- data$yield(n = 1000)
+
+    if (is.null(yield)) {
+      return(yield)
+    }
+
+    yield %>%
       mutate(
         HEALTH = as_factor(HEALTH),
-        WORK30PLUS = lbl_na_if(AHRSWORKT, ~.lbl == "NIU (Not in universe)") %>%
-          {. >= 30},
-        AT_WORK = EMPSTAT %>% 
+        WORK30PLUS = lbl_na_if(AHRSWORKT, ~ .lbl == "NIU (Not in universe)") >= 30,
+        AT_WORK = as_factor(
           lbl_relabel(
-            lbl(1, "Yes") ~ .lbl == "At work", 
+            EMPSTAT,
+            lbl(1, "Yes") ~ .lbl == "At work",
             lbl(0, "No") ~ .lbl != "At work"
-          ) %>% 
-          as_factor()
+          )
+        )
       ) %>%
       filter(AT_WORK == "Yes")
-    return(out)
   }
 }
 
 ## ---- eval=installed_biglm----------------------------------------------------
-library(biglm)
 results <- bigglm(
   WORK30PLUS ~ AGE + I(AGE^2) + HEALTH,
   family = binomial(link = "logit"),
@@ -232,37 +228,50 @@ results <- bigglm(
 
 summary(results)
 
-## ---- eval = installed_db_pkgs------------------------------------------------
-# Connect to database
+## ---- eval=installed_db_pkgs, results="hide"----------------------------------
 library(DBI)
 library(RSQLite)
+
+# Connect to database
 con <- dbConnect(SQLite(), path = ":memory:")
 
-# Add data to tables in chunks
+# Load file metadata
 ddi <- read_ipums_ddi(cps_ddi_file)
+
+# Write data to database in chunks
 read_ipums_micro_chunked(
   ddi,
-  data_file = cps_data_file,
-  readr::SideEffectChunkCallback$new(function(x, pos) {
-    if (pos == 1) {
-      dbWriteTable(con, "cps", x)
-    } else {
-      dbWriteTable(con, "cps", x, row.names = FALSE, append = TRUE)
+  readr::SideEffectChunkCallback$new(
+    function(x, pos) {
+      if (pos == 1) {
+        dbWriteTable(con, "cps", x)
+      } else {
+        dbWriteTable(con, "cps", x, row.names = FALSE, append = TRUE)
+      }
     }
-  }),
+  ),
   chunk_size = 1000,
   verbose = FALSE
 )
 
-
-## ---- eval = installed_db_pkgs------------------------------------------------
+## ---- eval=installed_db_pkgs--------------------------------------------------
 example <- tbl(con, "cps")
 
 example %>%
-  filter('AGE' > 25)
+  filter("AGE" > 25)
 
-## ---- eval = installed_db_pkgs------------------------------------------------
-example %>%
-  filter('AGE' > 25) %>%
+## -----------------------------------------------------------------------------
+data <- example %>%
+  filter("AGE" > 25) %>%
+  collect()
+
+# Variable metadata is missing
+ipums_val_labels(data$MONTH)
+
+## ---- eval=installed_db_pkgs--------------------------------------------------
+data <- example %>%
+  filter("AGE" > 25) %>%
   ipums_collect(ddi)
+
+ipums_val_labels(data$MONTH)
 

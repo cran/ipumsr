@@ -4,38 +4,47 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## -----------------------------------------------------------------------------
+## ---- message=FALSE-----------------------------------------------------------
 library(ipumsr)
-ddi <- read_ipums_ddi(ipums_example("cps_00015.xml"))
+
+ddi <- read_ipums_ddi(ipums_example("cps_00160.xml"))
 cps <- read_ipums_micro(ddi, verbose = FALSE)
 
 cps
 
 ## -----------------------------------------------------------------------------
-# Printing the variable directly (or a subset)
+is.labelled(cps$STATEFIP)
+
+## -----------------------------------------------------------------------------
+# Labels print when accessing the column
 head(cps$MONTH)
 
-# Just get the labels
+# Get labels alone
 ipums_val_labels(cps$MONTH)
-
-# or if you're working interactively you can use ipums_view
-# ipums_view(ddi)
 
 ## -----------------------------------------------------------------------------
 head(cps$AGE)
 
+## -----------------------------------------------------------------------------
 cps$AGE_FACTOR <- as_factor(cps$AGE)
-head(cps$AGE_FACTOR)
+
+age0_factor <- cps[cps$AGE == 0, ]$AGE_FACTOR
+
+# The levels look the same
+unique(age0_factor)
+
+# But the values have changed
+unique(as.numeric(age0_factor))
+
+## -----------------------------------------------------------------------------
+age85_factor <- cps[cps$AGE == 85, ]$AGE_FACTOR
+
+unique(as.numeric(age85_factor))
 
 ## -----------------------------------------------------------------------------
 mean(cps$AGE)
 
-# mean(cps$AGE_FACTOR) # error because data is a factor not numeric
-
-mean(as.numeric(cps$AGE_FACTOR)) # A common mistake
-
-# The "more" correct way, but NA because of the text labels
-mean(as.numeric(as.character(cps$AGE_FACTOR)))
+mean(as.numeric(cps$AGE_FACTOR))
 
 ## -----------------------------------------------------------------------------
 ipums_val_labels(cps$HEALTH)
@@ -44,49 +53,59 @@ HEALTH2 <- ifelse(cps$HEALTH > 3, 3, cps$HEALTH)
 ipums_val_labels(HEALTH2)
 
 ## -----------------------------------------------------------------------------
-ipums_val_labels(cps$HEALTH)
-cps$HEALTH <- as_factor(cps$HEALTH)
+ipums_val_labels(cps$MONTH)
 
-## -----------------------------------------------------------------------------
-cps$ASECFLAG <- as_factor(cps$ASECFLAG)
 cps$MONTH <- as_factor(cps$MONTH)
 
-## -----------------------------------------------------------------------------
-cps$AGE <- zap_labels(cps$AGE)
+## ---- eval=FALSE--------------------------------------------------------------
+#  cps <- as_factor(cps)
+#  
+#  # ... further preparation of variables as factors
 
 ## -----------------------------------------------------------------------------
-ipums_val_labels(cps$STATEFIP)
-cps$STATEFIP <- lbl_clean(cps$STATEFIP)
+inctot_num <- zap_labels(cps$INCTOT)
 
-ipums_val_labels(cps$STATEFIP)
-cps$STATEFIP <- as_factor(cps$STATEFIP)
+typeof(inctot_num)
+
+ipums_val_labels(inctot_num)
 
 ## -----------------------------------------------------------------------------
-# Caution: R defaults to printing large numbers like 99999999 in rounded 
-# exponential format (1e+08) but that's not how they are actually stored
 ipums_val_labels(cps$INCTOT)
 
-# All of these are equivalent
-INCTOT1 <- lbl_na_if(cps$INCTOT, ~.val >= 99999990)
-INCTOT2 <- lbl_na_if(cps$INCTOT, ~.lbl %in% c("Missing.", "N.I.U. (Not in Universe)."))
-INCTOT3 <- lbl_na_if(cps$INCTOT, function(.val, .lbl) {
-  is_missing <- .val == 99999998
-  is_niu <- .lbl == "N.I.U. (Not in Universe)."
-  return(is_missing | is_niu)
-})
-
-# Change to a factor in the original cps data.frame
-cps$INCTOT <- lbl_na_if(cps$INCTOT, ~.val >= 9999990)
-cps$INCTOT <- as_factor(cps$INCTOT)
+## -----------------------------------------------------------------------------
+ipums_val_labels(cps$INCTOT)
 
 ## -----------------------------------------------------------------------------
-ipums_val_labels(cps$EDUC)
-# %/% is integer division, which divides by the number but doesn't keep the remainder
-cps$EDUC <- lbl_collapse(cps$EDUC, ~.val %/% 10)
+# Convert to NA using function that returns TRUE for all labelled values equal to 99999999
+inctot_na <- lbl_na_if(
+  cps$INCTOT,
+  function(.val, .lbl) .val == 999999999
+)
 
-ipums_val_labels(cps$EDUC)
+# All 99999999 values have been converted to NA
+any(inctot_na == 999999999, na.rm = TRUE)
 
-cps$EDUC <- as_factor(cps$EDUC)
+# And the label has been removed:
+ipums_val_labels(inctot_na)
+
+## -----------------------------------------------------------------------------
+# Convert to NA for labels that contain "N.I.U."
+inctot_na2 <- lbl_na_if(
+  cps$INCTOT,
+  function(.val, .lbl) grepl("N.I.U.", .lbl)
+)
+
+# Same result
+all(inctot_na2 == inctot_na, na.rm = TRUE)
+
+## ---- eval=FALSE--------------------------------------------------------------
+#  lbl_na_if(cps$INCTOT, ~ .val == 999999999)
+
+## -----------------------------------------------------------------------------
+x <- lbl_na_if(cps$INCTOT, ~ .val >= 0)
+
+# Unlabelled values greater than the cutoff are still present:
+length(which(x > 0))
 
 ## -----------------------------------------------------------------------------
 ipums_val_labels(cps$MIGRATE1)
@@ -99,7 +118,23 @@ cps$MIGRATE1 <- lbl_relabel(
 
 ipums_val_labels(cps$MIGRATE1)
 
-cps$MIGRATE1 <- as_factor(cps$MIGRATE1)
+## -----------------------------------------------------------------------------
+head(ipums_val_labels(cps$EDUC), 15)
+
+## -----------------------------------------------------------------------------
+# %/% refers to integer division, which divides but discards the remainder
+10 %/% 10
+11 %/% 10
+
+# Convert to groups by tens digit
+cps$EDUC2 <- lbl_collapse(cps$EDUC, ~ .val %/% 10)
+
+ipums_val_labels(cps$EDUC2)
+
+## -----------------------------------------------------------------------------
+ipums_val_labels(cps$STATEFIP)
+
+ipums_val_labels(lbl_clean(cps$STATEFIP))
 
 ## -----------------------------------------------------------------------------
 x <- haven::labelled(
@@ -107,22 +142,26 @@ x <- haven::labelled(
   c(`Unknown` = 990, NIU = 999)
 )
 
-lbl_add(x, lbl(100, "$100"), lbl(105, "$105"), lbl(200, "$200"), lbl(230, "$230"))
-lbl_add_vals(x, ~paste0("$", .))
+lbl_add(
+  x,
+  lbl(100, "$100"),
+  lbl(105, "$105"),
+  lbl(200, "$200"),
+  lbl(230, "$230")
+)
 
 ## -----------------------------------------------------------------------------
-# Reload cps data so that INCTOT is a labelled class again
-cps <- read_ipums_micro(ddi, verbose = FALSE)
-
-# Try to set all values above 1000000 to NA
-test1 <- lbl_na_if(cps$INCTOT, ~.val > 1000000)
-test1 <- zap_labels(test1)
-max(test1, na.rm = TRUE)
-# Didn't work
+# `.` refers to each label value
+lbl_add_vals(x, ~ paste0("$", .))
 
 ## -----------------------------------------------------------------------------
-test2 <- lbl_add_vals(cps$INCTOT)
-test2 <- lbl_na_if(test2, ~.val > 1000000)
-test2 <- zap_labels(test2)
-max(test2, na.rm = TRUE)
+age <- c(10, 12, 16, 18, 20, 22, 25, 27)
+
+# Group age values into two label groups.
+# Values not captured by the right hand side functions remain unlabelled
+lbl_define(
+  age,
+  lbl(1, "Pre-college age") ~ .val < 18,
+  lbl(2, "College age") ~ .val >= 18 & .val <= 22
+)
 
