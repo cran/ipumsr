@@ -1,3 +1,7 @@
+# ipumsr 0.6.1
+
+* Fixes for CRAN checks.
+
 # ipumsr 0.6.0
 
 ## Breaking Changes + Deprecations
@@ -63,6 +67,10 @@
   
 * Individual `ipums_list_*()` functions have been moved to `ipums_list_files()`.
   
+* `read_ipums_codebook()` has been deprecated. Use `read_nhgis_codebook()` to
+  read NHGIS codebook files. IPUMS Terra codebook files are no longer supported
+  (see below)
+  
 * Example files in `ipums_example()` have been updated and include new file
   names.
 
@@ -71,9 +79,6 @@
 * Support for IPUMS Terra has been discontinued. This includes deprecations
   to all `read_terra_*()` functions, the `types = "raster"` option in 
   `ipums_list_files()`, and `read_ipums_codebook()`. 
-  
-  NHGIS codebook reading was previously supported by `read_ipums_codebook()`.
-  This functionality has been moved to `read_nhgis_codebook()`.
   
   For more on IPUMS Terra decommissioning, click 
   [here](https://terra.ipums.org/decommissioning).

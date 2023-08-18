@@ -1,6 +1,6 @@
 Package: ipumsr
 Title: An R Interface for Downloading, Reading, and Handling IPUMS Data
-Version: 0.6.0
+Version: 0.6.1
 Authors@R: c(
     person("Greg Freedman Ellis", role = "aut"),
     person("Derek Burk", , , "ipums+cran@umn.edu", role = c("aut", "cre")),
@@ -17,7 +17,8 @@ Description: An easy way to work with census, survey, and geographic data
     drawn from over 750 censuses and surveys is available free of charge
     from the IPUMS website <https://www.ipums.org>.
 License: Mozilla Public License 2.0
-URL: https://www.ipums.org, https://github.com/ipums/ipumsr
+URL: https://tech.popdata.org/ipumsr/, https://github.com/ipums/ipumsr,
+        https://www.ipums.org
 BugReports: https://github.com/ipums/ipumsr/issues
 Depends: R (>= 3.6)
 Imports: dplyr (>= 0.7.0), haven (>= 2.2.0), hipread (>= 0.2.0), httr,
@@ -32,7 +33,7 @@ Contact: ipums@umn.edu
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-07-21 02:37:44 UTC; robe2037
+Packaged: 2023-08-18 19:15:54 UTC; robe2037
 Author: Greg Freedman Ellis [aut],
   Derek Burk [aut, cre],
   Finn Roberts [aut],
@@ -42,4 +43,4 @@ Author: Greg Freedman Ellis [aut],
   Institute for Social Research and Data Innovation [cph]
 Maintainer: Derek Burk <ipums+cran@umn.edu>
 Repository: CRAN
-Date/Publication: 2023-07-21 08:00:03 UTC
+Date/Publication: 2023-08-18 19:32:32 UTC
