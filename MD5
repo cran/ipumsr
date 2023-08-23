@@ -1,6 +1,6 @@
-1dfdae41bc9e01cd2fc00d193c73de82 *DESCRIPTION
+a3c2e542c0caa68bbe5955683dabbe42 *DESCRIPTION
 81410c3b9b7fcbd23409fbbd84def06c *NAMESPACE
-8464f9cab7c8a5b77e01bda2618a8b73 *NEWS.md
+f3dc31e697a75f1c3b76af5ef9dd01b2 *NEWS.md
 1bc27a84179ea585547d5de9211e2f7e *R/api_define_extract.R
 6c157cf7d3ebe37f2a8bc8c7816fb661 *R/api_extract_info.R
 a120deace1341a320bea84f7722e3728 *R/api_helpers.R
@@ -172,6 +172,8 @@ fb66d67861156393e478c22ef7bd96cc *tests/fixtures/nhgis-metadata-summary.yml
 be88fb113d80a8e27c22144700376e7d *tests/fixtures/nhgis1270_csv.zip
 909781220e47d2d5f65bdf55356c39d2 *tests/fixtures/nhgis1270_shape.zip
 659b0a7dcde7bd9ed870b3bef4143249 *tests/fixtures/nhgis1271_shape.zip
+1ffe2b0635d3964e20f149a90572adfb *tests/fixtures/nhgis_unzipped/test1.csv
+1ffe2b0635d3964e20f149a90572adfb *tests/fixtures/nhgis_unzipped/test2.csv
 ba5fe5acbdd8982dfa59afc03c09665d *tests/fixtures/ready-nhgis-extract-shp.yml
 f37289a40ea8345fff278a839a3897ba *tests/fixtures/ready-nhgis-extract.yml
 9188f26c76cc173a9ad87058278fa2c7 *tests/fixtures/ready-usa-extract.yml
@@ -191,7 +193,7 @@ edc7df626445db8fcf1382990622c642 *tests/fixtures/submitted-usa-extract.yml
 705b62d21e4a6784296e76537eac0fb5 *tests/fixtures/usa_00301.xml
 9eab73df27b7454130e22252ca2c2fff *tests/fixtures/zipped_ddi.zip
 a429033c37a1fd906c454c98998875f7 *tests/fixtures/zipped_misc.zip
-a285a995a997dc3e21f68c627d49a3da *tests/testthat.R
+07376e2efca495afc7f174f6ed2fe8c8 *tests/testthat.R
 ea510168afbc8814c55d76d1c1135027 *tests/testthat/helper_api.R
 df61892cfc68414cab44a1784c604dbb *tests/testthat/setup-ipumsr.R
 d5f2374bd1f185de6d190b7142353a9b *tests/testthat/test_api_define_extract.R
@@ -208,7 +210,7 @@ e869342e7ab4a3918cd5a8a89dadcb40 *tests/testthat/test_lower_names.R
 6300a0e890c78fafb4e4cb9dad9816d1 *tests/testthat/test_micro.R
 ac84e64488c99931a09f5b62f9a7394f *tests/testthat/test_micro_chunked.R
 5b57d33e1afe6a40239bb598e9a7e1c1 *tests/testthat/test_micro_yield.R
-91699a96671f2911cd7fca888ab2cd2e *tests/testthat/test_nhgis.R
+95e5301299f164310fc6942fde33e1c0 *tests/testthat/test_nhgis.R
 ce9ed88d22d55a5ee45acdd521dad022 *tests/testthat/test_parse_manual_code.R
 5cb4e898674d5314244cd0ba987fda66 *tests/testthat/test_read_ddi.R
 ad51c7fc8e46dbdf5113a10759350e11 *tests/testthat/test_select_style.R
