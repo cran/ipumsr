@@ -1,6 +1,6 @@
 Package: ipumsr
 Title: An R Interface for Downloading, Reading, and Handling IPUMS Data
-Version: 0.6.2
+Version: 0.6.3
 Authors@R: c(
     person("Greg Freedman Ellis", role = "aut"),
     person("Derek Burk", , , "ipums+cran@umn.edu", role = c("aut", "cre")),
@@ -33,7 +33,7 @@ Contact: ipums@umn.edu
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 NeedsCompilation: no
-Packaged: 2023-08-22 17:50:48 UTC; robe2037
+Packaged: 2023-09-01 22:12:52 UTC; robe2037
 Author: Greg Freedman Ellis [aut],
   Derek Burk [aut, cre],
   Finn Roberts [aut],
@@ -43,4 +43,4 @@ Author: Greg Freedman Ellis [aut],
   Institute for Social Research and Data Innovation [cph]
 Maintainer: Derek Burk <ipums+cran@umn.edu>
 Repository: CRAN
-Date/Publication: 2023-08-23 00:00:16 UTC
+Date/Publication: 2023-09-01 22:40:03 UTC
