@@ -21,12 +21,12 @@ nhgis_extract_request <- define_extract_nhgis(
   )
 )
 
-## ---- eval = FALSE------------------------------------------------------------
+## ----eval = FALSE-------------------------------------------------------------
 #  submitted_extract <- submit_extract(extract_request)
 #  downloadable_extract <- wait_for_extract(submitted_extract)
 #  data_files <- download_extract(downloadable_extract)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  past_extracts <- get_extract_history("nhgis")
 
 ## -----------------------------------------------------------------------------
@@ -41,7 +41,7 @@ nhgis_data <- read_nhgis(nhgis_file)
 
 head(nhgis_data)
 
-## ---- eval = requireNamespace("sf")-------------------------------------------
+## ----eval = requireNamespace("sf")--------------------------------------------
 shp_file <- ipums_example("nhgis0972_shape_small.zip")
 nhgis_shp <- read_ipums_sf(shp_file)
 

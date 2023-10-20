@@ -1,10 +1,10 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- echo=FALSE, results="hide"----------------------------------------------
+## ----echo=FALSE, results="hide"-----------------------------------------------
 library(vcr)
 
 vcr_dir <- "fixtures"
@@ -31,11 +31,11 @@ vcr_configure(
 
 check_cassette_names()
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ipumsr)
 library(dplyr)
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("micro-sample-ids")
 
 ## -----------------------------------------------------------------------------
@@ -49,7 +49,7 @@ ipumsi_samps <- get_sample_info("ipumsi")
 ipumsi_samps %>% 
   filter(grepl("Mexico", description))
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("micro-sample-ids")
 
 ## -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ define_extract_cps(
 ## -----------------------------------------------------------------------------
 str(cps_ext$variables)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  define_extract_cps(
 #    description = "Example CPS extract",
 #    samples = "cps2018_03s",
@@ -147,6 +147,6 @@ usa_ext <- define_extract_usa(
   data_quality_flags = TRUE
 )
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  usa_ext_submitted <- submit_extract(usa_ext)
 

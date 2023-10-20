@@ -3,26 +3,48 @@
 # in this project's top-level directory, and also on-line at:
 #   https://github.com/ipums/ipumsr
 
-#' View a static webpage with variable information from a IPUMS extract
+#' View a static webpage with variable metadata from an IPUMS extract
 #'
-#' Requires that htmltools, shiny and DT are installed.
+#' @description
+#' For a given [`ipums_ddi`] object or data frame, display metadata about
+#' its contents in the RStudio viewer pane. This includes extract-level
+#' information as well as metadata for the variables included in the
+#' input object.
 #'
-#' @param x An [ipums_ddi] object or a data frame with IPUMS attributes
+#' It is also possible to save the output to an external HTML file without
+#' launching the RStudio viewer.
+#'
+#' @details
+#' `ipums_view()` requires that the htmltools, shiny, and DT packages are
+#' installed. If `launch = TRUE`, RStudio and the rstudioapi package must
+#' also be available.
+#'
+#' Note that if `launch = FALSE` and `out_file` is unspecified, the output
+#' file will be written to a temporary directory. Some operating systems
+#' may be unable to open the HTML file from the temporary directory; we
+#' suggest that you manually specify the `out_file` location in this case.
+#'
+#' @param x An `ipums_ddi` object or a data frame with IPUMS attributes
 #'   attached.
 #'
-#'   Note that the file-level information (e.g. extract notes) are only
-#'   available when providing an `ipums_ddi` object.
-#' @param out_file Optional location to save produced HTML file. If `NULL`,
+#'   Note that file-level information (e.g. extract notes) is only
+#'   available when `x` is an `ipums_ddi` object.
+#' @param out_file Optional location to save the output HTML file. If `NULL`,
 #'   makes a temporary file.
-#' @param launch Logical indicating whether to launch the website.
-#' @return The filepath to the html (silently if `launch = TRUE`)
+#' @param launch Logical indicating whether to launch the HTML file in the
+#'   RStudio viewer pane. If `TRUE`, RStudio and rstudioapi must be available.
+#'
+#' @return The file path to the output HTML file (invisibly, if `launch = TRUE`)
+#'
+#' @export
+#'
 #' @examples
 #' ddi <- read_ipums_ddi(ipums_example("cps_00157.xml"))
+#'
 #' \dontrun{
 #' ipums_view(ddi)
 #' ipums_view(ddi, "codebook.html", launch = FALSE)
 #' }
-#' @export
 ipums_view <- function(x, out_file = NULL, launch = TRUE) {
   if (!requireNamespace("htmltools", quietly = TRUE) ||
     !requireNamespace("shiny", quietly = TRUE) ||
@@ -37,6 +59,14 @@ ipums_view <- function(x, out_file = NULL, launch = TRUE) {
   }
 
   if (is.null(out_file)) {
+    if (!launch) {
+      rlang::warn(c(
+        paste0("Some operating systems may have trouble opening an HTML ",
+               "file from a temporary directory."),
+        "i" = "Use `out_file` to specify an alternate output location."
+      ))
+    }
+
     out_file <- paste0(tempfile(), ".html")
   }
 
@@ -60,23 +90,14 @@ ipums_view <- function(x, out_file = NULL, launch = TRUE) {
 
   htmltools::save_html(html_page, out_file)
 
-  on.exit(
-    unlink(list.files(tempdir(), ".html", full.names = TRUE)),
-    add = TRUE,
-    after = FALSE
-  )
-
-  on.exit(
-    unlink(file.path(tempdir(), "lib"), recursive = TRUE),
-    add = TRUE,
-    after = FALSE
-  )
-
   if (launch) {
-    if (requireNamespace("rstudioapi", quietly = TRUE)) {
+    if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
       rstudioapi::viewer(out_file)
     } else {
-      shell.exec(out_file)
+      rlang::abort(c(
+        "RStudio and the rstudioapi package are required when `launch = TRUE`",
+        "i" = "Install rstudioapi with `install.packages(\"rstudioapi\")`"
+      ))
     }
     invisible(out_file)
   } else {
@@ -147,11 +168,19 @@ display_ipums_var_row <- function(var_name,
   code_instr <- split_double_linebreaks_to_ptags(code_instr)
 
   if (nrow(val_labels) > 0) {
+    # The line below is a hacky solution to a problem that collapses the
+    # height of the value labels table such that no rows are visible when viewed
+    # in the RStudio Viewer pane
+    val_lbls_height_in_pixels <- paste0(
+      200 + min(nrow(val_labels), 10) * 30,
+      "px"
+    )
     value_labels <- DT::datatable(
       val_labels,
       style = "bootstrap",
       rownames = FALSE,
-      width = "100%"
+      width = "100%",
+      height = val_lbls_height_in_pixels
     )
   } else {
     value_labels <- htmltools::tags$p("N/A")
@@ -159,15 +188,15 @@ display_ipums_var_row <- function(var_name,
 
   url <- try(
     ipums_website(
+      x = project,
       var = var_name,
-      project = project,
       launch = FALSE,
-      verbose = FALSE,
-      var_label = var_label
+      verbose = FALSE
     ),
     silent = TRUE
   )
-  if (inherits(class(url)[1], "try-error")) {
+
+  if (inherits(url, "try-error")) {
     link <- NULL
   } else {
     link <- htmltools::a(href = url, "More details")
@@ -232,7 +261,7 @@ expandable_div <- function(title, subtitle, content) {
 }
 
 split_double_linebreaks_to_ptags <- function(x) {
-  if (is.null(x)) {
+  if (is.null(x) || x == "") {
     return("")
   }
   out <- fostr_split(x, "\n\n")[[1]]
@@ -240,7 +269,7 @@ split_double_linebreaks_to_ptags <- function(x) {
 }
 
 convert_single_linebreak_to_brtags <- function(x) {
-  if (is.null(x)) {
+  if (is.null(x) || x == "") {
     return(NULL)
   }
 

@@ -4,7 +4,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ipumsr)
 
 ddi <- read_ipums_ddi(ipums_example("cps_00160.xml"))
@@ -57,7 +57,7 @@ ipums_val_labels(cps$MONTH)
 
 cps$MONTH <- as_factor(cps$MONTH)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  cps <- as_factor(cps)
 #  
 #  # ... further preparation of variables as factors
@@ -98,7 +98,7 @@ inctot_na2 <- lbl_na_if(
 # Same result
 all(inctot_na2 == inctot_na, na.rm = TRUE)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  lbl_na_if(cps$INCTOT, ~ .val == 999999999)
 
 ## -----------------------------------------------------------------------------

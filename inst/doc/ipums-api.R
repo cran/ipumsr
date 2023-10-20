@@ -1,10 +1,10 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- echo=FALSE, results="hide"----------------------------------------------
+## ----echo=FALSE, results="hide"-----------------------------------------------
 library(vcr)
 
 vcr_dir <- "fixtures"
@@ -54,7 +54,7 @@ modify_ready_extract_cassette_file <- function(cassette_file_name,
   )
 }
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ipumsr)
 library(dplyr)
 library(purrr)
@@ -62,7 +62,7 @@ library(purrr)
 ## -----------------------------------------------------------------------------
 ipums_data_collections()
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Save key in .Renviron for use across sessions
 #  set_ipums_api_key("paste-your-key-here", save = TRUE)
 
@@ -90,7 +90,7 @@ usa_ext_def$status
 
 usa_ext_def$number
 
-## ---- include=FALSE-----------------------------------------------------------
+## ----include=FALSE------------------------------------------------------------
 insert_cassette("submit-placeholder-extract-usa")
 
 # We submit these extracts so that the output of requests for things like
@@ -116,7 +116,7 @@ submit_extract(
 
 eject_cassette("submit-placeholder-extract-usa")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("submit-extract")
 
 ## -----------------------------------------------------------------------------
@@ -135,10 +135,10 @@ usa_ext_submitted <- get_last_extract_info("usa")
 
 usa_ext_submitted$number
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("submit-extract")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("wait-for-extract")
 
 usa_ext_complete <- wait_for_extract(usa_ext_submitted)
@@ -152,7 +152,7 @@ modify_ready_extract_cassette_file(
   n_requests = 2
 )
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("wait-for-extract")
 
 ## -----------------------------------------------------------------------------
@@ -163,19 +163,19 @@ usa_ext_complete$status
 # `download_links` should be populated if the extract is ready for download
 names(usa_ext_complete$download_links)
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("wait-for-extract")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("extract-ready")
 
 ## -----------------------------------------------------------------------------
 is_extract_ready(usa_ext_submitted)
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("extract-ready")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("check-extract-info")
 
 ## -----------------------------------------------------------------------------
@@ -183,18 +183,18 @@ usa_ext_submitted <- get_extract_info(usa_ext_submitted)
 
 usa_ext_submitted$status
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("check-extract-info")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # By default, downloads to your current working directory
 #  filepath <- download_extract(usa_ext_submitted)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  ddi <- read_ipums_ddi(filepath)
 #  micro_data <- read_ipums_micro(ddi)
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("check-extract-history")
 
 ## -----------------------------------------------------------------------------
@@ -221,10 +221,10 @@ purrr::keep(usa_extracts, is_extract_ready)
 ## -----------------------------------------------------------------------------
 purrr::map_chr(usa_extracts, ~ .x$description)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  set_ipums_default_collection("usa") # Set `save = TRUE` to store across sessions
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 set_ipums_default_collection("usa")
 
 ## -----------------------------------------------------------------------------
@@ -240,18 +240,18 @@ usa_ext_10 <- get_extract_info(10)
 # You can still request other collections as usual:
 cps_ext_10 <- get_extract_info("cps:10")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("check-extract-history")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  usa_ext_10 <- get_extract_info("usa:10")
 #  save_extract_as_json(usa_ext_10, file = "usa_extract_10.json")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  clone_of_usa_ext_10 <- define_extract_from_json("usa_extract_10.json")
 #  usa_ext_10_resubmitted <- submit_extract(clone_of_usa_ext_10)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  usa_data <- define_extract_usa(
 #    "USA extract for API vignette",
 #    c("us2018a", "us2019a"),
@@ -262,7 +262,7 @@ eject_cassette("check-extract-history")
 #    download_extract() %>%
 #    read_ipums_micro()
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  nhgis_data <- download_extract(nhgis_extract) %>%
 #    purrr::pluck("data") %>% # Select only the tabular data file to read
 #    read_nhgis()

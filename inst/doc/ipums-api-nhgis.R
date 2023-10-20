@@ -1,10 +1,10 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- echo=FALSE, results="hide"----------------------------------------------
+## ----echo=FALSE, results="hide"-----------------------------------------------
 library(vcr)
 
 vcr_dir <- "fixtures"
@@ -70,12 +70,12 @@ get_truncated_metadata <- function(collection,
   ipumsr:::convert_metadata(metadata)
 }
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ipumsr)
 library(dplyr)
 library(purrr)
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("nhgis-metadata-summary")
 
 ## -----------------------------------------------------------------------------
@@ -90,7 +90,7 @@ ds %>%
     grepl("Agriculture", description)
   )
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 # Secretly get truncated number of tst records because otherwise the .yml
 # fixture becomes very large.
 
@@ -98,7 +98,7 @@ ds %>%
 # that would be obtained were the entire metadata set loaded!
 tst <- get_truncated_metadata("nhgis", "time_series_tables")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  tst <- get_metadata_nhgis("time_series_tables")
 
 ## -----------------------------------------------------------------------------
@@ -115,10 +115,10 @@ tst$geog_levels[[1]]
 tst %>%
   filter(map_lgl(years, ~ "1840" %in% .x$name))
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("nhgis-metadata-summary")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("nhgis-metadata-detailed")
 
 ## -----------------------------------------------------------------------------
@@ -132,7 +132,7 @@ cAg_meta$geog_levels
 ## -----------------------------------------------------------------------------
 get_metadata_nhgis(dataset = "1900_cAg", data_table = "NT2")
 
-## ---- echo=FALSE, results="hide", message=FALSE-------------------------------
+## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("nhgis-metadata-detailed")
 
 ## -----------------------------------------------------------------------------
@@ -165,7 +165,7 @@ define_extract_nhgis(
   )
 )
 
-## ---- error=TRUE--------------------------------------------------------------
+## ----error=TRUE---------------------------------------------------------------
 define_extract_nhgis(
   description = "Invalid extract",
   datasets = ds_spec("1900_STF1", data_tables = "NP1")
@@ -210,6 +210,6 @@ nhgis_ext <- define_extract_nhgis(
 
 nhgis_ext
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  nhgis_ext_submitted <- submit_extract(nhgis_ext)
 

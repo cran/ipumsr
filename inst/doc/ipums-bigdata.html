@@ -950,23 +950,7 @@ syntax we would use with dplyr:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>example <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">&quot;cps&quot;</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>example <span class="sc">%&gt;%</span></span>
-<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [?? x 14]</span></span>
-<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a><span class="co">#&gt; # Database: sqlite 3.41.2 []</span></span>
-<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL MONTH   CPSID ASECFLAG ASECWTH FOODSTMP PERNUM  CPSIDP ASECWT</span></span>
-<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a><span class="co">#&gt;  1  2011     33     3 2.01e13        1    308.        1      1 2.01e13   308.</span></span>
-<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co">#&gt;  2  2011     33     3 2.01e13        1    308.        1      2 2.01e13   217.</span></span>
-<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="co">#&gt;  3  2011     33     3 2.01e13        1    308.        1      3 2.01e13   249.</span></span>
-<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">#&gt;  4  2011     46     3 2.01e13        1    266.        1      1 2.01e13   266.</span></span>
-<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a><span class="co">#&gt;  5  2011     46     3 2.01e13        1    266.        1      2 2.01e13   266.</span></span>
-<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a><span class="co">#&gt;  6  2011     46     3 2.01e13        1    266.        1      3 2.01e13   265.</span></span>
-<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a><span class="co">#&gt;  7  2011     46     3 2.01e13        1    266.        1      4 2.01e13   296.</span></span>
-<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a><span class="co">#&gt;  8  2011     64     3 2.01e13        1    241.        1      1 2.01e13   241.</span></span>
-<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a><span class="co">#&gt;  9  2011     64     3 2.01e13        1    241.        1      2 2.01e13   241.</span></span>
-<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a><span class="co">#&gt; 10  2011     64     3 2.01e13        1    241.        1      3 2.01e13   278.</span></span>
-<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a><span class="co">#&gt; # ℹ more rows</span></span>
-<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 4 more variables: AGE &lt;int&gt;, EMPSTAT &lt;int&gt;, AHRSWORKT &lt;dbl&gt;, HEALTH &lt;int&gt;</span></span></code></pre></div>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>)</span></code></pre></div>
 <p>dbplyr shows us a nice preview of the first rows of the result of our
 query, but the data still exist only in the database. You can use
 <code>dplyr::collect()</code> to load the full results of the query into
@@ -978,9 +962,7 @@ metadata:</p>
 <span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
 <span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a></span>
 <span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a><span class="co"># Variable metadata is missing</span></span>
-<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span>
-<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
-<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 variables: val &lt;dbl&gt;, lbl &lt;chr&gt;</span></span></code></pre></div>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span></code></pre></div>
 <p>Instead, use <code>ipums_collect()</code>, which uses a provided
 <code>ipums_ddi</code> object to reattach the metadata while loading
 into the R environment:</p>
@@ -988,22 +970,7 @@ into the R environment:</p>
 <span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="fu">ipums_collect</span>(ddi)</span>
 <span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span>
-<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
-<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
-<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
-<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
-<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
-<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
-<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
-<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
-<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
-<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
-<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
-<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
-<span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
-<span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
-<span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span></code></pre></div>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span></code></pre></div>
 <p>For more about variable metadata in IPUMS data, see
 <code>vignette(&quot;value-labels&quot;)</code>.</p>
 </div>

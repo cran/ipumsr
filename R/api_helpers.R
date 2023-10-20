@@ -30,21 +30,14 @@
 #' @examples
 #' ipums_data_collections()
 ipums_data_collections <- function() {
-  tibble::tribble(
-    ~collection_name, ~collection_type, ~code_for_api, ~api_support,
-    "IPUMS USA", "microdata", "usa", TRUE,
-    "IPUMS CPS", "microdata", "cps", TRUE,
-    "IPUMS International", "microdata", "ipumsi", TRUE,
-    "IPUMS NHGIS", "aggregate data", "nhgis", TRUE,
-    "IPUMS IHGIS", "aggregate data", "ihgis", FALSE,
-    "IPUMS AHTUS", "microdata", "ahtus", FALSE,
-    "IPUMS MTUS", "microdata", "mtus", FALSE,
-    "IPUMS ATUS", "microdata", "atus", FALSE,
-    "IPUMS DHS", "microdata", "dhs", FALSE,
-    "IPUMS Higher Ed", "microdata", "highered", FALSE,
-    "IPUMS MEPS", "microdata", "meps", FALSE,
-    "IPUMS NHIS", "microdata", "nhis", FALSE,
-    "IPUMS PMA", "microdata", "pma", FALSE
+  purrr::map_dfr(
+    proj_config(),
+    ~ tibble::tibble(
+      collection_name = .x$proj_name,
+      collection_type = .x$collection_type,
+      code_for_api = .x$code_for_api,
+      api_support = .x$api_support
+    )
   )
 }
 
@@ -771,7 +764,7 @@ parse_response_error <- function(res) {
 # Helper to handle errors and warnings for API requests.
 # Called in ipums_api_request()
 validate_api_request <- function(res, call = caller_env()) {
-  is_downloads_request <- fostr_detect(res$url, "downloads/")
+  is_downloads_request <- fostr_detect(res$url, "downloads")
   is_extract_request <- !is_downloads_request &&
     fostr_detect(res$url, "extracts/")
 
@@ -887,7 +880,7 @@ add_user_auth_header <- function(api_key) {
 api_base_url <- function() {
   api_instance <- active_api_instance()
 
-  if (api_instance == "") {
+  if (api_instance == "" || api_instance == "internal") {
     url <- "https://api.ipums.org/"
   } else {
     url <- paste0("https://", api_instance, ".api.ipums.org/")
@@ -946,7 +939,14 @@ extract_request_path <- function(number = NULL) {
   if (!rlang::is_null(number)) {
     number <- format(number, scientific = FALSE)
   }
-  paste0("extracts/", number)
+
+  if (active_api_instance() == "internal") {
+    path <- paste0("internal-extracts/", number)
+  } else {
+    path <- paste0("extracts/", number)
+  }
+
+  path
 }
 
 #' Helper to construct URL paths for API metadata endpoints
@@ -971,7 +971,17 @@ metadata_request_path <- function(collection, ...) {
   path_args <- purrr::compact(rlang::list2(...))
   path_fields <- names(path_args)
 
-  path_args <- c("metadata", collection, rbind(path_fields, unlist(path_args)))
+  if (active_api_instance() == "internal") {
+    metadata_path <- "internal-metadata"
+  } else {
+    metadata_path <- "metadata"
+  }
+
+  path_args <- c(
+    metadata_path,
+    collection,
+    rbind(path_fields, unlist(path_args))
+  )
 
   # Avoids extra `/` for unnamed args in `path`
   path_args <- path_args[which(path_args != "")]

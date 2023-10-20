@@ -1,10 +1,10 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 
-## ---- message=FALSE-----------------------------------------------------------
+## ----message=FALSE------------------------------------------------------------
 library(ipumsr)
 library(dplyr)
 
@@ -79,7 +79,7 @@ nhgis_ex2 <- ipums_example("nhgis0731_csv.zip")
 
 ipums_list_files(nhgis_ex2)
 
-## ---- error=TRUE, message=FALSE-----------------------------------------------
+## ----error=TRUE, message=FALSE------------------------------------------------
 nhgis_data2 <- read_nhgis(nhgis_ex2, file_select = contains("nation"))
 
 nhgis_data3 <- read_nhgis(nhgis_ex2, file_select = contains("ts_nominal_state"))
@@ -89,7 +89,7 @@ attributes(nhgis_data2$AJWBE001)
 
 attributes(nhgis_data3$A00AA1790)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  # Match by file name
 #  read_nhgis(nhgis_ex2, file_select = "nhgis0731_csv/nhgis0731_ds239_20185_nation.csv")
 #  
@@ -111,14 +111,14 @@ nhgis_fwf_data <- read_nhgis(nhgis_fwf, file_select = matches("ts_nominal"))
 
 nhgis_fwf_data
 
-## ---- eval = requireNamespace("sf")-------------------------------------------
+## ----eval = requireNamespace("sf")--------------------------------------------
 nhgis_shp_file <- ipums_example("nhgis0972_shape_small.zip")
 
 shp_data <- read_ipums_sf(nhgis_shp_file)
 
 head(shp_data)
 
-## ---- eval = requireNamespace("sf")-------------------------------------------
+## ----eval = requireNamespace("sf")--------------------------------------------
 joined_data <- ipums_shape_left_join(
   nhgis_data,
   shp_data,
