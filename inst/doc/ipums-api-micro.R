@@ -46,7 +46,7 @@ head(cps_samps)
 ## -----------------------------------------------------------------------------
 ipumsi_samps <- get_sample_info("ipumsi")
 
-ipumsi_samps %>% 
+ipumsi_samps %>%
   filter(grepl("Mexico", description))
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
@@ -114,8 +114,8 @@ var_spec("RACE", case_selections = "8")
 
 # For detailed case selection, change the `case_selection_type`
 var_spec(
-  "RACE", 
-  case_selections = c("811", "812"), 
+  "RACE",
+  case_selections = c("811", "812"),
   case_selection_type = "detailed"
 )
 

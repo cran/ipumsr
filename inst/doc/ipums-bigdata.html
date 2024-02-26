@@ -10,7 +10,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Institute for Social Research and Data Innovation" />
 
 
 <title>Big IPUMS Data</title>
@@ -338,14 +337,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Big IPUMS Data</h1>
-<h4 class="author">Institute for Social Research and Data
-Innovation</h4>
 
 
 
 <p>Browsing for IPUMS data can be a little like grocery shopping when
 you’re hungry—you show up to grab a couple things, but everything looks
-so good that you end up with an overflowing cart<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Unfortunately, this
+so good that you end up with an overflowing cart.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> Unfortunately, this
 can lead to extracts so large that they don’t fit in your computer’s
 memory.</p>
 <p>If you’ve got an extract that’s too big, both the IPUMS website and
@@ -423,19 +420,21 @@ for married women:</p>
 <span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us2013a</span></span>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; Variables: (2 total) MARST, SEX</span></span></code></pre></div>
-<p>If you’re using the online interface, the “Select Cases” option will
-be available on the last page before submitting an extract request.</p>
+<p>If you’re using the online interface, the <strong>Select
+Cases</strong> option will be available on the last page before
+submitting an extract request.</p>
 </div>
 <div id="use-a-sampled-subset-of-the-data" class="section level3">
 <h3>Use a sampled subset of the data</h3>
 <p>Yet another option (also only for microdata projects) is to take a
 random subsample of the data before producing your extract.</p>
 <p>Sampled data is not available via the IPUMS API, but you can use the
-“Customize Sample Size” option in the online interface to do so. This
-also appears on the final page before submitting an extract request.</p>
-<p>If you’ve already submitted the extract, you can click the “REVISE”
-link on the “Download or Revise Extracts” page to access these features
-and produce a new data extract.</p>
+<strong>Customize Sample Size</strong> option in the online interface to
+do so. This also appears on the final page before submitting an extract
+request.</p>
+<p>If you’ve already submitted the extract, you can click the
+<strong>REVISE</strong> link on the <em>Download or Revise Extracts</em>
+page to access these features and produce a new data extract.</p>
 </div>
 </div>
 <div id="option-3-process-the-data-in-pieces" class="section level2">
@@ -443,14 +442,14 @@ and produce a new data extract.</p>
 <p>ipumsr provides two related options for reading data sources in
 increments:</p>
 <ul>
-<li><p><em>Chunked</em> functions allow you to specify a function that
-will be called on each chunk of data as it is read in as well as how you
+<li><em>Chunked</em> functions allow you to specify a function that will
+be called on each chunk of data as it is read in as well as how you
 would like the chunks to be combined at the end. These functions use the
 readr <a href="https://readr.tidyverse.org/reference/read_delim_chunked.html">framework</a>
-for reading chunked data.</p></li>
-<li><p><em>Yielded</em> functions allow more flexibility by returning
+for reading chunked data.</li>
+<li><em>Yielded</em> functions allow more flexibility by returning
 control to the user between the loading of each piece of data. These
-functions are unique to ipumsr and fixed-width data.</p></li>
+functions are unique to ipumsr and fixed-width data.</li>
 </ul>
 <div id="reading-chunked-data" class="section level3">
 <h3>Reading chunked data</h3>
@@ -472,10 +471,9 @@ legitimate!</em></p>
 <p>Imagine we wanted to find the percent of people in the workforce
 grouped by their self-reported health. Since our example extract is
 small enough to fit in memory, we could load the full dataset with
-<code>read_ipums_micro()</code>, relabel the <code>EMPSTAT</code>
-variable into a binary variable (see
-<code>vignette(&quot;value-labels&quot;)</code>), and count the people in each
-group.</p>
+<code>read_ipums_micro()</code>, use <code>lbl_relabel()</code> to
+relabel the <code>EMPSTAT</code> variable into a binary variable, and
+count the people in each group.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">read_ipums_micro</span>(cps_ddi_file, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="at">HEALTH =</span> <span class="fu">as_factor</span>(HEALTH),</span>
@@ -550,9 +548,9 @@ regression models discussed <a href="#chunked-reg">below</a>).</p>
 <p>In this case, we want to row-bind the data frames returned by
 <code>cb_function()</code>, so we use
 <code>IpumsDataFrameCallback</code>.</p>
-<p>Callback objects are <a href="https://CRAN.R-project.org/package=R6">R6</a> objects, but you
-don’t need to be familiar with R6 to use them<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. To initialize a
-callback object, simply use <code>$new()</code>:</p>
+<p>Callback objects are <code>{R6}</code> objects, but you don’t need to
+be familiar with R6 to use them.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> To initialize a callback object, simply use
+<code>$new()</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>cb <span class="ot">&lt;-</span> IpumsDataFrameCallback<span class="sc">$</span><span class="fu">new</span>(cb_function)</span></code></pre></div>
 <p>At this point, we’re ready to load the data in chunks. We use
 <code>read_ipums_micro_chunked()</code> to specify the callback and
@@ -895,15 +893,17 @@ be loaded into R.</p>
 benefits and drawbacks, and the database you choose to use will be
 specific to your use case. However, once you’ve chosen a database, there
 will be two general steps:</p>
-<ul>
-<li><p>Importing data into the database</p></li>
-<li><p>Connecting the database to R</p></li>
-</ul>
-<p>R has several tools that support database integration, including <a href="https://dbi.r-dbi.org/">DBI</a>, <a href="https://dbplyr.tidyverse.org/">dbplyr</a>, <a href="https://spark.rstudio.com/">sparklyr</a>, <a href="https://spark.apache.org/docs/latest/sparkr.html">sparkR</a>, <a href="https://bigrquery.r-dbi.org/">bigrquery</a>, and others. In this
-example, we’ll use RSQLite to load the data into an in-memory database.
-(We use RSQLite because it is easy to set up, but it is likely not
-efficient enough to fully resolve issues with large IPUMS data, so it
-may be wise to consider an alternative in practice.)</p>
+<ol style="list-style-type: decimal">
+<li>Importing data into the database</li>
+<li>Connecting the database to R</li>
+</ol>
+<p>R has several tools that support database integration, including
+<code>{DBI}</code>, <code>{dbplyr}</code>, <code>{sparklyr}</code>,
+<code>{bigrquery}</code>, and others. In this example, we’ll use
+<code>{RSQLite}</code> to load the data into an in-memory database. (We
+use RSQLite because it is easy to set up, but it is likely not efficient
+enough to fully resolve issues with large IPUMS data, so it may be wise
+to consider an alternative in practice.)</p>
 <div id="importing-data-into-the-database" class="section level4">
 <h4>Importing data into the database</h4>
 <p>For rectangular extracts, it is likely simplest to load your data
@@ -912,9 +912,9 @@ working with a hierarchical extract (or your database software doesn’t
 support CSV format), then you can use an ipumsr <code>chunked</code>
 function to load the data into a database without needing to store the
 entire dataset in R.</p>
-<p>(For more about rectangular vs. hierarchical extracts, see the
-“Hierarchical extracts” section of
-<code>vignette(&quot;ipums-read&quot;)</code>.)</p>
+<p>See the <a href="ipums-read.html#hierarchical-extracts">IPUMS data
+reading vignette</a> for more about rectangular vs. hierarchical
+extracts.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
 <span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="fu">library</span>(RSQLite)</span>
 <span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a></span>
@@ -950,7 +950,23 @@ syntax we would use with dplyr:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>example <span class="ot">&lt;-</span> <span class="fu">tbl</span>(con, <span class="st">&quot;cps&quot;</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" tabindex="-1"></a>example <span class="sc">%&gt;%</span></span>
-<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>)</span></code></pre></div>
+<span id="cb26-4"><a href="#cb26-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>)</span>
+<span id="cb26-5"><a href="#cb26-5" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [?? x 14]</span></span>
+<span id="cb26-6"><a href="#cb26-6" tabindex="-1"></a><span class="co">#&gt; # Database: sqlite 3.43.2 []</span></span>
+<span id="cb26-7"><a href="#cb26-7" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL MONTH   CPSID ASECFLAG ASECWTH FOODSTMP PERNUM  CPSIDP ASECWT</span></span>
+<span id="cb26-8"><a href="#cb26-8" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span id="cb26-9"><a href="#cb26-9" tabindex="-1"></a><span class="co">#&gt;  1  2011     33     3 2.01e13        1    308.        1      1 2.01e13   308.</span></span>
+<span id="cb26-10"><a href="#cb26-10" tabindex="-1"></a><span class="co">#&gt;  2  2011     33     3 2.01e13        1    308.        1      2 2.01e13   217.</span></span>
+<span id="cb26-11"><a href="#cb26-11" tabindex="-1"></a><span class="co">#&gt;  3  2011     33     3 2.01e13        1    308.        1      3 2.01e13   249.</span></span>
+<span id="cb26-12"><a href="#cb26-12" tabindex="-1"></a><span class="co">#&gt;  4  2011     46     3 2.01e13        1    266.        1      1 2.01e13   266.</span></span>
+<span id="cb26-13"><a href="#cb26-13" tabindex="-1"></a><span class="co">#&gt;  5  2011     46     3 2.01e13        1    266.        1      2 2.01e13   266.</span></span>
+<span id="cb26-14"><a href="#cb26-14" tabindex="-1"></a><span class="co">#&gt;  6  2011     46     3 2.01e13        1    266.        1      3 2.01e13   265.</span></span>
+<span id="cb26-15"><a href="#cb26-15" tabindex="-1"></a><span class="co">#&gt;  7  2011     46     3 2.01e13        1    266.        1      4 2.01e13   296.</span></span>
+<span id="cb26-16"><a href="#cb26-16" tabindex="-1"></a><span class="co">#&gt;  8  2011     64     3 2.01e13        1    241.        1      1 2.01e13   241.</span></span>
+<span id="cb26-17"><a href="#cb26-17" tabindex="-1"></a><span class="co">#&gt;  9  2011     64     3 2.01e13        1    241.        1      2 2.01e13   241.</span></span>
+<span id="cb26-18"><a href="#cb26-18" tabindex="-1"></a><span class="co">#&gt; 10  2011     64     3 2.01e13        1    241.        1      3 2.01e13   278.</span></span>
+<span id="cb26-19"><a href="#cb26-19" tabindex="-1"></a><span class="co">#&gt; # ℹ more rows</span></span>
+<span id="cb26-20"><a href="#cb26-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 4 more variables: AGE &lt;int&gt;, EMPSTAT &lt;int&gt;, AHRSWORKT &lt;dbl&gt;, HEALTH &lt;int&gt;</span></span></code></pre></div>
 <p>dbplyr shows us a nice preview of the first rows of the result of our
 query, but the data still exist only in the database. You can use
 <code>dplyr::collect()</code> to load the full results of the query into
@@ -962,7 +978,9 @@ metadata:</p>
 <span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
 <span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a></span>
 <span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a><span class="co"># Variable metadata is missing</span></span>
-<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span></code></pre></div>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span>
+<span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="co">#&gt; # ℹ 2 variables: val &lt;dbl&gt;, lbl &lt;chr&gt;</span></span></code></pre></div>
 <p>Instead, use <code>ipums_collect()</code>, which uses a provided
 <code>ipums_ddi</code> object to reattach the metadata while loading
 into the R environment:</p>
@@ -970,9 +988,24 @@ into the R environment:</p>
 <span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>  <span class="fu">ipums_collect</span>(ddi)</span>
 <span id="cb28-4"><a href="#cb28-4" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span></code></pre></div>
-<p>For more about variable metadata in IPUMS data, see
-<code>vignette(&quot;value-labels&quot;)</code>.</p>
+<span id="cb28-5"><a href="#cb28-5" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(data<span class="sc">$</span>MONTH)</span>
+<span id="cb28-6"><a href="#cb28-6" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
+<span id="cb28-7"><a href="#cb28-7" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
+<span id="cb28-8"><a href="#cb28-8" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
+<span id="cb28-9"><a href="#cb28-9" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
+<span id="cb28-10"><a href="#cb28-10" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
+<span id="cb28-11"><a href="#cb28-11" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
+<span id="cb28-12"><a href="#cb28-12" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
+<span id="cb28-13"><a href="#cb28-13" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
+<span id="cb28-14"><a href="#cb28-14" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
+<span id="cb28-15"><a href="#cb28-15" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
+<span id="cb28-16"><a href="#cb28-16" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
+<span id="cb28-17"><a href="#cb28-17" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
+<span id="cb28-18"><a href="#cb28-18" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
+<span id="cb28-19"><a href="#cb28-19" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
+<span id="cb28-20"><a href="#cb28-20" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span></code></pre></div>
+<p>See the <a href="value-labels.html">value labels vignette</a> more
+about variable metadata in IPUMS data.</p>
 </div>
 </div>
 <div id="learning-more" class="section level2">

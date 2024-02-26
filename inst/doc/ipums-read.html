@@ -10,7 +10,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Institute for Social Research and Data Innovation" />
 
 
 <title>Reading IPUMS Data</title>
@@ -338,8 +337,6 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Reading IPUMS Data</h1>
-<h4 class="author">Institute for Social Research and Data
-Innovation</h4>
 
 
 
@@ -355,10 +352,10 @@ to IPUMS data.</p>
 all projects will provide multiple files in a data extract. The files
 most relevant to ipumsr are:</p>
 <ul>
-<li><p>The metadata file containing information about the variables
-included in the extract data</p></li>
-<li><p>One or more data files, depending on the project and
-specifications in the extract</p></li>
+<li>The <strong>metadata</strong> file containing information about the
+variables included in the extract data</li>
+<li>One or more <strong>data</strong> files, depending on the project
+and specifications in the extract</li>
 </ul>
 <p>Both of these files are necessary to properly load data into R.
 Obviously, the data files contain the actual data values to be loaded.
@@ -367,8 +364,8 @@ are required to correctly parse the data on load.</p>
 <p>Even for .csv files, the metadata file allows for the addition of
 contextual variable information to the loaded data. This makes it much
 easier to interpret the values in the data variables and effectively use
-them in your data processing pipeline. See the vignette about <a href="value-labels.html">value labels</a> for more information on
-working with these labels.</p>
+them in your data processing pipeline. See the <a href="value-labels.html">value labels</a> vignette for more information
+on working with these labels.</p>
 </div>
 <div id="reading-microdata-extracts" class="section level2">
 <h2>Reading microdata extracts</h2>
@@ -506,13 +503,13 @@ match those in the DDI:</p>
 <span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span></code></pre></div>
 <div id="hierarchical-extracts" class="section level3">
 <h3>Hierarchical extracts</h3>
-<p>IPUMS microdata can come in either “rectangular” or “hierarchical”
-format.</p>
+<p>IPUMS microdata can come in either <em>rectangular</em> or
+<em>hierarchical</em> format.</p>
 <p>Rectangular data are transformed such that every row of data
 represents the same type of record. For instance, each row will
 represent a person record, and all household-level information for that
-person will be included in the same row. (This is the case for the CPS
-example above.)</p>
+person will be included in the same row. (This is the case for
+<code>cps_data</code> shown in the <a href="#reading-microdata-extracts">example above</a>.)</p>
 <p>Hierarchical data have records of different types interspersed in a
 single file. For instance, a household record will be included in its
 own row followed by the person records associated with that
@@ -537,11 +534,11 @@ household.</p>
 <span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co">#&gt;  9 H [Househ…  1962     84  3 [Mar…   1790. 27 [Min…     NA    NA  NA           </span></span>
 <span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a><span class="co">#&gt; 10 P [Person…  1962     84 NA           NA  NA            1  1790.  6.38e3      </span></span>
 <span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a><span class="co">#&gt; # ℹ 11,043 more rows</span></span></code></pre></div>
-<p>The long format consists of a single <code>data.frame</code> that
-includes rows with varying record types. In this example, some rows have
-a record type of “Household” and others have a record type of “Person”.
-Variables that do not apply to a particular record type will be filled
-with <code>NA</code> in rows of that record type.</p>
+<p>The long format consists of a single <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html"><code>tibble</code></a>
+that includes rows with varying record types. In this example, some rows
+have a record type of “Household” and others have a record type of
+“Person”. Variables that do not apply to a particular record type will
+be filled with <code>NA</code> in rows of that record type.</p>
 <p>To read data in list format, use
 <code>read_ipums_micro_list()</code>. This function returns a list where
 each element contains all the records for a given record type:</p>
@@ -632,12 +629,13 @@ where available:</p>
 <span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt; $var_desc</span></span>
 <span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Table D6Z: Year Structure Built (Universe: Housing Units)&quot;</span></span></code></pre></div>
-<p>Variable metadata for NHGIS data are slightly different than those
-provided by microdata products. First, they come from a .txt codebook
-file rather than an .xml DDI file. Codebooks can still be loaded into an
-<code>ipums_ddi</code> object, but fields that do not apply to aggregate
-data will be empty. In general, NHGIS codebooks provide only variable
-labels and descriptions, along with citation information.</p>
+<p>However, variable metadata for NHGIS data are slightly different than
+those provided by microdata products. First, they come from a .txt
+codebook file rather than an .xml DDI file. Codebooks can still be
+loaded into an <code>ipums_ddi</code> object, but fields that do not
+apply to aggregate data will be empty. In general, NHGIS codebooks
+provide only variable labels and descriptions, along with citation
+information.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>nhgis_cb <span class="ot">&lt;-</span> <span class="fu">read_nhgis_codebook</span>(nhgis_ex1)</span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># Most useful metadata for NHGIS is for variable labels:</span></span>
@@ -657,9 +655,10 @@ labels and descriptions, along with citation information.</p>
 <span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="co">#&gt;  9 REGIONA   Region Code                                                &quot;&quot;      </span></span>
 <span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="co">#&gt; 10 STATEA    State Code                                                 &quot;&quot;      </span></span>
 <span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="co">#&gt; # ℹ 15 more rows</span></span></code></pre></div>
-<p>By design, NHGIS codebooks are human-readable. To view the codebook
-contents themselves without converting to an <code>ipums_ddi</code>
-object, set <code>raw = TRUE</code>.</p>
+<p>By design, NHGIS codebooks are human-readable, and it may be easier
+to interpret their contents in raw format. To view the codebook itself
+without converting to an <code>ipums_ddi</code> object, set
+<code>raw = TRUE</code>.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>nhgis_cb <span class="ot">&lt;-</span> <span class="fu">read_nhgis_codebook</span>(nhgis_ex1, <span class="at">raw =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="fu">cat</span>(nhgis_cb[<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>], <span class="at">sep =</span> <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
@@ -685,12 +684,9 @@ object, set <code>raw = TRUE</code>.</p>
 <span id="cb13-23"><a href="#cb13-23" tabindex="-1"></a><span class="co">#&gt;    NHGIS code:    1990_SSTF09</span></span></code></pre></div>
 <div id="handling-multiple-files" class="section level3">
 <h3>Handling multiple files</h3>
-<p>In the above example, <code>read_nhgis_codebook()</code> was able to
-identify and load the codebook file, even though the provided file path
-is the same that was provided to <code>read_nhgis()</code> earlier.
-However, for more complicated NHGIS extracts that include data from
-multiple data sources, the provided .zip archive will contain multiple
-codebook and data files.</p>
+<p>For more complicated NHGIS extracts that include data from multiple
+data sources, the provided .zip archive will contain multiple codebook
+and data files.</p>
 <p>You can view the files contained in an extract to determine if this
 is the case:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>nhgis_ex2 <span class="ot">&lt;-</span> <span class="fu">ipums_example</span>(<span class="st">&quot;nhgis0731_csv.zip&quot;</span>)</span>
@@ -707,8 +703,7 @@ features of the <a href="https://tidyselect.r-lib.org/reference/language.html">t
 selection language</a>. (See <code>?selection_language</code> for
 documentation of the features supported in ipumsr.)</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>nhgis_data2 <span class="ot">&lt;-</span> <span class="fu">read_nhgis</span>(nhgis_ex2, <span class="at">file_select =</span> <span class="fu">contains</span>(<span class="st">&quot;nation&quot;</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>nhgis_data3 <span class="ot">&lt;-</span> <span class="fu">read_nhgis</span>(nhgis_ex2, <span class="at">file_select =</span> <span class="fu">contains</span>(<span class="st">&quot;ts_nominal_state&quot;</span>))</span></code></pre></div>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>nhgis_data3 <span class="ot">&lt;-</span> <span class="fu">read_nhgis</span>(nhgis_ex2, <span class="at">file_select =</span> <span class="fu">contains</span>(<span class="st">&quot;ts_nominal_state&quot;</span>))</span></code></pre></div>
 <p>The matching codebook should automatically be loaded and attached to
 the data:</p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">attributes</span>(nhgis_data2<span class="sc">$</span>AJWBE001)</span>
@@ -739,7 +734,7 @@ the file to load:</p>
 <h3>NHGIS data formats</h3>
 <div id="csv-data" class="section level4">
 <h4>CSV data</h4>
-<p>NHGIS data are most easily handled when in .csv format.
+<p>NHGIS data are most easily handled in .csv format.
 <code>read_nhgis()</code> uses <code>readr::read_csv()</code> to handle
 the generation of column type specifications. If the guessed
 specifications are incorrect, you can use the <code>col_types</code>
@@ -808,12 +803,10 @@ fixed-width format:</p>
 <span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a><span class="co">#&gt; #   A00AA1940 &lt;dbl&gt;, A00AA1950 &lt;dbl&gt;, A00AA1960 &lt;dbl&gt;, A00AA1970 &lt;dbl&gt;,</span></span>
 <span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a><span class="co">#&gt; #   A00AA1980 &lt;dbl&gt;, A00AA1990 &lt;dbl&gt;, A00AA2000 &lt;dbl&gt;, A00AA2010 &lt;dbl&gt;,</span></span>
 <span id="cb19-34"><a href="#cb19-34" tabindex="-1"></a><span class="co">#&gt; #   A00AA2020 &lt;dbl&gt;</span></span></code></pre></div>
-<p>Note that in this case numeric geographic codes are correctly loaded
-as character variables. The correct parsing of NHGIS fixed-width files
-is driven by the column parsing information contained in the .do file
-provided in the .zip archive. This contains information not only about
-column positions and data types, but also implicit decimals in the
-data.</p>
+<p>The correct parsing of NHGIS fixed-width files is driven by the
+column parsing information contained in the .do file provided in the
+.zip archive. This contains information not only about column positions
+and data types, but also implicit decimals in the data.</p>
 <p>If you no longer have access to the .do file, it is best to resubmit
 and/or re-download the extract (you may also consider converting to .csv
 format in the process). If you have moved the .do file, provide its file
@@ -832,25 +825,21 @@ loading of NHGIS .csv files.</p>
 <h2>Reading spatial data</h2>
 <p>IPUMS distributes spatial data for several projects.</p>
 <ul>
-<li><p>For microdata projects, spatial data are distributed in
-shapefiles on dedicated geography pages separate from the standard
-extract system. Look for a “Geography and GIS” link in the “Supplemental
-Data” section of the project’s website to find spatial data files and
-information.</p></li>
-<li><p>For NHGIS, spatial data can be obtained within the extract
-system. Shapefiles will be distributed in their own .zip archive
-alongside the .zip archive containing the extract’s tabular data (if any
-tabular data are requested).</p></li>
+<li>For microdata projects, spatial data are distributed in shapefiles
+on dedicated geography pages separate from the standard extract system.
+Look for a <strong>Geography and GIS</strong> link in the
+<strong>Supplemental Data</strong> section of the project’s website to
+find spatial data files and information.</li>
+<li>For NHGIS, spatial data can be obtained within the extract system.
+Shapefiles will be distributed in their own .zip archive alongside the
+.zip archive containing the extract’s tabular data (if any tabular data
+are requested).</li>
 </ul>
 <p>Use <code>read_ipums_sf()</code> to load spatial data from any of
-these sources (ipumsr is phasing out support for objects from the
-<code>sp</code> package. If you prefer to work with these objects, use
-<code>sf::as_Spatial()</code> to convert from <code>sf</code> to
-<code>sp</code>).</p>
+these sources as an <code>sf</code> object from <code>{sf}</code>.</p>
 <p><code>read_ipums_sf()</code> also supports the loading of spatial
 files within .zip archives and the <code>file_select</code> syntax for
-file selection (we don’t need <code>file_select</code> in this example
-because there is only one shapefile in this example extract).</p>
+file selection when multiple internal files are present.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>nhgis_shp_file <span class="ot">&lt;-</span> <span class="fu">ipums_example</span>(<span class="st">&quot;nhgis0972_shape_small.zip&quot;</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>shp_data <span class="ot">&lt;-</span> <span class="fu">read_ipums_sf</span>(nhgis_shp_file)</span>
@@ -872,8 +861,8 @@ because there is only one shapefile in this example extract).</p>
 <span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">#&gt; 6 1640  1642    21      G1640   1640      5608404797.   415671. G16421640</span></span>
 <span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 1 more variable: geometry &lt;MULTIPOLYGON [m]&gt;</span></span></code></pre></div>
 <p>These data can then be joined to associated tabular data. To preserve
-IPUMS attributes from the tabular data used in the join, use
-an<code>ipums_shape_*_join</code> function:</p>
+IPUMS attributes from the tabular data used in the join, use an
+<code>ipums_shape_*_join()</code> function:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a>joined_data <span class="ot">&lt;-</span> <span class="fu">ipums_shape_left_join</span>(</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  nhgis_data,</span>
 <span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  shp_data,</span>
@@ -886,12 +875,12 @@ an<code>ipums_shape_*_join</code> function:</p>
 <span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="co">#&gt; $var_desc</span></span>
 <span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;&quot;</span></span></code></pre></div>
-<p>For NHGIS data, the join code typically corresponds to the “GISJOIN”
-variable. However, for microdata projects, the variable name used for a
-geographic level in the tabular data may differ from that in the spatial
-data. Consult the documentation and metadata for these files to identify
-the correct join columns and use the <code>by</code> argument to join on
-these columns.</p>
+<p>For NHGIS data, the join code typically corresponds to the
+<code>GISJOIN</code> variable. However, for microdata projects, the
+variable name used for a geographic level in the tabular data may differ
+from that in the spatial data. Consult the documentation and metadata
+for these files to identify the correct join columns and use the
+<code>by</code> argument to join on these columns.</p>
 <p>Once joined, data include both statistical and spatial information
 along with the variable metadata.</p>
 <div id="harmonized-vs.-non-harmonized-data" class="section level3">
@@ -900,11 +889,11 @@ along with the variable metadata.</p>
 that geographic boundaries shift over time. IPUMS therefore provides
 multiple types of spatial data:</p>
 <ul>
-<li><p>Harmonized (also called “integrated” or “consistent”) files have
+<li>Harmonized (also called “integrated” or “consistent”) files have
 been made consistent over time by combining geographies that share area
-for different time periods.</p></li>
-<li><p>Non-harmonized, or year-specific, files represent geographies at
-a specific point in time.</p></li>
+for different time periods.</li>
+<li>Non-harmonized, or year-specific, files represent geographies at a
+specific point in time.</li>
 </ul>
 <p>Furthermore, some NHGIS time series tables have been standardized
 such that the statistics have been adjusted to apply to a year-specific

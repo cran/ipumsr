@@ -81,7 +81,6 @@ ipums_list_files(nhgis_ex2)
 
 ## ----error=TRUE, message=FALSE------------------------------------------------
 nhgis_data2 <- read_nhgis(nhgis_ex2, file_select = contains("nation"))
-
 nhgis_data3 <- read_nhgis(nhgis_ex2, file_select = contains("ts_nominal_state"))
 
 ## -----------------------------------------------------------------------------

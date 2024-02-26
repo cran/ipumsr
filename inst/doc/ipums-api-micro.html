@@ -10,7 +10,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Institute for Social Research and Data Innovation" />
 
 
 <title>Microdata API Requests</title>
@@ -338,8 +337,6 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Microdata API Requests</h1>
-<h4 class="author">Institute for Social Research and Data
-Innovation</h4>
 
 
 
@@ -367,8 +364,8 @@ API.</p>
 <p>In addition to microdata projects, the IPUMS API also supports IPUMS
 NHGIS data. For details about obtaining IPUMS NHGIS data using ipumsr,
 see the <a href="ipums-api-nhgis.html">NHGIS-specific vignette</a>.</p>
-<p>Before getting started, we’ll load ipumsr and <a href="https://dplyr.tidyverse.org/">dplyr</a>, which will be helpful for
-this demo:</p>
+<p>Before getting started, we’ll load ipumsr and <code>{dplyr}</code>,
+which will be helpful for this demo:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
 </div>
@@ -421,7 +418,7 @@ samples of interest. For instance, to find all IPUMS International
 samples for Mexico, we could do the following:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>ipumsi_samps <span class="ot">&lt;-</span> <span class="fu">get_sample_info</span>(<span class="st">&quot;ipumsi&quot;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>ipumsi_samps <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>ipumsi_samps <span class="sc">%&gt;%</span></span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">grepl</span>(<span class="st">&quot;Mexico&quot;</span>, description))</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; # A tibble: 70 × 2</span></span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;    name    description       </span></span>
@@ -628,8 +625,8 @@ your extract to only persons identifying as “White and Chinese” or
 <span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a></span>
 <span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="co"># For detailed case selection, change the `case_selection_type`</span></span>
 <span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="fu">var_spec</span>(</span>
-<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>  <span class="st">&quot;RACE&quot;</span>, </span>
-<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  <span class="at">case_selections =</span> <span class="fu">c</span>(<span class="st">&quot;811&quot;</span>, <span class="st">&quot;812&quot;</span>), </span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a>  <span class="st">&quot;RACE&quot;</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a>  <span class="at">case_selections =</span> <span class="fu">c</span>(<span class="st">&quot;811&quot;</span>, <span class="st">&quot;812&quot;</span>),</span>
 <span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a>  <span class="at">case_selection_type =</span> <span class="st">&quot;detailed&quot;</span></span>
 <span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a>)</span>
 <span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
@@ -678,7 +675,8 @@ definition:</p>
 characteristics of other household members. To do so, use the
 <code>attached_characteristics</code> argument of
 <code>var_spec()</code>.</p>
-<p>For instance, to attach the spouse’s SEX value to a record:</p>
+<p>For instance, to attach the spouse’s <code>SEX</code> value to a
+record:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">var_spec</span>(<span class="st">&quot;SEX&quot;</span>, <span class="at">attached_characteristics =</span> <span class="st">&quot;spouse&quot;</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
 <span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;SEX&quot;</span></span>
@@ -688,9 +686,9 @@ characteristics of other household members. To do so, use the
 <span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
-<p>This will add a new variable (in this case, SEX_SP) to the output
-data that will contain the sex of a person’s spouse (if no such record
-exists, the value will be 0).</p>
+<p>This will add a new variable (in this case, <code>SEX_SP</code>) to
+the output data that will contain the sex of a person’s spouse (if no
+such record exists, the value will be 0).</p>
 <p>Multiple attached characteristics can be attached for a single
 variable:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">var_spec</span>(<span class="st">&quot;AGE&quot;</span>, <span class="at">attached_characteristics =</span> <span class="fu">c</span>(<span class="st">&quot;mother&quot;</span>, <span class="st">&quot;father&quot;</span>))</span>
@@ -721,8 +719,8 @@ edited or allocated.</p>
 <span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; attr(,&quot;class&quot;)</span></span>
 <span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;var_spec&quot;   &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
-<p>This will produce a new variable (QRACE) containing the data quality
-flag for the given variable.</p>
+<p>This will produce a new variable (<code>QRACE</code>) containing the
+data quality flag for the given variable.</p>
 <p>To add data quality flags for all variables that have them, set
 <code>data_quality_flags = TRUE</code> in your extract definition
 directly:</p>

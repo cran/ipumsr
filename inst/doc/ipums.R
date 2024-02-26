@@ -5,6 +5,9 @@ knitr::opts_chunk$set(
 )
 library(ipumsr)
 
+## ----echo=FALSE, out.width = "70%", fig.align="center"------------------------
+knitr::include_graphics("cps_select_data.jpg")
+
 ## -----------------------------------------------------------------------------
 cps_extract_request <- define_extract_cps(
   description = "2018-2019 CPS Data",
@@ -22,7 +25,7 @@ nhgis_extract_request <- define_extract_nhgis(
 )
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  submitted_extract <- submit_extract(extract_request)
+#  submitted_extract <- submit_extract(cps_extract_request)
 #  downloadable_extract <- wait_for_extract(submitted_extract)
 #  data_files <- download_extract(downloadable_extract)
 
@@ -37,7 +40,7 @@ head(cps_data)
 
 ## -----------------------------------------------------------------------------
 nhgis_file <- ipums_example("nhgis0972_csv.zip")
-nhgis_data <- read_nhgis(nhgis_file)
+nhgis_data <- read_nhgis(nhgis_file, verbose = FALSE)
 
 head(nhgis_data)
 

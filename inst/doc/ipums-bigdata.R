@@ -13,21 +13,6 @@ installed_db_pkgs <- requireNamespace("DBI") &
   requireNamespace("RSQLite") &
   requireNamespace("dbplyr")
 
-# Suppress certain chunks when on CRAN, as they may fail due to
-# bug in vroom 1.6.4 that interacts with RSQLite and DBI 
-# (https://github.com/tidyverse/vroom/issues/519).
-# 
-# Until bug is fixed in vroom, we do not want vignette check failures 
-# on CRAN that are out of our control, so we suppress output from these chunks
-#
-# Developers can use dev version of RSQLite to avoid errors. To run the chunks
-# if you have the appropriate version of RSQLite installed, set the
-# `NOT_CRAN` environment variable equal to `"true"`.
-#
-# TODO: remove when vroom is fixed
-installed_db_pkgs <- installed_db_pkgs &&
-  isTRUE(as.logical(Sys.getenv("NOT_CRAN", "false")))
-
 ## ----echo=FALSE---------------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -244,49 +229,49 @@ results <- bigglm(
 summary(results)
 
 ## ----eval=installed_db_pkgs, results="hide"-----------------------------------
-#  library(DBI)
-#  library(RSQLite)
-#  
-#  # Connect to database
-#  con <- dbConnect(SQLite(), path = ":memory:")
-#  
-#  # Load file metadata
-#  ddi <- read_ipums_ddi(cps_ddi_file)
-#  
-#  # Write data to database in chunks
-#  read_ipums_micro_chunked(
-#    ddi,
-#    readr::SideEffectChunkCallback$new(
-#      function(x, pos) {
-#        if (pos == 1) {
-#          dbWriteTable(con, "cps", x)
-#        } else {
-#          dbWriteTable(con, "cps", x, row.names = FALSE, append = TRUE)
-#        }
-#      }
-#    ),
-#    chunk_size = 1000,
-#    verbose = FALSE
-#  )
+library(DBI)
+library(RSQLite)
+
+# Connect to database
+con <- dbConnect(SQLite(), path = ":memory:")
+
+# Load file metadata
+ddi <- read_ipums_ddi(cps_ddi_file)
+
+# Write data to database in chunks
+read_ipums_micro_chunked(
+  ddi,
+  readr::SideEffectChunkCallback$new(
+    function(x, pos) {
+      if (pos == 1) {
+        dbWriteTable(con, "cps", x)
+      } else {
+        dbWriteTable(con, "cps", x, row.names = FALSE, append = TRUE)
+      }
+    }
+  ),
+  chunk_size = 1000,
+  verbose = FALSE
+)
 
 ## ----eval=installed_db_pkgs---------------------------------------------------
-#  example <- tbl(con, "cps")
-#  
-#  example %>%
-#    filter("AGE" > 25)
+example <- tbl(con, "cps")
+
+example %>%
+  filter("AGE" > 25)
 
 ## ----eval=installed_db_pkgs---------------------------------------------------
-#  data <- example %>%
-#    filter("AGE" > 25) %>%
-#    collect()
-#  
-#  # Variable metadata is missing
-#  ipums_val_labels(data$MONTH)
+data <- example %>%
+  filter("AGE" > 25) %>%
+  collect()
+
+# Variable metadata is missing
+ipums_val_labels(data$MONTH)
 
 ## ----eval=installed_db_pkgs---------------------------------------------------
-#  data <- example %>%
-#    filter("AGE" > 25) %>%
-#    ipums_collect(ddi)
-#  
-#  ipums_val_labels(data$MONTH)
+data <- example %>%
+  filter("AGE" > 25) %>%
+  ipums_collect(ddi)
+
+ipums_val_labels(data$MONTH)
 

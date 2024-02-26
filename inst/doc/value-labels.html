@@ -10,7 +10,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Institute for Social Research and Data Innovation" />
 
 
 <title>Value Labels in IPUMS data</title>
@@ -338,13 +337,11 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">Value Labels in IPUMS data</h1>
-<h4 class="author">Institute for Social Research and Data
-Innovation</h4>
 
 
 
 <div id="ipums-variable-metadata" class="section level2">
-<h2>IPUMS Variable Metadata</h2>
+<h2>IPUMS variable metadata</h2>
 <p>IPUMS data come with three primary types of variable-level
 metadata:</p>
 <ul>
@@ -356,45 +353,42 @@ descriptions of the contents of a variable. These provide more
 information about what a given variable measures.</p></li>
 <li><p><strong><em>Value labels</em></strong> link particular data
 values to more meaningful text labels. For instance, the
-<code>HEALTH</code> variable has data values including 1 and 2, but
-these are actually stand-ins for “Excellent” and “Very good” health.
-This mapping would be contained in a value-label pair that includes a
-value and its associated label.</p></li>
+<code>HEALTH</code> variable may have data values including
+<code>1</code> and <code>2</code>, but these are actually stand-ins for
+“Excellent” and “Very good” health. This mapping would be contained in a
+value-label pair that includes a value and its associated
+label.</p></li>
 </ul>
 <p>The rest of this article will focus on value labels; for more about
-variable labels and descriptions, see
-<code>vignette(&quot;ipums&quot;)</code>.</p>
+variable labels and descriptions, see <code>?ipums_var_info</code>.</p>
 </div>
 <div id="value-labels" class="section level2">
 <h2>Value labels</h2>
-<p>ipumsr uses the <code>labelled</code> <a href="https://haven.tidyverse.org/reference/labelled.html">class</a>
-from the <a href="https://haven.tidyverse.org/index.html">haven</a>
-package to handle value labels.</p>
+<p>ipumsr uses the <a href="https://haven.tidyverse.org/reference/labelled.html"><code>labelled</code></a>
+class from the <code>{haven}</code> package to handle value labels.</p>
 <p>You can see this in the column data types when loading IPUMS data.
-Note that <code>&lt;int+lbl&gt;</code> appears below
-<code>STATEFIP</code>, <code>ASECFLAG</code>, and other variables:</p>
+Note that <code>&lt;int+lbl&gt;</code> appears below <code>MONTH</code>
+and <code>ASECFLAG</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(<span class="fu">ipums_example</span>(<span class="st">&quot;cps_00160.xml&quot;</span>))</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>cps <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ddi, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>cps</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,883 × 15</span></span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL MONTH      CPSID ASECFLAG ASECWTH STATEFIP PERNUM  CPSIDP ASECWT</span></span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int+lb&gt;   &lt;dbl&gt; &lt;int+lb&gt;   &lt;dbl&gt; &lt;int+lb&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  1  2016  24138 3 [Marc… 2.02e13 1 [ASEC]   3249. 55 [Wis…      1 2.02e13  3249.</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  2  2016  24139 3 [Marc… 2.02e13 1 [ASEC]   3154. 55 [Wis…      1 2.02e13  3154.</span></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  3  2016  24139 3 [Marc… 2.02e13 1 [ASEC]   3154. 55 [Wis…      2 2.02e13  3154.</span></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  4  2016  24140 3 [Marc… 2.02e13 1 [ASEC]   1652. 55 [Wis…      1 2.02e13  1652.</span></span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt;  5  2016  24140 3 [Marc… 2.02e13 1 [ASEC]   1652. 55 [Wis…      2 2.02e13  1503.</span></span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt;  6  2016  24140 3 [Marc… 2.02e13 1 [ASEC]   1652. 55 [Wis…      3 2.02e13  1652.</span></span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt;  7  2016  24141 3 [Marc… 2.02e13 1 [ASEC]   3049. 55 [Wis…      1 2.02e13  3049.</span></span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt;  8  2016  24142 3 [Marc… 2.02e13 1 [ASEC]   1637. 55 [Wis…      1 2.02e13  1637.</span></span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt;  9  2016  24142 3 [Marc… 2.02e13 1 [ASEC]   1637. 55 [Wis…      2 2.02e13  1637.</span></span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; 10  2016  24142 3 [Marc… 2.02e13 1 [ASEC]   1637. 55 [Wis…      3 2.02e13  1887.</span></span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 10,873 more rows</span></span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; # ℹ 5 more variables: AGE &lt;int+lbl&gt;, EDUC &lt;int+lbl&gt;, INCTOT &lt;dbl+lbl&gt;,</span></span>
-<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; #   MIGRATE1 &lt;int+lbl&gt;, HEALTH &lt;int+lbl&gt;</span></span></code></pre></div>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>cps[, <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="co">#&gt; # A tibble: 10,883 × 5</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL MONTH       CPSID ASECFLAG </span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int+lbl&gt;   &lt;dbl&gt; &lt;int+lbl&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="co">#&gt;  1  2016  24138 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co">#&gt;  2  2016  24139 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="co">#&gt;  3  2016  24139 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co">#&gt;  4  2016  24140 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co">#&gt;  5  2016  24140 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt;  6  2016  24140 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt;  7  2016  24141 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt;  8  2016  24142 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="co">#&gt;  9  2016  24142 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt; 10  2016  24142 3 [March] 2.02e13 1 [ASEC] </span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; # ℹ 10,873 more rows</span></span></code></pre></div>
 <p>This indicates that the data contained in these columns are integers
 but include value labels. You can use the function
 <code>is.labelled()</code> to determine if a variable is indeed
@@ -501,14 +495,16 @@ values:</p>
 <p>While <code>labelled</code> variables provide the benefits described
 above, they also present challenges.</p>
 <p>For example, you may have noticed that <em>both</em> of the means
-calculated above are suspect.</p>
-<p>In the case of <code>AGE_FACTOR</code>, the values have been remapped
-during conversion and several are inconsistent with the original
-data.</p>
-<p>In the case of <code>AGE</code>, we have considered all people over
+calculated above are suspect:</p>
+<ul>
+<li>In the case of <code>AGE_FACTOR</code>, the values have been
+remapped during conversion and several are inconsistent with the
+original data.</li>
+<li>In the case of <code>AGE</code>, we have considered all people over
 90 to be exactly 90, and all people over 99 to be exactly
 99—<code>labelled</code> variables don’t ensure that calculations are
-correct any more than factors do!</p>
+correct any more than factors do!</li>
+</ul>
 <p>Furthermore, many R functions ignore value labels or even actively
 remove them from the data:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>HEALTH)</span>
@@ -627,10 +623,8 @@ pairs whose values should be converted to <code>NA</code>.</p>
 recoding of value-label pairs. ipumsr provides a syntax to easily
 reference the values and labels in this user-defined function:</p>
 <ul>
-<li><p>The <code>.val</code> argument references the
-<em>values</em></p></li>
-<li><p>The <code>.lbl</code> argument references the
-<em>labels</em></p></li>
+<li>The <code>.val</code> argument references the <em>values</em></li>
+<li>The <code>.lbl</code> argument references the <em>labels</em></li>
 </ul>
 <p>For instance, to convert all values equal to <code>999999999</code>
 to <code>NA</code>, we can provide a function that uses the
@@ -681,11 +675,11 @@ values—unlabelled values are not affected:</p>
 pairs, often to recombine existing labels into more general categories.
 It takes a two-sided formula to handle the relabeling:</p>
 <ul>
-<li><p>On the left-hand side, use the <code>lbl()</code> helper to
-define a new value-label pair.</p></li>
-<li><p>On the right-hand side, provide a function that returns
+<li>On the left-hand side, use the <code>lbl()</code> helper to define a
+new value-label pair.</li>
+<li>On the right-hand side, provide a function that returns
 <code>TRUE</code> for those value-label pairs that should be relabelled
-with the new value-label pair from the left-hand side.</p></li>
+with the new value-label pair from the left-hand side.</li>
 </ul>
 <p>The function again uses the <code>.val</code> and <code>.lbl</code>
 <a href="#syntax">syntax</a> mentioned above to refer to values and
@@ -914,18 +908,17 @@ pipeline.</p>
 </div>
 <div id="other-resources" class="section level2">
 <h2>Other resources</h2>
-<p>The <a href="https://haven.tidyverse.org/index.html">haven</a>
-package, which underlies ipumsr’s handling of value labels, provides
-more details on the <code>labelled</code> class. See
-<code>vignette(&quot;semantics&quot;, package = &quot;haven&quot;)</code>.</p>
-<p>The <a href="http://larmarange.github.io/labelled/articles/intro_labelled.html">labelled</a>
-package provides other methods for manipulating value labels, some of
-which overlap those provided by ipumsr.</p>
-<p>The <a href="https://juba.github.io/questionr/">questionr</a> package
-includes functions for exploring <code>labelled</code> variables. In
-particular, the functions <code>describe</code>, <code>freq</code> and
-<code>lookfor</code> all print out to console information about the
-variable using the value labels.</p>
+<p>The <code>{haven}</code> package, which underlies ipumsr’s handling
+of value labels, provides more details on the <code>labelled</code>
+class. See <code>vignette(&quot;semantics&quot;, package = &quot;haven&quot;)</code>.</p>
+<p>The <code>{labelled}</code> package provides other methods for
+manipulating value labels, some of which overlap those provided by
+ipumsr.</p>
+<p>The <code>{questionr}</code> package includes functions for exploring
+<code>labelled</code> variables. In particular, the functions
+<code>describe</code>, <code>freq</code> and <code>lookfor</code> all
+print out to console information about the variable using the value
+labels.</p>
 <p>Finally, the <a href="https://cran.r-project.org/package=foreign">foreign</a> and <a href="https://cran.r-project.org/package=prettyR">prettyR</a> packages
 don’t use the <code>labelled</code> class, but provide similar
 functionality for handling value labels, which could be adapted for use

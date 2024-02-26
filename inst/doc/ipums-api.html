@@ -10,7 +10,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="author" content="Institute for Social Research and Data Innovation" />
 
 
 <title>Introduction to the IPUMS API for R Users</title>
@@ -339,20 +338,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Introduction to the IPUMS API for R
 Users</h1>
-<h4 class="author">Institute for Social Research and Data
-Innovation</h4>
 
 
 
 <p>The IPUMS API provides two asset types, both of which are supported
 by ipumsr:</p>
 <ul>
-<li><p><strong>IPUMS extract</strong> endpoints can be used to submit
+<li><strong>IPUMS extract</strong> endpoints can be used to submit
 extract requests for processing and download completed extract
-files.</p></li>
-<li><p><strong>IPUMS metadata</strong> endpoints can be used to discover
+files.</li>
+<li><strong>IPUMS metadata</strong> endpoints can be used to discover
 and explore available IPUMS data as well as retrieve codes, names, and
-other extract parameters necessary to form extract requests.</p></li>
+other extract parameters necessary to form extract requests.</li>
 </ul>
 <p>Use of the IPUMS API enables the adoption of a programmatic workflow
 that can help users to:</p>
@@ -381,7 +378,7 @@ examples in this vignette:</p>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
 <div id="api-availability" class="section level2">
-<h2>API Availability</h2>
+<h2>API availability</h2>
 <p>IPUMS <strong>extract</strong> support is currently available via API
 for the following collections:</p>
 <ul>
@@ -420,14 +417,9 @@ with <code>ipums_data_collections()</code>.</p>
 <span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="co">#&gt; 12 IPUMS NHIS          microdata       nhis         FALSE      </span></span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; 13 IPUMS MEPS          microdata       meps         FALSE      </span></span>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co">#&gt; 14 IPUMS Higher Ed     microdata       highered     FALSE</span></span></code></pre></div>
-<div id="note-new-features-currently-in-development" class="section level3">
-<h3>Note: New features currently in development</h3>
-<p>The tools in ipumsr may not necessarily support all the functionality
-currently supported by the IPUMS API. See the <a href="https://developer.ipums.org/docs/apiprogram/">API
-documentation</a> for more information about its latest features.
-Furthermore, the API tools in ipumsr are in active development, and some
-functionality may not yet be stable.</p>
-</div>
+<p>Note that the tools in ipumsr may not necessarily support all the
+functionality currently supported by the IPUMS API. See the <a href="https://developer.ipums.org/docs/apiprogram/">API
+documentation</a> for more information about its latest features.</p>
 </div>
 <div id="set-key" class="section level2">
 <h2>Set up your API key</h2>
@@ -759,8 +751,8 @@ collection is specified.</p>
 <p>One exciting feature enabled by the IPUMS API is the ability to share
 a standardized extract definition with other IPUMS users so that they
 can create an identical extract request themselves. The terms of use for
-most IPUMS collections prohibit the redistribution of IPUMS data, but
-don’t prohibit sharing data extract definitions.</p>
+most IPUMS collections prohibit the public redistribution of IPUMS data,
+but don’t prohibit the sharing of data extract definitions.</p>
 <p>ipumsr facilitates this type of sharing with
 <code>save_extract_as_json()</code> and
 <code>define_extract_from_json()</code>, which read and write

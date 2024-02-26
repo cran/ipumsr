@@ -45,14 +45,14 @@ get_truncated_metadata <- function(collection,
     path = ipumsr:::metadata_request_path(collection, type),
     queries = list(pageNumber = 1, pageSize = page_size)
   )
-  
+
   responses <- ipumsr:::ipums_api_paged_request(
     url = url,
     max_pages = max_pages,
     delay = 0,
     api_key = api_key
   )
-  
+
   metadata <- purrr::map_dfr(
     responses,
     function(res) {
@@ -60,11 +60,11 @@ get_truncated_metadata <- function(collection,
         httr::content(res, "text"),
         simplifyVector = TRUE
       )
-      
+
       content$data
     }
   )
-  
+
   # Recursively convert all metadata data.frames to tibbles and all
   # camelCase names to snake_case
   ipumsr:::convert_metadata(metadata)
@@ -84,9 +84,9 @@ ds <- get_metadata_nhgis(type = "datasets")
 head(ds)
 
 ## -----------------------------------------------------------------------------
-ds %>% 
+ds %>%
   filter(
-    group == "1900 Census", 
+    group == "1900 Census",
     grepl("Agriculture", description)
   )
 
@@ -140,8 +140,8 @@ cAg_meta$data_tables
 
 ## -----------------------------------------------------------------------------
 dataset <- ds_spec(
-  "1900_cAg", 
-  data_tables = c("NT1", "NT2"), 
+  "1900_cAg",
+  data_tables = c("NT1", "NT2"),
   geog_levels = "state"
 )
 
@@ -159,22 +159,22 @@ nhgis_ext
 define_extract_nhgis(
   description = "Example time series table request",
   time_series_tables = tst_spec(
-    "CW3", 
+    "CW3",
     geog_levels = c("county", "tract"),
     years = c("1990", "2000")
   )
-)
-
-## ----error=TRUE---------------------------------------------------------------
-define_extract_nhgis(
-  description = "Invalid extract",
-  datasets = ds_spec("1900_STF1", data_tables = "NP1")
 )
 
 ## -----------------------------------------------------------------------------
 define_extract_nhgis(
   description = "Example shapefiles request",
   shapefiles = c("us_county_2021_tl2021", "us_county_2020_tl2020")
+)
+
+## ----error=TRUE---------------------------------------------------------------
+define_extract_nhgis(
+  description = "Invalid extract",
+  datasets = ds_spec("1900_STF1", data_tables = "NP1")
 )
 
 ## -----------------------------------------------------------------------------
@@ -196,11 +196,7 @@ geogs <- c("county", "state")
 # data tabels and geog levels indicated above
 datasets <- purrr::map(
   ds_names,
-  ~ ds_spec(
-    name = .x, 
-    data_tables = tables, 
-    geog_levels = geogs
-  )
+  ~ ds_spec(name = .x, data_tables = tables, geog_levels = geogs)
 )
 
 nhgis_ext <- define_extract_nhgis(

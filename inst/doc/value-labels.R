@@ -10,7 +10,7 @@ library(ipumsr)
 ddi <- read_ipums_ddi(ipums_example("cps_00160.xml"))
 cps <- read_ipums_micro(ddi, verbose = FALSE)
 
-cps
+cps[, 1:5]
 
 ## -----------------------------------------------------------------------------
 is.labelled(cps$STATEFIP)
