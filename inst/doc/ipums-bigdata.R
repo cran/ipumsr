@@ -24,7 +24,8 @@ library(ipumsr)
 library(dplyr)
 
 ## -----------------------------------------------------------------------------
-define_extract_usa(
+define_extract_micro(
+  "usa",
   description = "2013 ACS Data for Married Women",
   samples = "us2013a",
   variables = list(
@@ -108,6 +109,7 @@ summary(model)
 ## ----eval=installed_biglm-----------------------------------------------------
 library(biglm)
 
+## ----eval=installed_biglm-----------------------------------------------------
 biglm_cb <- IpumsBiglmCallback$new(
   model = AHRSWORKT ~ AGE + I(AGE^2) + HEALTH,
   prep = function(x, pos) {

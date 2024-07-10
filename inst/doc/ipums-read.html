@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -427,23 +427,22 @@ it with <code>attributes()</code> or by using ipumsr helpers:</p>
 <span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; $var_desc</span></span>
 <span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; [1] &quot;MONTH indicates the calendar month of the CPS interview.&quot;</span></span>
-<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps_data<span class="sc">$</span>MONTH)</span>
-<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
-<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
-<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
-<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
-<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
-<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
-<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
-<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
-<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
-<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
-<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
-<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
-<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
-<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
-<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span></code></pre></div>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps_data<span class="sc">$</span>MONTH)</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a><span class="co">#&gt;      val lbl      </span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a><span class="co">#&gt;    &lt;int&gt; &lt;chr&gt;    </span></span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a><span class="co">#&gt;  1     1 January  </span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a><span class="co">#&gt;  2     2 February </span></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a><span class="co">#&gt;  3     3 March    </span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co">#&gt;  4     4 April    </span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a><span class="co">#&gt;  5     5 May      </span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a><span class="co">#&gt;  6     6 June     </span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a><span class="co">#&gt;  7     7 July     </span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a><span class="co">#&gt;  8     8 August   </span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a><span class="co">#&gt;  9     9 September</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a><span class="co">#&gt; 10    10 October  </span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a><span class="co">#&gt; 11    11 November </span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a><span class="co">#&gt; 12    12 December</span></span></code></pre></div>
 <p>While this is the most straightforward way to load microdata, it’s
 often advantageous to independently load the DDI file into an
 <code>ipums_ddi</code> object containing the metadata:</p>
@@ -601,26 +600,25 @@ files:</p>
 <span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>nhgis_data</span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; # A tibble: 71 × 25</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt;    GISJOIN  YEAR STUSAB CMSA  DIVISIONA MSA_CMSAA PMSA      PMSAA REGIONA STATEA</span></span>
-<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;lgl&gt;         &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt; &lt;lgl&gt;   &lt;lgl&gt; </span></span>
-<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt;  1 G0080    1990 OH     28    NA             1692 Akron, O… 0080  NA      NA    </span></span>
-<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt;  2 G0360    1990 CA     49    NA             4472 Anaheim-… 0360  NA      NA    </span></span>
-<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt;  3 G0440    1990 MI     35    NA             2162 Ann Arbo… 0440  NA      NA    </span></span>
-<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt;  4 G0620    1990 IL     14    NA             1602 Aurora--… 0620  NA      NA    </span></span>
-<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt;  5 G0845    1990 PA     78    NA             6282 Beaver C… 0845  NA      NA    </span></span>
-<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt;  6 G0875    1990 NJ     70    NA             5602 Bergen--… 0875  NA      NA    </span></span>
-<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt;  7 G1120    1990 MA     07    NA             1122 Boston, … 1120  NA      NA    </span></span>
-<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt;  8 G1125    1990 CO     34    NA             2082 Boulder-… 1125  NA      NA    </span></span>
-<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt;  9 G1145    1990 TX     42    NA             3362 Brazoria… 1145  NA      NA    </span></span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; 10 G1160    1990 CT     70    NA             5602 Bridgepo… 1160  NA      NA    </span></span>
-<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; # ℹ 61 more rows</span></span>
-<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; # ℹ 15 more variables: AREALAND &lt;chr&gt;, AREAWAT &lt;chr&gt;, ANPSADPI &lt;chr&gt;,</span></span>
-<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; #   FUNCSTAT &lt;chr&gt;, INTPTLAT &lt;dbl&gt;, INTPTLNG &lt;dbl&gt;, PSADC &lt;dbl&gt;, D6Z001 &lt;dbl&gt;,</span></span>
-<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; #   D6Z002 &lt;dbl&gt;, D6Z003 &lt;dbl&gt;, D6Z004 &lt;dbl&gt;, D6Z005 &lt;dbl&gt;, D6Z006 &lt;dbl&gt;,</span></span>
-<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a><span class="co">#&gt; #   D6Z007 &lt;dbl&gt;, D6Z008 &lt;dbl&gt;</span></span></code></pre></div>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>nhgis_data</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; # A tibble: 71 × 25</span></span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt;    GISJOIN  YEAR STUSAB CMSA  DIVISIONA MSA_CMSAA PMSA      PMSAA REGIONA STATEA</span></span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;lgl&gt;         &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt; &lt;lgl&gt;   &lt;lgl&gt; </span></span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="co">#&gt;  1 G0080    1990 OH     28    NA             1692 Akron, O… 0080  NA      NA    </span></span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a><span class="co">#&gt;  2 G0360    1990 CA     49    NA             4472 Anaheim-… 0360  NA      NA    </span></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="co">#&gt;  3 G0440    1990 MI     35    NA             2162 Ann Arbo… 0440  NA      NA    </span></span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a><span class="co">#&gt;  4 G0620    1990 IL     14    NA             1602 Aurora--… 0620  NA      NA    </span></span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a><span class="co">#&gt;  5 G0845    1990 PA     78    NA             6282 Beaver C… 0845  NA      NA    </span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt;  6 G0875    1990 NJ     70    NA             5602 Bergen--… 0875  NA      NA    </span></span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt;  7 G1120    1990 MA     07    NA             1122 Boston, … 1120  NA      NA    </span></span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a><span class="co">#&gt;  8 G1125    1990 CO     34    NA             2082 Boulder-… 1125  NA      NA    </span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="co">#&gt;  9 G1145    1990 TX     42    NA             3362 Brazoria… 1145  NA      NA    </span></span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co">#&gt; 10 G1160    1990 CT     70    NA             5602 Bridgepo… 1160  NA      NA    </span></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="co">#&gt; # ℹ 61 more rows</span></span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a><span class="co">#&gt; # ℹ 15 more variables: AREALAND &lt;chr&gt;, AREAWAT &lt;chr&gt;, ANPSADPI &lt;chr&gt;,</span></span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co">#&gt; #   FUNCSTAT &lt;chr&gt;, INTPTLAT &lt;dbl&gt;, INTPTLNG &lt;dbl&gt;, PSADC &lt;dbl&gt;, D6Z001 &lt;dbl&gt;,</span></span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a><span class="co">#&gt; #   D6Z002 &lt;dbl&gt;, D6Z003 &lt;dbl&gt;, D6Z004 &lt;dbl&gt;, D6Z005 &lt;dbl&gt;, D6Z006 &lt;dbl&gt;,</span></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a><span class="co">#&gt; #   D6Z007 &lt;dbl&gt;, D6Z008 &lt;dbl&gt;</span></span></code></pre></div>
 <p>Like microdata extracts, the data include variable-level metadata,
 where available:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">attributes</span>(nhgis_data<span class="sc">$</span>D6Z001)</span>
@@ -712,13 +710,12 @@ the data:</p>
 <span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; $var_desc</span></span>
 <span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Table AJWB: Sex by Age (Universe: Total population)&quot;</span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="fu">attributes</span>(nhgis_data3<span class="sc">$</span>A00AA1790)</span>
-<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; $label</span></span>
-<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1790: Persons: Total&quot;</span></span>
-<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; $var_desc</span></span>
-<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Table A00: Total Population&quot;</span></span></code></pre></div>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="fu">attributes</span>(nhgis_data3<span class="sc">$</span>A00AA1790)</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; $label</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; [1] &quot;1790: Persons: Total&quot;</span></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co">#&gt; $var_desc</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; [1] &quot;Table A00: Total Population&quot;</span></span></code></pre></div>
 <p>(If for some reason the codebook is not loaded correctly, you can
 load it separately with <code>read_nhgis_codebook()</code>, which also
 accepts a <code>file_select</code> specification.)</p>
@@ -781,28 +778,27 @@ fixed-width format:</p>
 <span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; ℹ Use `spec()` to retrieve the full column specification for this data.</span></span>
 <span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a><span class="co">#&gt; ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</span></span>
-<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a></span>
-<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>nhgis_fwf_data</span>
-<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co">#&gt; # A tibble: 84 × 28</span></span>
-<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt;    GISJOIN STATE         STATEFP STATENH A00AA1790 A00AA1800 A00AA1810 A00AA1820</span></span>
-<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co">#&gt;  1 G010    Alabama       01      010            NA        NA        NA    127901</span></span>
-<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a><span class="co">#&gt;  2 G020    Alaska        02      020            NA        NA        NA        NA</span></span>
-<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="co">#&gt;  3 G025    Alaska Terri… &lt;NA&gt;    025            NA        NA        NA        NA</span></span>
-<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a><span class="co">#&gt;  4 G040    Arizona       04      040            NA        NA        NA        NA</span></span>
-<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a><span class="co">#&gt;  5 G045    Arizona Terr… &lt;NA&gt;    045            NA        NA        NA        NA</span></span>
-<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a><span class="co">#&gt;  6 G050    Arkansas      05      050            NA        NA        NA        NA</span></span>
-<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a><span class="co">#&gt;  7 G055    Arkansas Ter… &lt;NA&gt;    055            NA        NA        NA     14273</span></span>
-<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="co">#&gt;  8 G060    California    06      060            NA        NA        NA        NA</span></span>
-<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="co">#&gt;  9 G080    Colorado      08      080            NA        NA        NA        NA</span></span>
-<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a><span class="co">#&gt; 10 G085    Colorado Ter… &lt;NA&gt;    085            NA        NA        NA        NA</span></span>
-<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a><span class="co">#&gt; # ℹ 74 more rows</span></span>
-<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more variables: A00AA1830 &lt;dbl&gt;, A00AA1840 &lt;dbl&gt;, A00AA1850 &lt;dbl&gt;,</span></span>
-<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a><span class="co">#&gt; #   A00AA1860 &lt;dbl&gt;, A00AA1870 &lt;dbl&gt;, A00AA1880 &lt;dbl&gt;, A00AA1890 &lt;dbl&gt;,</span></span>
-<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a><span class="co">#&gt; #   A00AA1900 &lt;dbl&gt;, A00AA1910 &lt;dbl&gt;, A00AA1920 &lt;dbl&gt;, A00AA1930 &lt;dbl&gt;,</span></span>
-<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a><span class="co">#&gt; #   A00AA1940 &lt;dbl&gt;, A00AA1950 &lt;dbl&gt;, A00AA1960 &lt;dbl&gt;, A00AA1970 &lt;dbl&gt;,</span></span>
-<span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a><span class="co">#&gt; #   A00AA1980 &lt;dbl&gt;, A00AA1990 &lt;dbl&gt;, A00AA2000 &lt;dbl&gt;, A00AA2010 &lt;dbl&gt;,</span></span>
-<span id="cb19-34"><a href="#cb19-34" tabindex="-1"></a><span class="co">#&gt; #   A00AA2020 &lt;dbl&gt;</span></span></code></pre></div>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>nhgis_fwf_data</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a><span class="co">#&gt; # A tibble: 84 × 28</span></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="co">#&gt;    GISJOIN STATE         STATEFP STATENH A00AA1790 A00AA1800 A00AA1810 A00AA1820</span></span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a><span class="co">#&gt;  1 G010    Alabama       01      010            NA        NA        NA    127901</span></span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a><span class="co">#&gt;  2 G020    Alaska        02      020            NA        NA        NA        NA</span></span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a><span class="co">#&gt;  3 G025    Alaska Terri… &lt;NA&gt;    025            NA        NA        NA        NA</span></span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="co">#&gt;  4 G040    Arizona       04      040            NA        NA        NA        NA</span></span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a><span class="co">#&gt;  5 G045    Arizona Terr… &lt;NA&gt;    045            NA        NA        NA        NA</span></span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a><span class="co">#&gt;  6 G050    Arkansas      05      050            NA        NA        NA        NA</span></span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a><span class="co">#&gt;  7 G055    Arkansas Ter… &lt;NA&gt;    055            NA        NA        NA     14273</span></span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a><span class="co">#&gt;  8 G060    California    06      060            NA        NA        NA        NA</span></span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="co">#&gt;  9 G080    Colorado      08      080            NA        NA        NA        NA</span></span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="co">#&gt; 10 G085    Colorado Ter… &lt;NA&gt;    085            NA        NA        NA        NA</span></span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a><span class="co">#&gt; # ℹ 74 more rows</span></span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a><span class="co">#&gt; # ℹ 20 more variables: A00AA1830 &lt;dbl&gt;, A00AA1840 &lt;dbl&gt;, A00AA1850 &lt;dbl&gt;,</span></span>
+<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a><span class="co">#&gt; #   A00AA1860 &lt;dbl&gt;, A00AA1870 &lt;dbl&gt;, A00AA1880 &lt;dbl&gt;, A00AA1890 &lt;dbl&gt;,</span></span>
+<span id="cb19-30"><a href="#cb19-30" tabindex="-1"></a><span class="co">#&gt; #   A00AA1900 &lt;dbl&gt;, A00AA1910 &lt;dbl&gt;, A00AA1920 &lt;dbl&gt;, A00AA1930 &lt;dbl&gt;,</span></span>
+<span id="cb19-31"><a href="#cb19-31" tabindex="-1"></a><span class="co">#&gt; #   A00AA1940 &lt;dbl&gt;, A00AA1950 &lt;dbl&gt;, A00AA1960 &lt;dbl&gt;, A00AA1970 &lt;dbl&gt;,</span></span>
+<span id="cb19-32"><a href="#cb19-32" tabindex="-1"></a><span class="co">#&gt; #   A00AA1980 &lt;dbl&gt;, A00AA1990 &lt;dbl&gt;, A00AA2000 &lt;dbl&gt;, A00AA2010 &lt;dbl&gt;,</span></span>
+<span id="cb19-33"><a href="#cb19-33" tabindex="-1"></a><span class="co">#&gt; #   A00AA2020 &lt;dbl&gt;</span></span></code></pre></div>
 <p>The correct parsing of NHGIS fixed-width files is driven by the
 column parsing information contained in the .do file provided in the
 .zip archive. This contains information not only about column positions

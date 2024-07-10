@@ -53,13 +53,14 @@ ipumsi_samps %>%
 eject_cassette("micro-sample-ids")
 
 ## -----------------------------------------------------------------------------
-cps_ext <- define_extract_cps(
+cps_extract <- define_extract_micro(
+  collection = "cps",
   description = "Example CPS extract",
   samples = c("cps2018_03s", "cps2019_03s"),
   variables = c("AGE", "SEX", "RACE", "STATEFIP")
 )
 
-cps_ext
+cps_extract
 
 ## -----------------------------------------------------------------------------
 var <- var_spec("SEX", case_selections = "2")
@@ -67,7 +68,8 @@ var <- var_spec("SEX", case_selections = "2")
 str(var)
 
 ## -----------------------------------------------------------------------------
-define_extract_cps(
+define_extract_micro(
+  "cps",
   description = "Case selection example",
   samples = c("cps2018_03s", "cps2019_03s"),
   variables = list(
@@ -77,23 +79,26 @@ define_extract_cps(
 )
 
 ## -----------------------------------------------------------------------------
-str(cps_ext$variables)
+str(cps_extract$variables)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_cps(
+#  define_extract_micro(
+#    "cps",
 #    description = "Example CPS extract",
 #    samples = "cps2018_03s",
 #    variables = "AGE"
 #  )
 #  
-#  define_extract_cps(
+#  define_extract_micro(
+#    "cps",
 #    description = "Example CPS extract",
 #    samples = "cps2018_03s",
 #    variables = var_spec("AGE")
 #  )
 
 ## -----------------------------------------------------------------------------
-define_extract_cps(
+define_extract_micro(
+  "cps",
   description = "Case selection example",
   samples = c("cps2018_03s", "cps2019_03s"),
   variables = list(
@@ -112,6 +117,7 @@ var$case_selection_type
 # General case selection is the default
 var_spec("RACE", case_selections = "8")
 
+## -----------------------------------------------------------------------------
 # For detailed case selection, change the `case_selection_type`
 var_spec(
   "RACE",
@@ -120,7 +126,8 @@ var_spec(
 )
 
 ## -----------------------------------------------------------------------------
-define_extract_usa(
+define_extract_micro(
+  "usa",
   description = "Household level case selection",
   samples = "us2021a",
   variables = var_spec("RACE", case_selections = "8"),
@@ -137,7 +144,8 @@ var_spec("AGE", attached_characteristics = c("mother", "father"))
 var_spec("RACE", data_quality_flags = TRUE)
 
 ## -----------------------------------------------------------------------------
-usa_ext <- define_extract_usa(
+usa_extract <- define_extract_micro(
+  "usa",
   description = "Data quality flags",
   samples = "us2021a",
   variables = list(
@@ -147,6 +155,60 @@ usa_ext <- define_extract_usa(
   data_quality_flags = TRUE
 )
 
+## -----------------------------------------------------------------------------
+define_extract_micro(
+  "atus",
+  description = "Time use variable demo",
+  samples = "at2017",
+  time_use_variables = "ACT_PCARE"
+)
+
 ## ----eval=FALSE---------------------------------------------------------------
-#  usa_ext_submitted <- submit_extract(usa_ext)
+#  define_extract_micro(
+#    "atus",
+#    description = "Time use variable demo",
+#    samples = "at2017",
+#    time_use_variables = tu_var_spec("MYTUVAR", owner = "user@example.com")
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
+#  define_extract_micro(
+#    "atus",
+#    description = "Time use variable demo",
+#    samples = "at2017",
+#    time_use_variables = list(
+#      "ACT_PCARE",
+#      tu_var_spec("MYTUVAR", owner = "user@example.com")
+#    )
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
+#  define_extract_micro(
+#    "nhis",
+#    description = "NHIS hierarchical",
+#    samples = "ih2002",
+#    variables = c("REGION", "AGE", "SEX", "BMI"),
+#    data_structure = "hierarchical"
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
+#  define_extract_micro(
+#    "meps",
+#    description = "MEPS rectangular-on-round",
+#    samples = "mp2021",
+#    variables = c("INCCHLD", "AGERD", "MARSTATRD"),
+#    rectangular_on = "R"
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
+#  define_extract_micro(
+#    "usa",
+#    description = "USA household only",
+#    samples = "us2022a",
+#    variables = "STATEFIP",
+#    data_structure = "household_only"
+#  )
+
+## ----eval=FALSE---------------------------------------------------------------
+#  usa_extract_submitted <- submit_extract(usa_extract)
 

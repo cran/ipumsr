@@ -19,6 +19,7 @@ is.labelled(cps$STATEFIP)
 # Labels print when accessing the column
 head(cps$MONTH)
 
+## -----------------------------------------------------------------------------
 # Get labels alone
 ipums_val_labels(cps$MONTH)
 
@@ -33,6 +34,7 @@ age0_factor <- cps[cps$AGE == 0, ]$AGE_FACTOR
 # The levels look the same
 unique(age0_factor)
 
+## -----------------------------------------------------------------------------
 # But the values have changed
 unique(as.numeric(age0_factor))
 
@@ -44,17 +46,19 @@ unique(as.numeric(age85_factor))
 ## -----------------------------------------------------------------------------
 mean(cps$AGE)
 
+## -----------------------------------------------------------------------------
 mean(as.numeric(cps$AGE_FACTOR))
 
 ## -----------------------------------------------------------------------------
 ipums_val_labels(cps$HEALTH)
 
+## -----------------------------------------------------------------------------
 HEALTH2 <- ifelse(cps$HEALTH > 3, 3, cps$HEALTH)
+
 ipums_val_labels(HEALTH2)
 
 ## -----------------------------------------------------------------------------
 ipums_val_labels(cps$MONTH)
-
 cps$MONTH <- as_factor(cps$MONTH)
 
 ## ----eval=FALSE---------------------------------------------------------------
@@ -67,6 +71,7 @@ inctot_num <- zap_labels(cps$INCTOT)
 
 typeof(inctot_num)
 
+## -----------------------------------------------------------------------------
 ipums_val_labels(inctot_num)
 
 ## -----------------------------------------------------------------------------
@@ -85,6 +90,7 @@ inctot_na <- lbl_na_if(
 # All 99999999 values have been converted to NA
 any(inctot_na == 999999999, na.rm = TRUE)
 
+## -----------------------------------------------------------------------------
 # And the label has been removed:
 ipums_val_labels(inctot_na)
 
@@ -110,6 +116,7 @@ length(which(x > 0))
 ## -----------------------------------------------------------------------------
 ipums_val_labels(cps$MIGRATE1)
 
+## -----------------------------------------------------------------------------
 cps$MIGRATE1 <- lbl_relabel(
   cps$MIGRATE1,
   lbl(0, "NIU / Missing / Unknown") ~ .val %in% c(0, 2, 9),
@@ -126,6 +133,7 @@ head(ipums_val_labels(cps$EDUC), 15)
 10 %/% 10
 11 %/% 10
 
+## -----------------------------------------------------------------------------
 # Convert to groups by tens digit
 cps$EDUC2 <- lbl_collapse(cps$EDUC, ~ .val %/% 10)
 
@@ -133,7 +141,6 @@ ipums_val_labels(cps$EDUC2)
 
 ## -----------------------------------------------------------------------------
 ipums_val_labels(cps$STATEFIP)
-
 ipums_val_labels(lbl_clean(cps$STATEFIP))
 
 ## -----------------------------------------------------------------------------

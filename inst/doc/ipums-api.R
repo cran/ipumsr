@@ -67,28 +67,26 @@ ipums_data_collections()
 #  set_ipums_api_key("paste-your-key-here", save = TRUE)
 
 ## -----------------------------------------------------------------------------
-usa_ext_def <- define_extract_usa(
+usa_extract_definition <- define_extract_micro(
+  collection = "usa",
   description = "USA extract for API vignette",
   samples = c("us2018a", "us2019a"),
   variables = c("AGE", "SEX", "RACE", "STATEFIP", "MARST")
 )
 
-usa_ext_def
+usa_extract_definition
 
 ## -----------------------------------------------------------------------------
-class(usa_ext_def)
+class(usa_extract_definition)
 
 ## -----------------------------------------------------------------------------
-names(usa_ext_def$samples)
-
-names(usa_ext_def$variables)
-
-usa_ext_def$data_format
+names(usa_extract_definition$samples)
+names(usa_extract_definition$variables)
+usa_extract_definition$data_format
 
 ## -----------------------------------------------------------------------------
-usa_ext_def$status
-
-usa_ext_def$number
+usa_extract_definition$status
+usa_extract_definition$number
 
 ## ----include=FALSE------------------------------------------------------------
 insert_cassette("submit-placeholder-extract-usa")
@@ -99,7 +97,8 @@ insert_cassette("submit-placeholder-extract-usa")
 # primary extract in this vignette, as this vignette usually gets rebuilt
 # several times during editing before it is complete.
 submit_extract(
-  define_extract_usa(
+  define_extract_micro(
+    "usa",
     description = "Data from 2017 PRCS",
     samples = "us2017b",
     variables = c("RACE", "YEAR")
@@ -107,7 +106,8 @@ submit_extract(
 )
 
 submit_extract(
-  define_extract_usa(
+  define_extract_micro(
+    "usa",
     description = "Data from long ago",
     samples = "us1880a",
     variables = c("SEX", "AGE", "LABFORCE")
@@ -120,20 +120,19 @@ eject_cassette("submit-placeholder-extract-usa")
 insert_cassette("submit-extract")
 
 ## -----------------------------------------------------------------------------
-usa_ext_submitted <- submit_extract(usa_ext_def)
+usa_extract_submitted <- submit_extract(usa_extract_definition)
 
 ## -----------------------------------------------------------------------------
-usa_ext_submitted$number
-
-usa_ext_submitted$status
-
-## -----------------------------------------------------------------------------
-names(usa_ext_submitted$variables)
+usa_extract_submitted$number
+usa_extract_submitted$status
 
 ## -----------------------------------------------------------------------------
-usa_ext_submitted <- get_last_extract_info("usa")
+names(usa_extract_submitted$variables)
 
-usa_ext_submitted$number
+## -----------------------------------------------------------------------------
+usa_extract_submitted <- get_last_extract_info("usa")
+
+usa_extract_submitted$number
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("submit-extract")
@@ -141,7 +140,7 @@ eject_cassette("submit-extract")
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("wait-for-extract")
 
-usa_ext_complete <- wait_for_extract(usa_ext_submitted)
+usa_extract_complete <- wait_for_extract(usa_extract_submitted)
 
 eject_cassette("wait-for-extract")
 
@@ -156,12 +155,14 @@ modify_ready_extract_cassette_file(
 insert_cassette("wait-for-extract")
 
 ## -----------------------------------------------------------------------------
-usa_ext_complete <- wait_for_extract(usa_ext_submitted)
+usa_extract_complete <- wait_for_extract(usa_extract_submitted)
 
-usa_ext_complete$status
+## -----------------------------------------------------------------------------
+usa_extract_complete$status
 
+## -----------------------------------------------------------------------------
 # `download_links` should be populated if the extract is ready for download
-names(usa_ext_complete$download_links)
+names(usa_extract_complete$download_links)
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("wait-for-extract")
@@ -170,7 +171,7 @@ eject_cassette("wait-for-extract")
 insert_cassette("extract-ready")
 
 ## -----------------------------------------------------------------------------
-is_extract_ready(usa_ext_submitted)
+is_extract_ready(usa_extract_submitted)
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("extract-ready")
@@ -179,16 +180,16 @@ eject_cassette("extract-ready")
 insert_cassette("check-extract-info")
 
 ## -----------------------------------------------------------------------------
-usa_ext_submitted <- get_extract_info(usa_ext_submitted)
+usa_extract_submitted <- get_extract_info(usa_extract_submitted)
 
-usa_ext_submitted$status
+usa_extract_submitted$status
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("check-extract-info")
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  # By default, downloads to your current working directory
-#  filepath <- download_extract(usa_ext_submitted)
+#  filepath <- download_extract(usa_extract_submitted)
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  ddi <- read_ipums_ddi(filepath)
@@ -198,12 +199,12 @@ eject_cassette("check-extract-info")
 insert_cassette("check-extract-history")
 
 ## -----------------------------------------------------------------------------
-usa_ext <- get_extract_info("usa:47")
+usa_extract <- get_extract_info("usa:47")
 
 # Alternatively:
-usa_ext <- get_extract_info(c("usa", 47))
+usa_extract <- get_extract_info(c("usa", 47))
 
-usa_ext
+usa_extract
 
 ## -----------------------------------------------------------------------------
 usa_extracts <- get_extract_history("usa", how_many = 3)
@@ -215,7 +216,6 @@ is_extract_ready(usa_extracts[[2]])
 
 ## -----------------------------------------------------------------------------
 purrr::keep(usa_extracts, ~ "MARST" %in% names(.x$variables))
-
 purrr::keep(usa_extracts, is_extract_ready)
 
 ## -----------------------------------------------------------------------------
@@ -231,31 +231,33 @@ set_ipums_default_collection("usa")
 # Check the default collection:
 Sys.getenv("IPUMS_DEFAULT_COLLECTION")
 
+## -----------------------------------------------------------------------------
 # Most recent USA extract:
 usa_last <- get_last_extract_info()
 
 # Request info on extract request "usa:10"
-usa_ext_10 <- get_extract_info(10)
+usa_extract_10 <- get_extract_info(10)
 
 # You can still request other collections as usual:
-cps_ext_10 <- get_extract_info("cps:10")
+cps_extract_10 <- get_extract_info("cps:10")
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 eject_cassette("check-extract-history")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  usa_ext_10 <- get_extract_info("usa:10")
-#  save_extract_as_json(usa_ext_10, file = "usa_extract_10.json")
+#  usa_extract_10 <- get_extract_info("usa:10")
+#  save_extract_as_json(usa_extract_10, file = "usa_extract_10.json")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  clone_of_usa_ext_10 <- define_extract_from_json("usa_extract_10.json")
-#  usa_ext_10_resubmitted <- submit_extract(clone_of_usa_ext_10)
+#  clone_of_usa_extract_10 <- define_extract_from_json("usa_extract_10.json")
+#  usa_extract_10_resubmitted <- submit_extract(clone_of_usa_extract_10)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  usa_data <- define_extract_usa(
+#  usa_data <- define_extract_micro(
+#    "usa",
 #    "USA extract for API vignette",
-#    c("us2018a", "us2019a"),
-#    c("AGE", "SEX", "RACE", "STATEFIP")
+#    samples = c("us2018a", "us2019a"),
+#    variables = c("AGE", "SEX", "RACE", "STATEFIP")
 #  ) %>%
 #    submit_extract() %>%
 #    wait_for_extract() %>%

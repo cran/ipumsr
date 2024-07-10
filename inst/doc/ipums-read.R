@@ -20,7 +20,6 @@ ipums_var_info(cps_data)
 
 ## -----------------------------------------------------------------------------
 attributes(cps_data$MONTH)
-
 ipums_val_labels(cps_data$MONTH)
 
 ## -----------------------------------------------------------------------------
@@ -56,7 +55,6 @@ read_ipums_micro_list(cps_hier_ddi)
 nhgis_ex1 <- ipums_example("nhgis0972_csv.zip")
 
 nhgis_data <- read_nhgis(nhgis_ex1)
-
 nhgis_data
 
 ## -----------------------------------------------------------------------------
@@ -85,7 +83,6 @@ nhgis_data3 <- read_nhgis(nhgis_ex2, file_select = contains("ts_nominal_state"))
 
 ## -----------------------------------------------------------------------------
 attributes(nhgis_data2$AJWBE001)
-
 attributes(nhgis_data3$A00AA1790)
 
 ## ----eval=FALSE---------------------------------------------------------------
@@ -107,7 +104,6 @@ read_nhgis(
 nhgis_fwf <- ipums_example("nhgis0730_fixed.zip")
 
 nhgis_fwf_data <- read_nhgis(nhgis_fwf, file_select = matches("ts_nominal"))
-
 nhgis_fwf_data
 
 ## ----eval = requireNamespace("sf")--------------------------------------------

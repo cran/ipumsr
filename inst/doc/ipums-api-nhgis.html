@@ -49,7 +49,7 @@ overflow: visible;
 </style>
 <style type="text/css" data-origin="pandoc">
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -454,13 +454,12 @@ list columns, where each entry is itself a data frame:</p>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;  9 1870  1870              12</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 10 1880  1880              22</span></span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 14 more rows</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>tst<span class="sc">$</span>geog_levels[[<span class="dv">1</span>]]</span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   name   description   sequence</span></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;</span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 1 state  State                4</span></span>
-<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; 2 county State--County       25</span></span></code></pre></div>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>tst<span class="sc">$</span>geog_levels[[<span class="dv">1</span>]]</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;   name   description   sequence</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 1 state  State                4</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 2 county State--County       25</span></span></code></pre></div>
 <p>To filter on these columns, we can use <code>map_lgl()</code> from
 <code>{purrr}</code>. For instance, to find all time series tables that
 include data from a particular year:</p>
@@ -488,28 +487,27 @@ the input data source. For instance, for the <code>1900_cAg</code>
 dataset, we have 66 tables to choose from, and 3 possible geographic
 levels:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>cAg_meta<span class="sc">$</span>data_tables</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 66 × 4</span></span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt;    name  nhgis_code description                           sequence</span></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;                                    &lt;int&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt;  1 NT1   AWS        Total Population                             1</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;  2 NT2   AW3        Number of Farms                              2</span></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;  3 NT3   AXE        Average Farm Size                            3</span></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;  4 NT4   AXP        Farm Acreage                                 4</span></span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt;  5 NT5   AXZ        Farm Management                              5</span></span>
-<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt;  6 NT6   AYA        Race of Farmer                               6</span></span>
-<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;  7 NT7   AYJ        Race of Farmer by Detailed Management        7</span></span>
-<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;  8 NT8   AYK        Number of Farms                              8</span></span>
-<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;  9 NT9   AYL        Farms with Buildings                         9</span></span>
-<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 10 NT10  AWT        Acres of Farmland                           10</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 66 × 7</span></span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="co">#&gt;    name  description       universe nhgis_code sequence dataset_name n_variables</span></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;              &lt;int&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="co">#&gt;  1 NT1   Total Population  Persons  AWS               1 1900_cAg               1</span></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="co">#&gt;  2 NT2   Number of Farms   Farms    AW3               2 1900_cAg               1</span></span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co">#&gt;  3 NT3   Average Farm Size Farms    AXE               3 1900_cAg               1</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a><span class="co">#&gt;  4 NT4   Farm Acreage      Farms    AXP               4 1900_cAg              10</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a><span class="co">#&gt;  5 NT5   Farm Management   Farms    AXZ               5 1900_cAg               3</span></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a><span class="co">#&gt;  6 NT6   Race of Farmer    Farms    AYA               6 1900_cAg               2</span></span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="co">#&gt;  7 NT7   Race of Farmer b… Farms    AYJ               7 1900_cAg              12</span></span>
+<span id="cb9-12"><a href="#cb9-12" tabindex="-1"></a><span class="co">#&gt;  8 NT8   Number of Farms   Farms    AYK               8 1900_cAg               1</span></span>
+<span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;  9 NT9   Farms with Build… Farms w… AYL               9 1900_cAg               1</span></span>
+<span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 10 NT10  Acres of Farmland Farms    AWT              10 1900_cAg               1</span></span>
 <span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 56 more rows</span></span>
-<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
-<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>cAg_meta<span class="sc">$</span>geog_levels</span>
-<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
-<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;   name   description   has_geog_extent_selection sequence</span></span>
-<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;         &lt;lgl&gt;                        &lt;int&gt;</span></span>
-<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 1 nation Nation        FALSE                            1</span></span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 2 state  State         FALSE                            4</span></span>
-<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 3 county State--County FALSE                           25</span></span></code></pre></div>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>cAg_meta<span class="sc">$</span>geog_levels</span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt;   name   description   has_geog_extent_selection sequence</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;         &lt;lgl&gt;                        &lt;int&gt;</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt; 1 nation Nation        FALSE                            1</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 2 state  State         FALSE                            4</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 3 county State--County FALSE                           25</span></span></code></pre></div>
 <p>You can also get detailed metadata for an individual data table.
 Since data tables belong to specific datasets, both need to be specified
 to identify a data table:</p>
@@ -562,19 +560,19 @@ of farms and their average size from the <code>1900_cAg</code> dataset
 that we identified above. As we can see in the metadata, these data are
 contained in tables <code>NT2</code> and <code>NT3</code>:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>cAg_meta<span class="sc">$</span>data_tables</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 66 × 4</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt;    name  nhgis_code description                           sequence</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;      &lt;chr&gt;                                    &lt;int&gt;</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt;  1 NT1   AWS        Total Population                             1</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt;  2 NT2   AW3        Number of Farms                              2</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;  3 NT3   AXE        Average Farm Size                            3</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt;  4 NT4   AXP        Farm Acreage                                 4</span></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt;  5 NT5   AXZ        Farm Management                              5</span></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;  6 NT6   AYA        Race of Farmer                               6</span></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt;  7 NT7   AYJ        Race of Farmer by Detailed Management        7</span></span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt;  8 NT8   AYK        Number of Farms                              8</span></span>
-<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;  9 NT9   AYL        Farms with Buildings                         9</span></span>
-<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; 10 NT10  AWT        Acres of Farmland                           10</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 66 × 7</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="co">#&gt;    name  description       universe nhgis_code sequence dataset_name n_variables</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;         &lt;int&gt; &lt;chr&gt;              &lt;int&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="co">#&gt;  1 NT1   Total Population  Persons  AWS               1 1900_cAg               1</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="co">#&gt;  2 NT2   Number of Farms   Farms    AW3               2 1900_cAg               1</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="co">#&gt;  3 NT3   Average Farm Size Farms    AXE               3 1900_cAg               1</span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="co">#&gt;  4 NT4   Farm Acreage      Farms    AXP               4 1900_cAg              10</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="co">#&gt;  5 NT5   Farm Management   Farms    AXZ               5 1900_cAg               3</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="co">#&gt;  6 NT6   Race of Farmer    Farms    AYA               6 1900_cAg               2</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="co">#&gt;  7 NT7   Race of Farmer b… Farms    AYJ               7 1900_cAg              12</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="co">#&gt;  8 NT8   Number of Farms   Farms    AYK               8 1900_cAg               1</span></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a><span class="co">#&gt;  9 NT9   Farms with Build… Farms w… AYL               9 1900_cAg               1</span></span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; 10 NT10  Acres of Farmland Farms    AWT              10 1900_cAg               1</span></span>
 <span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 56 more rows</span></span></code></pre></div>
 <div id="dataset-specifications" class="section level4">
 <h4>Dataset specifications</h4>

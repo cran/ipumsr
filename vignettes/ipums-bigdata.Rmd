@@ -107,7 +107,8 @@ selections for a variable in an extract definition. For instance, the following
 would produce an extract only including records for married women:
 
 ```{r}
-define_extract_usa(
+define_extract_micro(
+  "usa",
   description = "2013 ACS Data for Married Women",
   samples = "us2013a",
   variables = list(
@@ -327,7 +328,9 @@ running the regression:
 
 ```{r, eval=installed_biglm}
 library(biglm)
+```
 
+```{r, eval=installed_biglm}
 biglm_cb <- IpumsBiglmCallback$new(
   model = AHRSWORKT ~ AGE + I(AGE^2) + HEALTH,
   prep = function(x, pos) {
@@ -648,7 +651,7 @@ options.
 For some past blog posts and articles on the topic, see the following:
 
 -   [*Big Data in
-    R*](http://www.columbia.edu/~sjm2186/EPIC_R/EPIC_R_BigData.pdf) -
+    R*](https://github.com/smooney27/RWorkshopSER2024/blob/main/EPIC_R_BigData.pdf) -
     Part of Stephen Mooney's EPIC: Epidemiologic Analysis Using R, June
     2015 class
 -   [*Statistical Analysis with Open-Source R and RStudio on Amazon

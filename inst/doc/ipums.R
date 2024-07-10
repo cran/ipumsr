@@ -8,13 +8,19 @@ library(ipumsr)
 ## ----echo=FALSE, out.width = "70%", fig.align="center"------------------------
 knitr::include_graphics("cps_select_data.jpg")
 
+## ----echo=FALSE---------------------------------------------------------------
+knitr::include_graphics("microdata_annotated_screenshot.png")
+
 ## -----------------------------------------------------------------------------
-cps_extract_request <- define_extract_cps(
+# Define a microdata extract request, e.g. for IPUMS CPS
+cps_extract_request <- define_extract_micro(
+  collection = "cps",
   description = "2018-2019 CPS Data",
   samples = c("cps2018_05s", "cps2019_05s"),
   variables = c("SEX", "AGE", "YEAR")
 )
 
+# Define an NHGIS extract request
 nhgis_extract_request <- define_extract_nhgis(
   description = "NHGIS Data via IPUMS API",
   datasets = ds_spec(
@@ -27,7 +33,7 @@ nhgis_extract_request <- define_extract_nhgis(
 ## ----eval = FALSE-------------------------------------------------------------
 #  submitted_extract <- submit_extract(cps_extract_request)
 #  downloadable_extract <- wait_for_extract(submitted_extract)
-#  data_files <- download_extract(downloadable_extract)
+#  path_to_data_files <- download_extract(downloadable_extract)
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  past_extracts <- get_extract_history("nhgis")
@@ -35,7 +41,6 @@ nhgis_extract_request <- define_extract_nhgis(
 ## -----------------------------------------------------------------------------
 cps_file <- ipums_example("cps_00157.xml")
 cps_data <- read_ipums_micro(cps_file)
-
 head(cps_data)
 
 ## -----------------------------------------------------------------------------
@@ -59,7 +64,6 @@ ipums_var_info(cps_meta)
 
 ## -----------------------------------------------------------------------------
 ipums_var_desc(cps_data$INCTOT)
-
 ipums_val_labels(cps_data$STATEFIP)
 
 ## -----------------------------------------------------------------------------
