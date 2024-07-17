@@ -169,12 +169,6 @@ define_extract_nhgis(
   shapefiles = c("us_county_2021_tl2021", "us_county_2020_tl2020")
 )
 
-## ----error=TRUE---------------------------------------------------------------
-define_extract_nhgis(
-  description = "Invalid extract",
-  datasets = ds_spec("1900_STF1", data_tables = "NP1")
-)
-
 ## -----------------------------------------------------------------------------
 define_extract_nhgis(
   description = "Slightly more complicated extract request",

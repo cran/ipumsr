@@ -1,6 +1,6 @@
-cdb41b44112842728b22f789f641bde5 *DESCRIPTION
+488c8a231abde003a95961ac0cc682ed *DESCRIPTION
 80e04e7a440c687c19761dcc7f082989 *NAMESPACE
-9f61b1bf09ccab40046c39ec5199cf47 *NEWS.md
+d7a444bbb49e189df66b50cf08b3d306 *NEWS.md
 e9b74d8f8d1ac951f59b0743a866aa23 *R/api_define_extract.R
 fb67002dbe9442d5e4a9488cd1f8b0b6 *R/api_extract_info.R
 32d590c9525348c545c8c9c312147d4d *R/api_helpers.R
@@ -34,8 +34,8 @@ e9edf019f1ad6e9a092f2aff92d7cd8c *build/vignette.rds
 4e04e718a4bf34a38d8c0d2ea83ebf5f *inst/doc/ipums-api-micro.R
 4b70a8d7e4e21aadbdad4bedce712e50 *inst/doc/ipums-api-micro.Rmd
 1f9f4803b3643d2316a8c37208e0b248 *inst/doc/ipums-api-micro.html
-addfdd8cc2495a2c7ebaa65712714419 *inst/doc/ipums-api-nhgis.R
-43211d4daa19be9c63c3fd509c3c34fd *inst/doc/ipums-api-nhgis.Rmd
+dff70014f906f09943f746786cc2c5ae *inst/doc/ipums-api-nhgis.R
+2d4a1665cb43ef8d2202cf2ec83a7d82 *inst/doc/ipums-api-nhgis.Rmd
 0a2a7a5ea35b343e1af60bdfaaf526c6 *inst/doc/ipums-api-nhgis.html
 57a53d1cb4cebf602cee36f16d1318a6 *inst/doc/ipums-api.R
 2579af825494fba522745ded6fb2c0ad *inst/doc/ipums-api.Rmd
@@ -238,7 +238,7 @@ e57f36cee3c51fcc5d3e30cc6d1edf70 *vignettes/fixtures/submit-extract.yml
 d86a916bd652e752ebecb5c1519216ab *vignettes/fixtures/submit-placeholder-extract-usa.yml
 1f8b87144c6640c0dc8d37d445314ec8 *vignettes/fixtures/wait-for-extract.yml
 4b70a8d7e4e21aadbdad4bedce712e50 *vignettes/ipums-api-micro.Rmd
-43211d4daa19be9c63c3fd509c3c34fd *vignettes/ipums-api-nhgis.Rmd
+2d4a1665cb43ef8d2202cf2ec83a7d82 *vignettes/ipums-api-nhgis.Rmd
 2579af825494fba522745ded6fb2c0ad *vignettes/ipums-api.Rmd
 00e3a98461337b10dd59097b9af24db7 *vignettes/ipums-bigdata.Rmd
 04f1d5a2d2b1852849df3fa253ee388f *vignettes/ipums-read.Rmd
