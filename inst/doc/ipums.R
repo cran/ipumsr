@@ -31,12 +31,12 @@ nhgis_extract_request <- define_extract_nhgis(
 )
 
 ## ----eval = FALSE-------------------------------------------------------------
-#  submitted_extract <- submit_extract(cps_extract_request)
-#  downloadable_extract <- wait_for_extract(submitted_extract)
-#  path_to_data_files <- download_extract(downloadable_extract)
+# submitted_extract <- submit_extract(cps_extract_request)
+# downloadable_extract <- wait_for_extract(submitted_extract)
+# path_to_data_files <- download_extract(downloadable_extract)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  past_extracts <- get_extract_history("nhgis")
+# past_extracts <- get_extract_history("nhgis")
 
 ## -----------------------------------------------------------------------------
 cps_file <- ipums_example("cps_00157.xml")

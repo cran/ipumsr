@@ -99,7 +99,7 @@ ds %>%
 tst <- get_truncated_metadata("nhgis", "time_series_tables")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  tst <- get_metadata_nhgis("time_series_tables")
+# tst <- get_metadata_nhgis("time_series_tables")
 
 ## -----------------------------------------------------------------------------
 head(tst)
@@ -199,5 +199,5 @@ nhgis_ext <- define_extract_nhgis(
 nhgis_ext
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  nhgis_ext_submitted <- submit_extract(nhgis_ext)
+# nhgis_ext_submitted <- submit_extract(nhgis_ext)
 

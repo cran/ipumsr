@@ -1,10 +1,10 @@
 ## ----eval=FALSE---------------------------------------------------------------
-#  # To run the full vignette, you'll also need the following packages. If they
-#  # aren't installed already, do so with:
-#  install.packages("biglm")
-#  install.packages("DBI")
-#  install.packages("RSQLite")
-#  install.packages("dbplyr")
+# # To run the full vignette, you'll also need the following packages. If they
+# # aren't installed already, do so with:
+# install.packages("biglm")
+# install.packages("DBI")
+# install.packages("RSQLite")
+# install.packages("dbplyr")
 
 ## ----include=FALSE------------------------------------------------------------
 installed_biglm <- requireNamespace("biglm")

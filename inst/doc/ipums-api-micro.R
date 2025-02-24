@@ -82,19 +82,19 @@ define_extract_micro(
 str(cps_extract$variables)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_micro(
-#    "cps",
-#    description = "Example CPS extract",
-#    samples = "cps2018_03s",
-#    variables = "AGE"
-#  )
-#  
-#  define_extract_micro(
-#    "cps",
-#    description = "Example CPS extract",
-#    samples = "cps2018_03s",
-#    variables = var_spec("AGE")
-#  )
+# define_extract_micro(
+#   "cps",
+#   description = "Example CPS extract",
+#   samples = "cps2018_03s",
+#   variables = "AGE"
+# )
+# 
+# define_extract_micro(
+#   "cps",
+#   description = "Example CPS extract",
+#   samples = "cps2018_03s",
+#   variables = var_spec("AGE")
+# )
 
 ## -----------------------------------------------------------------------------
 define_extract_micro(
@@ -164,51 +164,51 @@ define_extract_micro(
 )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_micro(
-#    "atus",
-#    description = "Time use variable demo",
-#    samples = "at2017",
-#    time_use_variables = tu_var_spec("MYTUVAR", owner = "user@example.com")
-#  )
+# define_extract_micro(
+#   "atus",
+#   description = "Time use variable demo",
+#   samples = "at2017",
+#   time_use_variables = tu_var_spec("MYTUVAR", owner = "user@example.com")
+# )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_micro(
-#    "atus",
-#    description = "Time use variable demo",
-#    samples = "at2017",
-#    time_use_variables = list(
-#      "ACT_PCARE",
-#      tu_var_spec("MYTUVAR", owner = "user@example.com")
-#    )
-#  )
+# define_extract_micro(
+#   "atus",
+#   description = "Time use variable demo",
+#   samples = "at2017",
+#   time_use_variables = list(
+#     "ACT_PCARE",
+#     tu_var_spec("MYTUVAR", owner = "user@example.com")
+#   )
+# )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_micro(
-#    "nhis",
-#    description = "NHIS hierarchical",
-#    samples = "ih2002",
-#    variables = c("REGION", "AGE", "SEX", "BMI"),
-#    data_structure = "hierarchical"
-#  )
+# define_extract_micro(
+#   "nhis",
+#   description = "NHIS hierarchical",
+#   samples = "ih2002",
+#   variables = c("REGION", "AGE", "SEX", "BMI"),
+#   data_structure = "hierarchical"
+# )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_micro(
-#    "meps",
-#    description = "MEPS rectangular-on-round",
-#    samples = "mp2021",
-#    variables = c("INCCHLD", "AGERD", "MARSTATRD"),
-#    rectangular_on = "R"
-#  )
+# define_extract_micro(
+#   "meps",
+#   description = "MEPS rectangular-on-round",
+#   samples = "mp2021",
+#   variables = c("INCCHLD", "AGERD", "MARSTATRD"),
+#   rectangular_on = "R"
+# )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  define_extract_micro(
-#    "usa",
-#    description = "USA household only",
-#    samples = "us2022a",
-#    variables = "STATEFIP",
-#    data_structure = "household_only"
-#  )
+# define_extract_micro(
+#   "usa",
+#   description = "USA household only",
+#   samples = "us2022a",
+#   variables = "STATEFIP",
+#   data_structure = "household_only"
+# )
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  usa_extract_submitted <- submit_extract(usa_extract)
+# usa_extract_submitted <- submit_extract(usa_extract)
 

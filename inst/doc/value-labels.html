@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -532,10 +532,10 @@ value labels to make this process easier.</p>
 <div id="prepping-data-with-value-labels" class="section level2">
 <h2>Prepping data with value labels</h2>
 <div id="convert-labelled-values-to-other-data-types" class="section level3">
-<h3>Convert labelled values to other data types<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></h3>
-<p>Use <code>as_factor()</code> once labels have the correct categories
-and need no further manipulation. For instance, <code>MONTH</code>
-already has sensible categories, so we can convert it to a factor right
+<h3>Convert labelled values to other data types</h3>
+<p>Use <code>as_factor()</code><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> once labels have the correct categories and
+need no further manipulation. For instance, <code>MONTH</code> already
+has sensible categories, so we can convert it to a factor right
 away:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">ipums_val_labels</span>(cps<span class="sc">$</span>MONTH)</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; # A tibble: 12 × 2</span></span>

@@ -95,6 +95,7 @@ ipums_shape_join <- function(data,
   UseMethod("ipums_shape_join", shape_data)
 }
 
+#' @export
 ipums_shape_join.sf <- function(data,
                                 shape_data,
                                 by,
@@ -130,9 +131,7 @@ ipums_shape_join.sf <- function(data,
 
   if (direction == "left") {
     direction <- "right"
-  }
-
-  if (direction == "right") {
+  } else if (direction == "right") {
     direction <- "left"
   }
 

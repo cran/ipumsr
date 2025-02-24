@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -952,7 +952,7 @@ syntax we would use with dplyr:</p>
 <span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a>example <span class="sc">%&gt;%</span></span>
 <span id="cb27-4"><a href="#cb27-4" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">&quot;AGE&quot;</span> <span class="sc">&gt;</span> <span class="dv">25</span>)</span>
 <span id="cb27-5"><a href="#cb27-5" tabindex="-1"></a><span class="co">#&gt; # Source:   SQL [?? x 14]</span></span>
-<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="co">#&gt; # Database: sqlite 3.46.0 []</span></span>
+<span id="cb27-6"><a href="#cb27-6" tabindex="-1"></a><span class="co">#&gt; # Database: sqlite 3.47.1 []</span></span>
 <span id="cb27-7"><a href="#cb27-7" tabindex="-1"></a><span class="co">#&gt;     YEAR SERIAL MONTH   CPSID ASECFLAG ASECWTH FOODSTMP PERNUM  CPSIDP ASECWT</span></span>
 <span id="cb27-8"><a href="#cb27-8" tabindex="-1"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
 <span id="cb27-9"><a href="#cb27-9" tabindex="-1"></a><span class="co">#&gt;  1  2011     33     3 2.01e13        1    308.        1      1 2.01e13   308.</span></span>
@@ -1026,7 +1026,7 @@ Schmidberger on the AWS Big Data Blog</li>
 <li><a href="https://www.jumpingrivers.com/blog/hosting-rstudio-server-on-azure/"><em>Hosting
 RStudio Server on Azure</em></a> - Colin Gillespie’s blog post on using
 Rstudio on Azure</li>
-<li><a href="https://www.r-consortium.org/blog/2017/05/15/improving-dbi-a-retrospect"><em>Improving
+<li><a href="https://archive.r-consortium.org/blog/2017/05/15/improving-dbi-a-retrospect"><em>Improving
 DBI: A Retrospect</em></a> - Kirill Müller’s report on the R Consortium
 grant to improve database support in R</li>
 </ul>

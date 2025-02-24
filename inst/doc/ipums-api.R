@@ -63,8 +63,8 @@ library(purrr)
 ipums_data_collections()
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # Save key in .Renviron for use across sessions
-#  set_ipums_api_key("paste-your-key-here", save = TRUE)
+# # Save key in .Renviron for use across sessions
+# set_ipums_api_key("paste-your-key-here", save = TRUE)
 
 ## -----------------------------------------------------------------------------
 usa_extract_definition <- define_extract_micro(
@@ -188,12 +188,12 @@ usa_extract_submitted$status
 eject_cassette("check-extract-info")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # By default, downloads to your current working directory
-#  filepath <- download_extract(usa_extract_submitted)
+# # By default, downloads to your current working directory
+# filepath <- download_extract(usa_extract_submitted)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  ddi <- read_ipums_ddi(filepath)
-#  micro_data <- read_ipums_micro(ddi)
+# ddi <- read_ipums_ddi(filepath)
+# micro_data <- read_ipums_micro(ddi)
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("check-extract-history")
@@ -222,7 +222,7 @@ purrr::keep(usa_extracts, is_extract_ready)
 purrr::map_chr(usa_extracts, ~ .x$description)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  set_ipums_default_collection("usa") # Set `save = TRUE` to store across sessions
+# set_ipums_default_collection("usa") # Set `save = TRUE` to store across sessions
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 set_ipums_default_collection("usa")
@@ -245,27 +245,27 @@ cps_extract_10 <- get_extract_info("cps:10")
 eject_cassette("check-extract-history")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  usa_extract_10 <- get_extract_info("usa:10")
-#  save_extract_as_json(usa_extract_10, file = "usa_extract_10.json")
+# usa_extract_10 <- get_extract_info("usa:10")
+# save_extract_as_json(usa_extract_10, file = "usa_extract_10.json")
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  clone_of_usa_extract_10 <- define_extract_from_json("usa_extract_10.json")
-#  usa_extract_10_resubmitted <- submit_extract(clone_of_usa_extract_10)
+# clone_of_usa_extract_10 <- define_extract_from_json("usa_extract_10.json")
+# usa_extract_10_resubmitted <- submit_extract(clone_of_usa_extract_10)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  usa_data <- define_extract_micro(
-#    "usa",
-#    "USA extract for API vignette",
-#    samples = c("us2018a", "us2019a"),
-#    variables = c("AGE", "SEX", "RACE", "STATEFIP")
-#  ) %>%
-#    submit_extract() %>%
-#    wait_for_extract() %>%
-#    download_extract() %>%
-#    read_ipums_micro()
+# usa_data <- define_extract_micro(
+#   "usa",
+#   "USA extract for API vignette",
+#   samples = c("us2018a", "us2019a"),
+#   variables = c("AGE", "SEX", "RACE", "STATEFIP")
+# ) %>%
+#   submit_extract() %>%
+#   wait_for_extract() %>%
+#   download_extract() %>%
+#   read_ipums_micro()
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  nhgis_data <- download_extract(nhgis_extract) %>%
-#    purrr::pluck("data") %>% # Select only the tabular data file to read
-#    read_nhgis()
+# nhgis_data <- download_extract(nhgis_extract) %>%
+#   purrr::pluck("data") %>% # Select only the tabular data file to read
+#   read_nhgis()
 

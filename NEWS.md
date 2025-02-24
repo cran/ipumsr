@@ -1,3 +1,22 @@
+# ipumsr 0.8.2
+    
+-   Adds codebook files to output of `ipums_list_files()` (#85).
+
+-   Removes deprecated `ipums_list_files()` arguments `data_layer`, 
+    `shape_layer`, and `raster_layer`. Use `file_select` instead. Also removes
+    support for listing raster file types (#85).
+
+-   The `"*"` wildcard is no longer required to select all `geographic_extents`
+    in `define_extract_nhgis()`. Instead, all available geographic extents
+    are selected by default. The `"*"` syntax is still supported.
+
+-   Adds `download_supplemental_data()` to enable access to supplemental
+    data files via the IPUMS API (#83).
+
+-   Fixed bug in `shape_join.R` that would always give the result of a 
+    right join no matter whether `ipums_shape_left_join()` or 
+    `ipums_shape_right_join()` was used (#82) (thanks @JiaZhang42!).
+
 # ipumsr 0.8.1
 
 ## Minor improvements and fixes

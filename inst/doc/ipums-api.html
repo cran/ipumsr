@@ -60,7 +60,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
 { counter-reset: source-line 0; }
@@ -519,10 +519,10 @@ extract request will be returned with its assigned number and status.
 Storing the returned object can be useful for checking the extract
 request’s status later.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>usa_extract_submitted <span class="ot">&lt;-</span> <span class="fu">submit_extract</span>(usa_extract_definition)</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; Successfully submitted IPUMS USA extract number 348</span></span></code></pre></div>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="co">#&gt; Successfully submitted IPUMS USA extract number 456</span></span></code></pre></div>
 <p>The extract number will be stored in the returned object:</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>usa_extract_submitted<span class="sc">$</span>number</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; [1] 348</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="co">#&gt; [1] 456</span></span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>usa_extract_submitted<span class="sc">$</span>status</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;queued&quot;</span></span></code></pre></div>
 <p>Note that some fields of a submitted extract may be automatically
@@ -540,7 +540,7 @@ for your most recent extract request for a given collection:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>usa_extract_submitted <span class="ot">&lt;-</span> <span class="fu">get_last_extract_info</span>(<span class="st">&quot;usa&quot;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>usa_extract_submitted<span class="sc">$</span>number</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; [1] 348</span></span></code></pre></div>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="co">#&gt; [1] 456</span></span></code></pre></div>
 </div>
 <div id="wait" class="section level2">
 <h2>Wait for an extract request to complete</h2>
@@ -555,7 +555,7 @@ containing the completed extract definition.</p>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="co">#&gt; Checking extract status...</span></span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co">#&gt; Waiting 10 seconds...</span></span>
 <span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="co">#&gt; Checking extract status...</span></span>
-<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; IPUMS USA extract 348 is ready to download.</span></span></code></pre></div>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="co">#&gt; IPUMS USA extract 456 is ready to download.</span></span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>usa_extract_complete<span class="sc">$</span>status</span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;completed&quot;</span></span></code></pre></div>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># `download_links` should be populated if the extract is ready for download</span></span>
@@ -649,21 +649,21 @@ requests to retrieve with the <code>how_many</code> argument:</p>
 <span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>usa_extracts</span>
 <span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 348</span></span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 456</span></span>
 <span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a><span class="co">#&gt; Description: USA extract for API vignette</span></span>
 <span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) us2018a, us2019a</span></span>
 <span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co">#&gt; Variables: (15 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, CLUSTER, STATEFIP...</span></span>
 <span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 347</span></span>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 455</span></span>
 <span id="cb20-13"><a href="#cb20-13" tabindex="-1"></a><span class="co">#&gt; Description: Data from long ago</span></span>
 <span id="cb20-14"><a href="#cb20-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb20-15"><a href="#cb20-15" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us1880a</span></span>
 <span id="cb20-16"><a href="#cb20-16" tabindex="-1"></a><span class="co">#&gt; Variables: (12 total) YEAR, SAMPLE, SERIAL, HHWT, CLUSTER, STRATA, GQ, PERNUM...</span></span>
 <span id="cb20-17"><a href="#cb20-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb20-18"><a href="#cb20-18" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
-<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 346</span></span>
+<span id="cb20-19"><a href="#cb20-19" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 454</span></span>
 <span id="cb20-20"><a href="#cb20-20" tabindex="-1"></a><span class="co">#&gt; Description: Data from 2017 PRCS</span></span>
 <span id="cb20-21"><a href="#cb20-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb20-22"><a href="#cb20-22" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us2017b</span></span>
@@ -679,28 +679,28 @@ with particular characteristics. For instance, we can use
 variable or are ready for download:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">keep</span>(usa_extracts, <span class="sc">~</span> <span class="st">&quot;MARST&quot;</span> <span class="sc">%in%</span> <span class="fu">names</span>(.x<span class="sc">$</span>variables))</span>
 <span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 348</span></span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 456</span></span>
 <span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="co">#&gt; Description: USA extract for API vignette</span></span>
 <span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) us2018a, us2019a</span></span>
 <span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="co">#&gt; Variables: (15 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, CLUSTER, STATEFIP...</span></span>
 <span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">keep</span>(usa_extracts, is_extract_ready)</span>
 <span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 348</span></span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 456</span></span>
 <span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a><span class="co">#&gt; Description: USA extract for API vignette</span></span>
 <span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) us2018a, us2019a</span></span>
 <span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="co">#&gt; Variables: (15 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, CLUSTER, STATEFIP...</span></span>
 <span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 347</span></span>
+<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 455</span></span>
 <span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a><span class="co">#&gt; Description: Data from long ago</span></span>
 <span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us1880a</span></span>
 <span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co">#&gt; Variables: (12 total) YEAR, SAMPLE, SERIAL, HHWT, CLUSTER, STRATA, GQ, PERNUM...</span></span>
 <span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
-<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 346</span></span>
+<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 454</span></span>
 <span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a><span class="co">#&gt; Description: Data from 2017 PRCS</span></span>
 <span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us2017b</span></span>

@@ -78,19 +78,21 @@ nhgis_ex2 <- ipums_example("nhgis0731_csv.zip")
 ipums_list_files(nhgis_ex2)
 
 ## ----error=TRUE, message=FALSE------------------------------------------------
+try({
 nhgis_data2 <- read_nhgis(nhgis_ex2, file_select = contains("nation"))
 nhgis_data3 <- read_nhgis(nhgis_ex2, file_select = contains("ts_nominal_state"))
+})
 
 ## -----------------------------------------------------------------------------
 attributes(nhgis_data2$AJWBE001)
 attributes(nhgis_data3$A00AA1790)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  # Match by file name
-#  read_nhgis(nhgis_ex2, file_select = "nhgis0731_csv/nhgis0731_ds239_20185_nation.csv")
-#  
-#  # Match first file in extract
-#  read_nhgis(nhgis_ex2, file_select = 1)
+# # Match by file name
+# read_nhgis(nhgis_ex2, file_select = "nhgis0731_csv/nhgis0731_ds239_20185_nation.csv")
+# 
+# # Match first file in extract
+# read_nhgis(nhgis_ex2, file_select = 1)
 
 ## -----------------------------------------------------------------------------
 # Convert MSA codes to character format

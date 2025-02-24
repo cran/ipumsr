@@ -62,9 +62,9 @@ ipums_val_labels(cps$MONTH)
 cps$MONTH <- as_factor(cps$MONTH)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  cps <- as_factor(cps)
-#  
-#  # ... further preparation of variables as factors
+# cps <- as_factor(cps)
+# 
+# # ... further preparation of variables as factors
 
 ## -----------------------------------------------------------------------------
 inctot_num <- zap_labels(cps$INCTOT)
@@ -105,7 +105,7 @@ inctot_na2 <- lbl_na_if(
 all(inctot_na2 == inctot_na, na.rm = TRUE)
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  lbl_na_if(cps$INCTOT, ~ .val == 999999999)
+# lbl_na_if(cps$INCTOT, ~ .val == 999999999)
 
 ## -----------------------------------------------------------------------------
 x <- lbl_na_if(cps$INCTOT, ~ .val >= 0)
