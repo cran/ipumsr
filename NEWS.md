@@ -1,3 +1,62 @@
+# ipumsr 0.9.0
+
+## New features
+
+-   This release adds comprehensive support for IPUMS IHGIS extract submission, 
+    metadata retrieval, and data loading! 
+    
+    As IPUMS IHGIS is an aggregate data 
+    project alongside IPUMS NHGIS, many functions that previously were 
+    NHGIS-specific have been generalized to accommodate both collections. This 
+    includes the following new functions:
+    
+    -   `read_ipums_agg()` loads downloaded extracts for both NHGIS and IHGIS.
+        This replaces `read_nhgis()`, which is now deprecated.
+        
+        `read_ipums_agg()` also includes a new `file_encoding` argument, as
+        IHGIS and NHGIS files often have different encoding. Typically,
+        the default `file_encoding` should load an aggregate data extract
+        file correctly. If not, you can adjust the encoding here.
+        
+    -   `define_extract_agg()` defines extract requests for both NHGIS and
+        IHGIS. Use the `collection` argument to specify the data collection for
+        a given extract. This replaces `define_extract_nhgis()`, which is now
+        deprecated.
+        
+    -   `get_metadata_catalog()` retrieves summary metadata about NHGIS and 
+        IHGIS data sources. `get_metadata()` retrieves
+        detailed metadata about a particular NHGIS or IHGIS data source. These
+        functions replace `get_metadata_nhgis()`, which is now deprecated.
+        
+-   Adds `read_ihgis_codebook()` to load codebook files containing
+    file-level metadata for downloaded IHGIS extracts. This function is
+    currently experimental.
+    
+-   Enables monetary value adjustment for supported IPUMS USA and IPUMS
+    CPS variables. Use the `adjust_monetary_values` argument to `var_spec()`
+    to include an additional adjusted variable in your extract. See the
+    [IPUMS CPS](https://cps.ipums.org/cps/adjusted_monetary_values.shtml) 
+    and [IPUMS USA](https://usa.ipums.org/usa/adjusted_monetary_values.shtml) 
+    documentation for more information on monetary adjustment.
+
+## Function + argument retirements
+    
+-   `data_layer` and `shape_layer` arguments are now defunct. In cases
+    where this functionality is still supported, please use the
+    `file_select` argument instead.
+    
+-   `get_recent_extracts_info_list()`, `get_recent_extracts_info_tbl()`,
+    and `extract_tbl_to_list()` are now defunct. Use `get_extract_history()`
+    to obtain a list of previously-submitted extracts.
+    
+-   The ability to read files through directories is now defunct. This
+    affects most reader functions. If you have unzipped an IPUMS extract
+    archive, please provide the path to the individual file you wish
+    to load, not its containing directory.
+    
+-   `project` and `var_label` arguments in `ipums_website()` are now 
+    defunct.
+
 # ipumsr 0.8.2
     
 -   Adds codebook files to output of `ipums_list_files()` (#85).

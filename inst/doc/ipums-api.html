@@ -382,22 +382,27 @@ examples in this vignette:</p>
 <p>IPUMS <strong>extract</strong> support is currently available via API
 for the following collections:</p>
 <ul>
+<li>IPUMS microdata collections
+<ul>
 <li>IPUMS USA</li>
 <li>IPUMS CPS</li>
 <li>IPUMS International</li>
 <li>IPUMS Time Use (ATUS, AHTUS, MTUS)</li>
 <li>IPUMS Health Surveys (NHIS, MEPS)</li>
-<li>IPUMS NHGIS</li>
-</ul>
-<p>Note that this support only includes data available via a
-collection’s extract engine. Many collections provide additional data
-via direct download, but these products are not supported by the IPUMS
-API.</p>
-<p>IPUMS <strong>metadata</strong> support is currently available via
-API for the following collections:</p>
+</ul></li>
+<li>IPUMS aggregate data collections
 <ul>
 <li>IPUMS NHGIS</li>
+<li>IPUMS IHGIS</li>
+</ul></li>
 </ul>
+<p>Note that this support only includes data available via a
+collection’s extract engine. Many collections provide supplemental data
+files via direct download. Currently, API support for downloading these
+files is limited to IPUMS NHGIS. See
+<code>download_supplemental_data()</code> for more information.</p>
+<p>IPUMS <strong>metadata</strong> support is currently available via
+API for the IPUMS aggregate data collections (NHGIS and IHGIS).</p>
 <p>API support will continue to be added for more collections in the
 future. You can check general API availability for all IPUMS collections
 with <code>ipums_data_collections()</code>.</p>
@@ -409,7 +414,7 @@ with <code>ipums_data_collections()</code>.</p>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="co">#&gt;  2 IPUMS CPS           microdata       cps          TRUE       </span></span>
 <span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co">#&gt;  3 IPUMS International microdata       ipumsi       TRUE       </span></span>
 <span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a><span class="co">#&gt;  4 IPUMS NHGIS         aggregate data  nhgis        TRUE       </span></span>
-<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  5 IPUMS IHGIS         aggregate data  ihgis        FALSE      </span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co">#&gt;  5 IPUMS IHGIS         aggregate data  ihgis        TRUE       </span></span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="co">#&gt;  6 IPUMS ATUS          microdata       atus         TRUE       </span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt;  7 IPUMS AHTUS         microdata       ahtus        TRUE       </span></span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="co">#&gt;  8 IPUMS MTUS          microdata       mtus         TRUE       </span></span>
@@ -451,9 +456,10 @@ stored it in the <code>IPUMS_API_KEY</code> environment variable.</p>
 <p>ipumsr contains two extract definition functions used to specify the
 parameters of a new extract request from scratch.</p>
 <ul>
-<li>For microdata projects (USA, CPS, International, Time Use, and
-Health Surveys), use <code>define_extract_micro()</code>.</li>
-<li>For NHGIS, use <code>define_extract_nhgis()</code>.</li>
+<li>For microdata projects, use
+<code>define_extract_micro()</code>.</li>
+<li>For aggregate data projects, use
+<code>define_extract_agg()</code>.</li>
 </ul>
 <p>When you define an extract request, you can specify the data to be
 included in the extract and indicate the desired format and layout.</p>
@@ -476,14 +482,14 @@ and 2019 American Community Survey (ACS):</p>
 <span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt; Variables: (5 total) AGE, SEX, RACE, STATEFIP, MARST</span></span></code></pre></div>
 <p>The exact extract definition options vary across collections, but all
 collections can be used with the same general workflow. For more details
-on the available extract definition options, see the associated <a href="ipums-api-micro.html">microdata</a> and <a href="ipums-api-nhgis.html">NHGIS</a> vignettes.</p>
+on the available extract definition options, see the associated <a href="ipums-api-micro.html">microdata</a> and <a href="ipums-api-agg.html">aggregate data</a> vignettes.</p>
 <p>For the purposes of demonstrating the overall workflow, we will
 continue to work with the sample IPUMS USA extract definition created
 above.</p>
 <div id="extract-request-objects" class="section level3">
 <h3>Extract request objects</h3>
 <p><code>define_extract_micro()</code> and
-<code>define_extract_nhgis()</code> always produce an
+<code>define_extract_agg()</code> always produce an
 <code>ipums_extract</code> object, which can be handled by other API
 functions (see <code>?ipums_extract</code>). Furthermore, these objects
 will have a subclass for the particular collection with which they are
@@ -494,18 +500,21 @@ associated.</p>
 accessed by indexing the object:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">names</span>(usa_extract_definition<span class="sc">$</span>samples)</span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;us2018a&quot; &quot;us2019a&quot;</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="fu">names</span>(usa_extract_definition<span class="sc">$</span>variables)</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; [1] &quot;AGE&quot;      &quot;SEX&quot;      &quot;RACE&quot;     &quot;STATEFIP&quot; &quot;MARST&quot;</span></span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>usa_extract_definition<span class="sc">$</span>data_format</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; [1] &quot;fixed_width&quot;</span></span></code></pre></div>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="fu">names</span>(usa_extract_definition<span class="sc">$</span>variables)</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="co">#&gt; [1] &quot;AGE&quot;      &quot;SEX&quot;      &quot;RACE&quot;     &quot;STATEFIP&quot; &quot;MARST&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>usa_extract_definition<span class="sc">$</span>data_format</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="co">#&gt; [1] &quot;fixed_width&quot;</span></span></code></pre></div>
 <p><code>ipums_extract</code> objects also contain information about the
 extract request’s processing status and its assigned extract number,
 which serves as an identifier for the extract request. Since this
 extract request is still unsubmitted, it has no request number:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>usa_extract_definition<span class="sc">$</span>status</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; [1] &quot;unsubmitted&quot;</span></span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>usa_extract_definition<span class="sc">$</span>number</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>usa_extract_definition<span class="sc">$</span>number</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt; [1] NA</span></span></code></pre></div>
 <p>To obtain the data requested in the extract definition, we must first
 submit it to the IPUMS API for processing.</p>
 </div>
@@ -614,8 +623,9 @@ directly into the reader functions provided by ipumsr. For instance, for
 microdata projects:</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>ddi <span class="ot">&lt;-</span> <span class="fu">read_ipums_ddi</span>(filepath)</span>
 <span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>micro_data <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(ddi)</span></code></pre></div>
-<p>If instead you’re working with an NHGIS extract, use
-<code>read_nhgis()</code> or <code>read_ipums_sf()</code>.</p>
+<p>If instead you’re working with an aggregate data extract, use
+<code>read_ipums_agg()</code> (or <code>read_ipums_sf()</code> for
+spatial data from IPUMS NHGIS extracts).</p>
 <p>See the <a href="ipums-read.html">associated vignette</a> for more
 information about loading IPUMS data into R.</p>
 </div>
@@ -684,27 +694,28 @@ variable or are ready for download:</p>
 <span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) us2018a, us2019a</span></span>
 <span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="co">#&gt; Variables: (15 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, CLUSTER, STATEFIP...</span></span>
-<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">keep</span>(usa_extracts, is_extract_ready)</span>
-<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 456</span></span>
-<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a><span class="co">#&gt; Description: USA extract for API vignette</span></span>
-<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) us2018a, us2019a</span></span>
-<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="co">#&gt; Variables: (15 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, CLUSTER, STATEFIP...</span></span>
-<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
-<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 455</span></span>
-<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a><span class="co">#&gt; Description: Data from long ago</span></span>
-<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us1880a</span></span>
-<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co">#&gt; Variables: (12 total) YEAR, SAMPLE, SERIAL, HHWT, CLUSTER, STRATA, GQ, PERNUM...</span></span>
-<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
-<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 454</span></span>
-<span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a><span class="co">#&gt; Description: Data from 2017 PRCS</span></span>
-<span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us2017b</span></span>
-<span id="cb22-28"><a href="#cb22-28" tabindex="-1"></a><span class="co">#&gt; Variables: (9 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, GQ, PERNUM, PERWT,...</span></span></code></pre></div>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">keep</span>(usa_extracts, is_extract_ready)</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 456</span></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a><span class="co">#&gt; Description: USA extract for API vignette</span></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb22-14"><a href="#cb22-14" tabindex="-1"></a><span class="co">#&gt; Samples: (2 total) us2018a, us2019a</span></span>
+<span id="cb22-15"><a href="#cb22-15" tabindex="-1"></a><span class="co">#&gt; Variables: (15 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, CLUSTER, STATEFIP...</span></span>
+<span id="cb22-16"><a href="#cb22-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb22-17"><a href="#cb22-17" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb22-18"><a href="#cb22-18" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 455</span></span>
+<span id="cb22-19"><a href="#cb22-19" tabindex="-1"></a><span class="co">#&gt; Description: Data from long ago</span></span>
+<span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us1880a</span></span>
+<span id="cb22-22"><a href="#cb22-22" tabindex="-1"></a><span class="co">#&gt; Variables: (12 total) YEAR, SAMPLE, SERIAL, HHWT, CLUSTER, STRATA, GQ, PERNUM...</span></span>
+<span id="cb22-23"><a href="#cb22-23" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb22-24"><a href="#cb22-24" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb22-25"><a href="#cb22-25" tabindex="-1"></a><span class="co">#&gt; Submitted IPUMS USA extract number 454</span></span>
+<span id="cb22-26"><a href="#cb22-26" tabindex="-1"></a><span class="co">#&gt; Description: Data from 2017 PRCS</span></span>
+<span id="cb22-27"><a href="#cb22-27" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb22-28"><a href="#cb22-28" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) us2017b</span></span>
+<span id="cb22-29"><a href="#cb22-29" tabindex="-1"></a><span class="co">#&gt; Variables: (9 total) YEAR, SAMPLE, SERIAL, CBSERIAL, HHWT, GQ, PERNUM, PERWT,...</span></span></code></pre></div>
 <p>Or we can use the <code>purrr::map()</code> family to browse certain
 values:</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>purrr<span class="sc">::</span><span class="fu">map_chr</span>(usa_extracts, <span class="sc">~</span> .x<span class="sc">$</span>description)</span>
@@ -717,7 +728,8 @@ collection to the value of the <code>IPUMS_DEFAULT_COLLECTION</code>
 environment variable. If you have a default collection set, API
 functions will use that collection in all requests, assuming no other
 collection is specified.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">set_ipums_default_collection</span>(<span class="st">&quot;usa&quot;</span>) <span class="co"># Set `save = TRUE` to store across sessions</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="co"># Set `save = TRUE` to store across sessions</span></span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a><span class="fu">set_ipums_default_collection</span>(<span class="st">&quot;usa&quot;</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="co"># Check the default collection:</span></span>
 <span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a><span class="fu">Sys.getenv</span>(<span class="st">&quot;IPUMS_DEFAULT_COLLECTION&quot;</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;usa&quot;</span></span></code></pre></div>
@@ -803,7 +815,7 @@ instance, for a hypothetical <code>nhgis_extract</code> that contains
 both tabular and spatial data:</p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>nhgis_data <span class="ot">&lt;-</span> <span class="fu">download_extract</span>(nhgis_extract) <span class="sc">%&gt;%</span></span>
 <span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="st">&quot;data&quot;</span>) <span class="sc">%&gt;%</span> <span class="co"># Select only the tabular data file to read</span></span>
-<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="fu">read_nhgis</span>()</span></code></pre></div>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>  <span class="fu">read_ipums_agg</span>()</span></code></pre></div>
 <p>Not only does this API workflow allow you to obtain IPUMS data
 without ever leaving your R environment, but it also allows you to
 retain a reproducible record of your process. This makes it much easier

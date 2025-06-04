@@ -9,7 +9,7 @@
 Status:Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ipumsr)](https://CRAN.R-project.org/package=ipumsr)
 [![R build
-status](https://github.com/ipums/ipumsr/workflows/R-CMD-check/badge.svg)](https://github.com/ipums/ipumsr/actions)
+status](https://github.com/ipums/ipumsr/workflows/R-CMD-check/badge.svg)](https://github.com/ipums/ipumsr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/ipums/ipumsr/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ipums/ipumsr?branch=main)
 
@@ -194,10 +194,13 @@ Tabular and GIS data from population, housing, and agricultural censuses
 around the world
 </td>
 <td style="text-align:center;">
+<img src='man/figures/check-solid.svg' class='icon-check' alt='Check mark'>
 </td>
 <td style="text-align:center;">
+<img src='man/figures/check-solid.svg' class='icon-check' alt='Check mark'>
 </td>
 <td style="text-align:center;">
+<img src='man/figures/check-solid.svg' class='icon-check' alt='Check mark'>
 </td>
 </tr>
 <tr>
@@ -319,8 +322,9 @@ offer:
 - To interact with the IPUMS extract and metadata system via the IPUMS
   API, see `vignette("ipums-api")`.
 
-- For additional details about microdata and NHGIS extract requests, see
-  `vignette("ipums-api-micro")` and `vignette("ipums-api-nhgis")`.
+- For additional details about microdata and aggregate data extract
+  requests, see `vignette("ipums-api-micro")` and
+  `vignette("ipums-api-agg")`.
 
 - To work with labelled values in IPUMS data, see
   `vignette("value-labels")`.

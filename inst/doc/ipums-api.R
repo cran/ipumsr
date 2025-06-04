@@ -29,8 +29,6 @@ vcr_configure(
   dir = vcr_dir
 )
 
-check_cassette_names()
-
 modify_ready_extract_cassette_file <- function(cassette_file_name,
                                                fixture_path = NULL,
                                                n_requests = 1) {
@@ -81,11 +79,14 @@ class(usa_extract_definition)
 
 ## -----------------------------------------------------------------------------
 names(usa_extract_definition$samples)
+
 names(usa_extract_definition$variables)
+
 usa_extract_definition$data_format
 
 ## -----------------------------------------------------------------------------
 usa_extract_definition$status
+
 usa_extract_definition$number
 
 ## ----include=FALSE------------------------------------------------------------
@@ -114,7 +115,7 @@ submit_extract(
   )
 )
 
-eject_cassette("submit-placeholder-extract-usa")
+eject_cassette()
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("submit-extract")
@@ -135,14 +136,14 @@ usa_extract_submitted <- get_last_extract_info("usa")
 usa_extract_submitted$number
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("submit-extract")
+eject_cassette()
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("wait-for-extract")
 
 usa_extract_complete <- wait_for_extract(usa_extract_submitted)
 
-eject_cassette("wait-for-extract")
+eject_cassette()
 
 # Leave an extract request to simulate wait_for_extract() output for USA
 modify_ready_extract_cassette_file(
@@ -165,7 +166,7 @@ usa_extract_complete$status
 names(usa_extract_complete$download_links)
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("wait-for-extract")
+eject_cassette()
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("extract-ready")
@@ -174,7 +175,7 @@ insert_cassette("extract-ready")
 is_extract_ready(usa_extract_submitted)
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("extract-ready")
+eject_cassette()
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("check-extract-info")
@@ -185,7 +186,7 @@ usa_extract_submitted <- get_extract_info(usa_extract_submitted)
 usa_extract_submitted$status
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("check-extract-info")
+eject_cassette()
 
 ## ----eval=FALSE---------------------------------------------------------------
 # # By default, downloads to your current working directory
@@ -216,13 +217,15 @@ is_extract_ready(usa_extracts[[2]])
 
 ## -----------------------------------------------------------------------------
 purrr::keep(usa_extracts, ~ "MARST" %in% names(.x$variables))
+
 purrr::keep(usa_extracts, is_extract_ready)
 
 ## -----------------------------------------------------------------------------
 purrr::map_chr(usa_extracts, ~ .x$description)
 
 ## ----eval=FALSE---------------------------------------------------------------
-# set_ipums_default_collection("usa") # Set `save = TRUE` to store across sessions
+# # Set `save = TRUE` to store across sessions
+# set_ipums_default_collection("usa")
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 set_ipums_default_collection("usa")
@@ -242,7 +245,7 @@ usa_extract_10 <- get_extract_info(10)
 cps_extract_10 <- get_extract_info("cps:10")
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("check-extract-history")
+eject_cassette()
 
 ## ----eval=FALSE---------------------------------------------------------------
 # usa_extract_10 <- get_extract_info("usa:10")
@@ -267,5 +270,5 @@ eject_cassette("check-extract-history")
 ## ----eval=FALSE---------------------------------------------------------------
 # nhgis_data <- download_extract(nhgis_extract) %>%
 #   purrr::pluck("data") %>% # Select only the tabular data file to read
-#   read_nhgis()
+#   read_ipums_agg()
 

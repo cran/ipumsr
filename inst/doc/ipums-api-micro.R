@@ -29,8 +29,6 @@ vcr_configure(
   dir = vcr_dir
 )
 
-check_cassette_names()
-
 ## ----message=FALSE------------------------------------------------------------
 library(ipumsr)
 library(dplyr)
@@ -50,7 +48,7 @@ ipumsi_samps %>%
   filter(grepl("Mexico", description))
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("micro-sample-ids")
+eject_cassette()
 
 ## -----------------------------------------------------------------------------
 cps_extract <- define_extract_micro(
@@ -154,6 +152,14 @@ usa_extract <- define_extract_micro(
   ),
   data_quality_flags = TRUE
 )
+
+## -----------------------------------------------------------------------------
+# define_extract_micro(
+#   "cps",
+#   description = "monetary value adjustment example",
+#   samples = "cps2012_03s",
+#   variables = var_spec("HOURWAGE", adjust_monetary_values = TRUE)
+# )
 
 ## -----------------------------------------------------------------------------
 define_extract_micro(

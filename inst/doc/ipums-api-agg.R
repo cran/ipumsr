@@ -29,8 +29,6 @@ vcr_configure(
   dir = vcr_dir
 )
 
-check_cassette_names()
-
 # We do not expose detailed pagination options to users, but we do not want
 # to save a full record of summary metadata in a .yml fixture for this
 # vignette. This helper allows us to request just a few records, which
@@ -79,7 +77,7 @@ library(purrr)
 insert_cassette("nhgis-metadata-summary")
 
 ## -----------------------------------------------------------------------------
-ds <- get_metadata_nhgis(type = "datasets")
+ds <- get_metadata_catalog("nhgis", metadata_type = "datasets")
 
 head(ds)
 
@@ -99,13 +97,14 @@ ds %>%
 tst <- get_truncated_metadata("nhgis", "time_series_tables")
 
 ## ----eval=FALSE---------------------------------------------------------------
-# tst <- get_metadata_nhgis("time_series_tables")
+# tst <- get_metadata_catalog("nhgis", "time_series_tables")
 
 ## -----------------------------------------------------------------------------
 head(tst)
 
 ## -----------------------------------------------------------------------------
 tst$years[[1]]
+
 tst$geog_levels[[1]]
 
 ## -----------------------------------------------------------------------------
@@ -115,23 +114,24 @@ tst %>%
   filter(map_lgl(years, ~ "1840" %in% .x$name))
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("nhgis-metadata-summary")
+eject_cassette()
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
 insert_cassette("nhgis-metadata-detailed")
 
 ## -----------------------------------------------------------------------------
-cAg_meta <- get_metadata_nhgis(dataset = "1900_cAg")
+cAg_meta <- get_metadata("nhgis", dataset = "1900_cAg")
 
 ## -----------------------------------------------------------------------------
 cAg_meta$data_tables
+
 cAg_meta$geog_levels
 
 ## -----------------------------------------------------------------------------
-get_metadata_nhgis(dataset = "1900_cAg", data_table = "NT2")
+get_metadata("nhgis", dataset = "1900_cAg", data_table = "NT2")
 
 ## ----echo=FALSE, results="hide", message=FALSE--------------------------------
-eject_cassette("nhgis-metadata-detailed")
+eject_cassette()
 
 ## -----------------------------------------------------------------------------
 cAg_meta$data_tables
@@ -146,7 +146,8 @@ dataset <- ds_spec(
 str(dataset)
 
 ## -----------------------------------------------------------------------------
-nhgis_ext <- define_extract_nhgis(
+nhgis_ext <- define_extract_agg(
+  "nhgis",
   description = "Example farm data in 1900",
   datasets = dataset
 )
@@ -154,7 +155,19 @@ nhgis_ext <- define_extract_nhgis(
 nhgis_ext
 
 ## -----------------------------------------------------------------------------
-define_extract_nhgis(
+define_extract_agg(
+  "ihgis",
+  description = "Example IHGIS extract",
+  datasets = ds_spec(
+    "KZ2009pop", 
+    data_tables = "KZ2009pop.AAA",
+    tabulation_geographies = "KZ2009pop.g0"
+  )
+)
+
+## -----------------------------------------------------------------------------
+define_extract_agg(
+  "nhgis",
   description = "Example time series table request",
   time_series_tables = tst_spec(
     "CW3",
@@ -164,13 +177,15 @@ define_extract_nhgis(
 )
 
 ## -----------------------------------------------------------------------------
-define_extract_nhgis(
+define_extract_agg(
+  "nhgis",
   description = "Example shapefiles request",
   shapefiles = c("us_county_2021_tl2021", "us_county_2020_tl2020")
 )
 
 ## -----------------------------------------------------------------------------
-define_extract_nhgis(
+define_extract_agg(
+  "nhgis",
   description = "Slightly more complicated extract request",
   datasets = list(
     ds_spec("2018_ACS1", "B01001", "state"),
@@ -191,7 +206,8 @@ datasets <- purrr::map(
   ~ ds_spec(name = .x, data_tables = tables, geog_levels = geogs)
 )
 
-nhgis_ext <- define_extract_nhgis(
+nhgis_ext <- define_extract_agg(
+  "nhgis",
   description = "Slightly more complicated extract request",
   datasets = datasets
 )

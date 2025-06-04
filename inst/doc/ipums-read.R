@@ -54,8 +54,17 @@ read_ipums_micro_list(cps_hier_ddi)
 ## -----------------------------------------------------------------------------
 nhgis_ex1 <- ipums_example("nhgis0972_csv.zip")
 
-nhgis_data <- read_nhgis(nhgis_ex1)
+nhgis_data <- read_ipums_agg(nhgis_ex1)
+
 nhgis_data
+
+## -----------------------------------------------------------------------------
+# Convert MSA codes to character format
+read_ipums_agg(
+  nhgis_ex1,
+  col_types = c(MSA_CMSAA = "c"),
+  verbose = FALSE
+)
 
 ## -----------------------------------------------------------------------------
 attributes(nhgis_data$D6Z001)
@@ -66,6 +75,11 @@ nhgis_cb <- read_nhgis_codebook(nhgis_ex1)
 # Most useful metadata for NHGIS is for variable labels:
 ipums_var_info(nhgis_cb) %>%
   select(var_name, var_label, var_desc)
+
+## -----------------------------------------------------------------------------
+ihgis_cb <- read_ihgis_codebook(ipums_example("ihgis0014.zip"))
+
+ipums_var_info(ihgis_cb)
 
 ## -----------------------------------------------------------------------------
 nhgis_cb <- read_nhgis_codebook(nhgis_ex1, raw = TRUE)
@@ -79,34 +93,31 @@ ipums_list_files(nhgis_ex2)
 
 ## ----error=TRUE, message=FALSE------------------------------------------------
 try({
-nhgis_data2 <- read_nhgis(nhgis_ex2, file_select = contains("nation"))
-nhgis_data3 <- read_nhgis(nhgis_ex2, file_select = contains("ts_nominal_state"))
+nhgis_data2 <- read_ipums_agg(
+  nhgis_ex2, 
+  file_select = contains("nation")
+)
+
+nhgis_data3 <- read_ipums_agg(
+  nhgis_ex2, 
+  file_select = contains("ts_nominal_state")
+)
 })
 
 ## -----------------------------------------------------------------------------
 attributes(nhgis_data2$AJWBE001)
+
 attributes(nhgis_data3$A00AA1790)
 
 ## ----eval=FALSE---------------------------------------------------------------
 # # Match by file name
-# read_nhgis(nhgis_ex2, file_select = "nhgis0731_csv/nhgis0731_ds239_20185_nation.csv")
+# read_ipums_agg(
+#   nhgis_ex2,
+#   file_select = "nhgis0731_csv/nhgis0731_ds239_20185_nation.csv"
+# )
 # 
 # # Match first file in extract
-# read_nhgis(nhgis_ex2, file_select = 1)
-
-## -----------------------------------------------------------------------------
-# Convert MSA codes to character format
-read_nhgis(
-  nhgis_ex1,
-  col_types = c(MSA_CMSAA = "c"),
-  verbose = FALSE
-)
-
-## -----------------------------------------------------------------------------
-nhgis_fwf <- ipums_example("nhgis0730_fixed.zip")
-
-nhgis_fwf_data <- read_nhgis(nhgis_fwf, file_select = matches("ts_nominal"))
-nhgis_fwf_data
+# read_ipums_agg(nhgis_ex2, file_select = 1)
 
 ## ----eval = requireNamespace("sf")--------------------------------------------
 nhgis_shp_file <- ipums_example("nhgis0972_shape_small.zip")

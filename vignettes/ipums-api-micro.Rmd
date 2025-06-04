@@ -38,8 +38,6 @@ vcr_configure(
   write_disk_path = vcr_dir,
   dir = vcr_dir
 )
-
-check_cassette_names()
 ```
 
 This vignette details the options available for requesting data from IPUMS
@@ -70,9 +68,9 @@ API support will continue to be added for more collections in the future.
 See the [API documentation](https://developer.ipums.org/docs/apiprogram/)
 for more information on upcoming additions to the API.
 
-In addition to microdata projects, the IPUMS API also supports IPUMS NHGIS
-data. For details about obtaining IPUMS NHGIS data using ipumsr, see
-the [NHGIS-specific vignette](ipums-api-nhgis.html).
+In addition to microdata projects, the IPUMS API also supports IPUMS aggregate
+data projects. For details about obtaining IPUMS aggregate data using ipumsr, 
+see the [aggregate data vignette](ipums-api-agg.html).
 
 Before getting started, we'll load ipumsr and `{dplyr}`, which will be 
 helpful for this demo:
@@ -106,7 +104,7 @@ subset of individuals from a population. Many IPUMS samples are samples in
 the statistical sense, but some are "full-count" samples, meaning they contain 
 all individuals in a population.
 
-## IPUMS microdata metadata (forthcoming)
+## IPUMS microdata metadata
 
 ```{r, echo=FALSE, results="hide", message=FALSE}
 insert_cassette("micro-sample-ids")
@@ -157,7 +155,7 @@ includes. See the [IPUMS API introduction](ipums-api.html) for more
 details.
 
 ```{r, echo=FALSE, results="hide", message=FALSE}
-eject_cassette("micro-sample-ids")
+eject_cassette()
 ```
 
 ## Defining an IPUMS microdata extract request
@@ -414,6 +412,33 @@ usa_extract <- define_extract_micro(
 Each data quality flag corresponds to one or more variables, and the codes for 
 each flag vary based on the sample. See the documentation for the IPUMS
 collection of interest for more information about data quality flag codes.
+
+### Monetary value adjustment
+
+IPUMS CPS and IPUMS USA offer the option to standardize income or other 
+dollar values to 2010 dollars. This option both retains the original IPUMS 
+variable in your extract and adds a new, adjusted variable called 
+`{VARIABLE NAME}_cpiu_2010` that contains the inflation-adjusted values. 
+Inflation adjusted values are only available for continuous variables that 
+represent dollar amounts.
+
+To request an adjusted variable in an extract, use the `adjust_monetary_values`
+argument:
+
+```{r}
+#| eval: false
+define_extract_micro(
+  "cps",
+  description = "monetary value adjustment example",
+  samples = "cps2012_03s",
+  variables = var_spec("HOURWAGE", adjust_monetary_values = TRUE)
+)
+```
+
+Further information on monetary value adjustment can be found on 
+the [IPUMS CPS](https://cps.ipums.org/cps/adjusted_monetary_values.shtml) 
+and [IPUMS USA](https://usa.ipums.org/usa/adjusted_monetary_values.shtml) 
+websites.
 
 ## Time use variables
 

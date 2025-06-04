@@ -21,7 +21,8 @@ cps_extract_request <- define_extract_micro(
 )
 
 # Define an NHGIS extract request
-nhgis_extract_request <- define_extract_nhgis(
+nhgis_extract_request <- define_extract_agg(
+  collection = "nhgis",
   description = "NHGIS Data via IPUMS API",
   datasets = ds_spec(
     "1990_STF1",
@@ -41,11 +42,12 @@ nhgis_extract_request <- define_extract_nhgis(
 ## -----------------------------------------------------------------------------
 cps_file <- ipums_example("cps_00157.xml")
 cps_data <- read_ipums_micro(cps_file)
+
 head(cps_data)
 
 ## -----------------------------------------------------------------------------
 nhgis_file <- ipums_example("nhgis0972_csv.zip")
-nhgis_data <- read_nhgis(nhgis_file, verbose = FALSE)
+nhgis_data <- read_ipums_agg(nhgis_file, verbose = FALSE)
 
 head(nhgis_data)
 
@@ -56,14 +58,15 @@ nhgis_shp <- read_ipums_sf(shp_file)
 head(nhgis_shp)
 
 ## -----------------------------------------------------------------------------
-cps_meta <- read_ipums_ddi(cps_file)
-nhgis_meta <- read_nhgis_codebook(nhgis_file)
+cps_metadata <- read_ipums_ddi(cps_file)
+nhgis_metadata <- read_nhgis_codebook(nhgis_file)
 
 ## -----------------------------------------------------------------------------
-ipums_var_info(cps_meta)
+ipums_var_info(cps_metadata)
 
 ## -----------------------------------------------------------------------------
 ipums_var_desc(cps_data$INCTOT)
+
 ipums_val_labels(cps_data$STATEFIP)
 
 ## -----------------------------------------------------------------------------

@@ -373,8 +373,9 @@ future. See the <a href="https://developer.ipums.org/docs/apiprogram/">API
 documentation</a> for more information on upcoming additions to the
 API.</p>
 <p>In addition to microdata projects, the IPUMS API also supports IPUMS
-NHGIS data. For details about obtaining IPUMS NHGIS data using ipumsr,
-see the <a href="ipums-api-nhgis.html">NHGIS-specific vignette</a>.</p>
+aggregate data projects. For details about obtaining IPUMS aggregate
+data using ipumsr, see the <a href="ipums-api-agg.html">aggregate data
+vignette</a>.</p>
 <p>Before getting started, we’ll load ipumsr and <code>{dplyr}</code>,
 which will be helpful for this demo:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
@@ -401,8 +402,8 @@ population. Many IPUMS samples are samples in the statistical sense, but
 some are “full-count” samples, meaning they contain all individuals in a
 population.</p>
 </div>
-<div id="ipums-microdata-metadata-forthcoming" class="section level2">
-<h2>IPUMS microdata metadata (forthcoming)</h2>
+<div id="ipums-microdata-metadata" class="section level2">
+<h2>IPUMS microdata metadata</h2>
 <p>Of course, to request samples and variables, we have to know the
 codes that the API uses to refer to them. For samples, the IPUMS API
 uses special codes that don’t appear in the web-based extract builder.
@@ -746,6 +747,27 @@ codes for each flag vary based on the sample. See the documentation for
 the IPUMS collection of interest for more information about data quality
 flag codes.</p>
 </div>
+<div id="monetary-value-adjustment" class="section level3">
+<h3>Monetary value adjustment</h3>
+<p>IPUMS CPS and IPUMS USA offer the option to standardize income or
+other dollar values to 2010 dollars. This option both retains the
+original IPUMS variable in your extract and adds a new, adjusted
+variable called <code>{VARIABLE NAME}_cpiu_2010</code> that contains the
+inflation-adjusted values. Inflation adjusted values are only available
+for continuous variables that represent dollar amounts.</p>
+<p>To request an adjusted variable in an extract, use the
+<code>adjust_monetary_values</code> argument:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="st">&quot;cps&quot;</span>,</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;monetary value adjustment example&quot;</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;cps2012_03s&quot;</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">var_spec</span>(<span class="st">&quot;HOURWAGE&quot;</span>, <span class="at">adjust_monetary_values =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>)</span></code></pre></div>
+<p>Further information on monetary value adjustment can be found on the
+<a href="https://cps.ipums.org/cps/adjusted_monetary_values.shtml">IPUMS
+CPS</a> and <a href="https://usa.ipums.org/usa/adjusted_monetary_values.shtml">IPUMS
+USA</a> websites.</p>
+</div>
 </div>
 <div id="time-use-variables" class="section level2">
 <h2>Time use variables</h2>
@@ -753,40 +775,40 @@ flag codes.</p>
 request time use variables using the <code>time_use_variables</code>
 argument.</p>
 <p>For IPUMS-defined time use variables, simply provide the name:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>  <span class="st">&quot;atus&quot;</span>,</span>
-<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Time use variable demo&quot;</span>,</span>
-<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;at2017&quot;</span>,</span>
-<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>  <span class="at">time_use_variables =</span> <span class="st">&quot;ACT_PCARE&quot;</span></span>
-<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>)</span>
-<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS ATUS extract </span></span>
-<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a><span class="co">#&gt; Description: Time use variable demo</span></span>
-<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) at2017</span></span>
-<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a><span class="co">#&gt; Time Use Variables: (1 total) ACT_PCARE</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="st">&quot;atus&quot;</span>,</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Time use variable demo&quot;</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;at2017&quot;</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>  <span class="at">time_use_variables =</span> <span class="st">&quot;ACT_PCARE&quot;</span></span>
+<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>)</span>
+<span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS ATUS extract </span></span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a><span class="co">#&gt; Description: Time use variable demo</span></span>
+<span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a><span class="co">#&gt; Samples: (1 total) at2017</span></span>
+<span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">#&gt; Time Use Variables: (1 total) ACT_PCARE</span></span></code></pre></div>
 <p>You can also request time use variables that you have defined
 yourself using the online extract builder. In this case, use the
 <code>tu_var_spec()</code> helper to provide the time use variable name
 and your user email to identify the account the variable was created
 under:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
-<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>  <span class="st">&quot;atus&quot;</span>,</span>
-<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Time use variable demo&quot;</span>,</span>
-<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;at2017&quot;</span>,</span>
-<span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>  <span class="at">time_use_variables =</span> <span class="fu">tu_var_spec</span>(<span class="st">&quot;MYTUVAR&quot;</span>, <span class="at">owner =</span> <span class="st">&quot;user@example.com&quot;</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>)</span></code></pre></div>
-<p>To request multiple user-defined time use variables or a combination
-of IPUMS-defined and user-defined time use variables, pass a
-<code>list</code> to the <code>time_use_variables</code> argument:</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
 <span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a>  <span class="st">&quot;atus&quot;</span>,</span>
 <span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Time use variable demo&quot;</span>,</span>
 <span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;at2017&quot;</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>  <span class="at">time_use_variables =</span> <span class="fu">list</span>(</span>
-<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>    <span class="st">&quot;ACT_PCARE&quot;</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a>    <span class="fu">tu_var_spec</span>(<span class="st">&quot;MYTUVAR&quot;</span>, <span class="at">owner =</span> <span class="st">&quot;user@example.com&quot;</span>)</span>
-<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>  )</span>
-<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a>)</span></code></pre></div>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a>  <span class="at">time_use_variables =</span> <span class="fu">tu_var_spec</span>(<span class="st">&quot;MYTUVAR&quot;</span>, <span class="at">owner =</span> <span class="st">&quot;user@example.com&quot;</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a>)</span></code></pre></div>
+<p>To request multiple user-defined time use variables or a combination
+of IPUMS-defined and user-defined time use variables, pass a
+<code>list</code> to the <code>time_use_variables</code> argument:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="st">&quot;atus&quot;</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Time use variable demo&quot;</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;at2017&quot;</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  <span class="at">time_use_variables =</span> <span class="fu">list</span>(</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>    <span class="st">&quot;ACT_PCARE&quot;</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>    <span class="fu">tu_var_spec</span>(<span class="st">&quot;MYTUVAR&quot;</span>, <span class="at">owner =</span> <span class="st">&quot;user@example.com&quot;</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a>  )</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="data-structure" class="section level2">
 <h2>Data structure</h2>
@@ -800,13 +822,13 @@ onto all household members.</p>
 records for each record type present in the data, set
 <code>data_structure = &quot;hierarchical&quot;</code> in your extract
 definition.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
-<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a>  <span class="st">&quot;nhis&quot;</span>,</span>
-<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;NHIS hierarchical&quot;</span>,</span>
-<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;ih2002&quot;</span>,</span>
-<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">&quot;REGION&quot;</span>, <span class="st">&quot;AGE&quot;</span>, <span class="st">&quot;SEX&quot;</span>, <span class="st">&quot;BMI&quot;</span>),</span>
-<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a>  <span class="at">data_structure =</span> <span class="st">&quot;hierarchical&quot;</span></span>
-<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="st">&quot;nhis&quot;</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;NHIS hierarchical&quot;</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;ih2002&quot;</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">&quot;REGION&quot;</span>, <span class="st">&quot;AGE&quot;</span>, <span class="st">&quot;SEX&quot;</span>, <span class="st">&quot;BMI&quot;</span>),</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>  <span class="at">data_structure =</span> <span class="st">&quot;hierarchical&quot;</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>)</span></code></pre></div>
 <p>See the <a href="ipums-read.html#hierarchical-extracts">IPUMS data
 reading vignette</a> for more information about loading hierarchical
 data into R.</p>
@@ -817,13 +839,13 @@ data in a different rectangular structure, set the
 <code>rectangular_on</code> argument in your extract definition to
 <code>&quot;A&quot;</code> (rectangular-on-activity), <code>&quot;I&quot;</code>
 (rectangular-on-injury), or <code>&quot;R&quot;</code> (rectangular-on-round).</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>  <span class="st">&quot;meps&quot;</span>,</span>
-<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;MEPS rectangular-on-round&quot;</span>,</span>
-<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;mp2021&quot;</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">&quot;INCCHLD&quot;</span>, <span class="st">&quot;AGERD&quot;</span>, <span class="st">&quot;MARSTATRD&quot;</span>),</span>
-<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>  <span class="at">rectangular_on =</span> <span class="st">&quot;R&quot;</span></span>
-<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="st">&quot;meps&quot;</span>,</span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;MEPS rectangular-on-round&quot;</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;mp2021&quot;</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="fu">c</span>(<span class="st">&quot;INCCHLD&quot;</span>, <span class="st">&quot;AGERD&quot;</span>, <span class="st">&quot;MARSTATRD&quot;</span>),</span>
+<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  <span class="at">rectangular_on =</span> <span class="st">&quot;R&quot;</span></span>
+<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>)</span></code></pre></div>
 <p>For a summary of rectangular structures available by collection, see
 the <a href="https://developer.ipums.org/docs/v2/apiprogram/apis/microdata/">IPUMS
 API documentation</a>.</p>
@@ -832,13 +854,13 @@ IPUMS USA can provide data containing only household records. To request
 a household-only data file, set
 <code>data_structure = &quot;household_only&quot;</code> in your IPUMS USA extract
 definition.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
-<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>  <span class="st">&quot;usa&quot;</span>,</span>
-<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;USA household only&quot;</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;us2022a&quot;</span>,</span>
-<span id="cb24-5"><a href="#cb24-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">&quot;STATEFIP&quot;</span>,</span>
-<span id="cb24-6"><a href="#cb24-6" tabindex="-1"></a>  <span class="at">data_structure =</span> <span class="st">&quot;household_only&quot;</span></span>
-<span id="cb24-7"><a href="#cb24-7" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">define_extract_micro</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>  <span class="st">&quot;usa&quot;</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;USA household only&quot;</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>  <span class="at">samples =</span> <span class="st">&quot;us2022a&quot;</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>  <span class="at">variables =</span> <span class="st">&quot;STATEFIP&quot;</span>,</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>  <span class="at">data_structure =</span> <span class="st">&quot;household_only&quot;</span></span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>)</span></code></pre></div>
 </div>
 <div id="data-file-format" class="section level2">
 <h2>Data file format</h2>
@@ -855,7 +877,7 @@ csv files.</p>
 <h2>Next steps</h2>
 <p>Once you have defined an extract request, you can submit the extract
 for processing:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a>usa_extract_submitted <span class="ot">&lt;-</span> <span class="fu">submit_extract</span>(usa_extract)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>usa_extract_submitted <span class="ot">&lt;-</span> <span class="fu">submit_extract</span>(usa_extract)</span></code></pre></div>
 <p>The workflow for submitting and monitoring an extract request and
 downloading its files when complete is described in the <a href="ipums-api.html">IPUMS API introduction</a>.</p>
 </div>

@@ -12,7 +12,7 @@
 
 
 
-<title>NHGIS API Requests</title>
+<title>Aggregate Data API Requests</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -336,63 +336,73 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">NHGIS API Requests</h1>
+<h1 class="title toc-ignore">Aggregate Data API Requests</h1>
 
 
 
-<p>This vignette details the options available for requesting IPUMS
-NHGIS data and metadata via the IPUMS API.</p>
+<p>This vignette details the options available for requesting data and
+metadata for IPUMS aggregate data projects via the IPUMS API. Supported
+aggregate data projects include:</p>
+<ul>
+<li>IPUMS NHGIS</li>
+<li>IPUMS IHGIS</li>
+</ul>
 <p>If you haven’t yet learned the basics of the IPUMS API workflow, you
 may want to start with the <a href="ipums-api.html">IPUMS API
 introduction</a>. The code below assumes you have registered and set up
 your API key as described there.</p>
-<p>In addition to NHGIS, the IPUMS API also supports several microdata
-projects. For details about obtaining IPUMS microdata using ipumsr, see
-the <a href="ipums-api-micro.html">microdata-specific vignette</a>.</p>
+<p>The IPUMS API also supports several microdata projects. For details
+about obtaining IPUMS microdata using ipumsr, see the <a href="ipums-api-micro.html">microdata-specific vignette</a>.</p>
 <p>Before getting started, we’ll load ipumsr and some helpful packages
 for this demo:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(ipumsr)</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
-<div id="basic-ipums-nhgis-concepts" class="section level2">
-<h2>Basic IPUMS NHGIS concepts</h2>
-<p>IPUMS NHGIS supports 3 main types of data products: datasets, time
-series tables, and shapefiles.</p>
+<div id="basic-ipums-aggregate-data-concepts" class="section level2">
+<h2>Basic IPUMS aggregate data concepts</h2>
+<p>IPUMS aggregate data collections support several different types of
+data products:</p>
 <ul>
 <li><p>A <em>dataset</em> contains a collection of <em>data tables</em>
 that each correspond to a particular tabulated summary statistic. A
 dataset is distinguished by the years, geographic levels, and topics
 that it covers. For instance, 2021 1-year data from the American
 Community Survey (ACS) is encapsulated in a single dataset. In other
-cases, a single census product will be split into multiple
-datasets.</p></li>
+cases, a single census product will be split into multiple datasets.</p>
+<p>Datasets are available for both NHGIS and IHGIS.</p></li>
 <li><p>A <em>time series table</em> is a longitudinal data source that
 links comparable statistics from multiple U.S. censuses in a single
 bundle. A table is comprised of one or more related time series, each of
 which describes a single summary statistic measured at multiple times
-for a given geographic level.</p></li>
+for a given geographic level.</p>
+<p>Time series tables are available for NHGIS.</p></li>
 <li><p>A <em>shapefile</em> (or <em>GIS file</em>) contains geographic
 data for a given geographic level and year. Typically, these files are
 composed of polygon geometries containing the boundaries of census
-reporting areas.</p></li>
+reporting areas.</p>
+<p>Shapefiles are available via API for NHGIS. Shapefiles from IHGIS can
+be downloaded directly from the <a href="https://ihgis.ipums.org/geography-gis">IHGIS website</a>.</p></li>
 </ul>
 </div>
-<div id="ipums-nhgis-metadata" class="section level2">
-<h2>IPUMS NHGIS metadata</h2>
+<div id="metadata-for-aggregate-data-projects" class="section level2">
+<h2>Metadata for aggregate data projects</h2>
 <p>Of course, to make a request for any of these data sources, we have
 to know the codes that the API uses to refer to them. Fortunately, we
-can browse the metadata for all available IPUMS NHGIS data sources with
-<code>get_metadata_nhgis()</code>.</p>
-<p>Users can view summary metadata for all available data sources of a
-given data type, or detailed metadata for a specific data source by
+can browse the metadata for available IPUMS aggregate data sources with
+<code>get_metadata_catalog()</code> and <code>get_metadata()</code>.</p>
+<p>Users can view a catalog of all available data sources of a given
+data type or detailed metadata for a specific data source indicated by
 name.</p>
 <div id="summary-metadata" class="section level3">
 <h3>Summary metadata</h3>
-<p>To see a summary of all available sources for a given data product
-type, use the <code>type</code> argument. This returns a data frame
-containing the available datasets, data tables, time series tables, or
-shapefiles.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">get_metadata_nhgis</span>(<span class="at">type =</span> <span class="st">&quot;datasets&quot;</span>)</span>
+<p>To see a catalog of all available sources for a given data product
+type, use <code>get_metadata_catalog()</code>. This returns a data frame
+containing the available data sources of the indicated
+<code>metadata_type</code>.</p>
+<p>Note that <code>metadata_type</code> supports different options for
+different collections. Use <code>catalog_types()</code> to determine the
+supported metadata types for a given collection.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>ds <span class="ot">&lt;-</span> <span class="fu">get_metadata_catalog</span>(<span class="st">&quot;nhgis&quot;</span>, <span class="at">metadata_type =</span> <span class="st">&quot;datasets&quot;</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">head</span>(ds)</span>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co">#&gt; # A tibble: 6 × 4</span></span>
@@ -422,7 +432,7 @@ we could filter on <code>group</code> and <code>description</code>:</p>
 code that you would use to request that dataset when creating an extract
 definition to be submitted to the IPUMS API.</p>
 <p>Similarly, for time series tables:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>tst <span class="ot">&lt;-</span> <span class="fu">get_metadata_nhgis</span>(<span class="st">&quot;time_series_tables&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>tst <span class="ot">&lt;-</span> <span class="fu">get_metadata_catalog</span>(<span class="st">&quot;nhgis&quot;</span>, <span class="st">&quot;time_series_tables&quot;</span>)</span></code></pre></div>
 <p>While some of the metadata fields are consistent across different
 data types, some, like <code>geographic_integration</code>, are specific
 to time series tables:</p>
@@ -454,12 +464,13 @@ list columns, where each entry is itself a data frame:</p>
 <span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;  9 1870  1870              12</span></span>
 <span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="co">#&gt; 10 1880  1880              22</span></span>
 <span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 14 more rows</span></span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>tst<span class="sc">$</span>geog_levels[[<span class="dv">1</span>]]</span>
-<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
-<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt;   name   description   sequence</span></span>
-<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;</span></span>
-<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 1 state  State                4</span></span>
-<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 2 county State--County       25</span></span></code></pre></div>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>tst<span class="sc">$</span>geog_levels[[<span class="dv">1</span>]]</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 3</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;   name   description   sequence</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;            &lt;int&gt;</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 1 state  State                4</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt; 2 county State--County       25</span></span></code></pre></div>
 <p>To filter on these columns, we can use <code>map_lgl()</code> from
 <code>{purrr}</code>. For instance, to find all time series tables that
 include data from a particular year:</p>
@@ -480,8 +491,8 @@ article</a>.</p>
 <h3>Detailed metadata</h3>
 <p>Once we have identified a data source of interest, we can find out
 more about its detailed options by providing its name to the
-corresponding argument of <code>get_metadata_nhgis()</code>:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cAg_meta <span class="ot">&lt;-</span> <span class="fu">get_metadata_nhgis</span>(<span class="at">dataset =</span> <span class="st">&quot;1900_cAg&quot;</span>)</span></code></pre></div>
+corresponding argument of <code>get_metadata()</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cAg_meta <span class="ot">&lt;-</span> <span class="fu">get_metadata</span>(<span class="st">&quot;nhgis&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;1900_cAg&quot;</span>)</span></code></pre></div>
 <p>This provides a comprehensive list of the possible specifications for
 the input data source. For instance, for the <code>1900_cAg</code>
 dataset, we have 66 tables to choose from, and 3 possible geographic
@@ -501,17 +512,18 @@ levels:</p>
 <span id="cb9-13"><a href="#cb9-13" tabindex="-1"></a><span class="co">#&gt;  9 NT9   Farms with Build… Farms w… AYL               9 1900_cAg               1</span></span>
 <span id="cb9-14"><a href="#cb9-14" tabindex="-1"></a><span class="co">#&gt; 10 NT10  Acres of Farmland Farms    AWT              10 1900_cAg               1</span></span>
 <span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a><span class="co">#&gt; # ℹ 56 more rows</span></span>
-<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>cAg_meta<span class="sc">$</span>geog_levels</span>
-<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
-<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt;   name   description   has_geog_extent_selection sequence</span></span>
-<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;         &lt;lgl&gt;                        &lt;int&gt;</span></span>
-<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt; 1 nation Nation        FALSE                            1</span></span>
-<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 2 state  State         FALSE                            4</span></span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 3 county State--County FALSE                           25</span></span></code></pre></div>
+<span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>cAg_meta<span class="sc">$</span>geog_levels</span>
+<span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a><span class="co">#&gt; # A tibble: 3 × 4</span></span>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a><span class="co">#&gt;   name   description   has_geog_extent_selection sequence</span></span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;  &lt;chr&gt;         &lt;lgl&gt;                        &lt;int&gt;</span></span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a><span class="co">#&gt; 1 nation Nation        FALSE                            1</span></span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a><span class="co">#&gt; 2 state  State         FALSE                            4</span></span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="co">#&gt; 3 county State--County FALSE                           25</span></span></code></pre></div>
 <p>You can also get detailed metadata for an individual data table.
 Since data tables belong to specific datasets, both need to be specified
 to identify a data table:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">get_metadata_nhgis</span>(<span class="at">dataset =</span> <span class="st">&quot;1900_cAg&quot;</span>, <span class="at">data_table =</span> <span class="st">&quot;NT2&quot;</span>)</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">get_metadata</span>(<span class="st">&quot;nhgis&quot;</span>, <span class="at">dataset =</span> <span class="st">&quot;1900_cAg&quot;</span>, <span class="at">data_table =</span> <span class="st">&quot;NT2&quot;</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="co">#&gt; $name</span></span>
 <span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co">#&gt; [1] &quot;NT2&quot;</span></span>
 <span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -536,23 +548,22 @@ to identify a data table:</p>
 <span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;       &lt;chr&gt;     </span></span>
 <span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a><span class="co">#&gt; 1 Total       AW3001</span></span></code></pre></div>
 <p>Note that the <code>name</code> element is the one that contains the
-codes used for interacting with the IPUMS API. The
+codes used for interacting with the IPUMS API. (The
 <code>nhgis_code</code> element refers to the prefix attached to
 individual variables in the output data, and the API will throw an error
-if you use it in an extract definition. For more details on interpreting
-each of the provided metadata elements, see the documentation for
-<code>get_metadata_nhgis()</code>.</p>
+if you use it in an extract definition.) For more details on
+interpreting each of the provided metadata elements, see the <a href="https://developer.ipums.org/docs/v2/workflows/explore_metadata/">IPUMS
+developer documentation</a>.</p>
 <p>Now that we have identified some of our options, we can go ahead and
 define an extract request to submit to the IPUMS API.</p>
 </div>
 </div>
-<div id="defining-an-ipums-nhgis-extract-request" class="section level2">
-<h2>Defining an IPUMS NHGIS extract request</h2>
-<p>To create an extract definition containing the specifications for a
-specific set of IPUMS NHGIS data, use
-<code>define_extract_nhgis()</code>.</p>
-<p>When you define an extract request, you can specify the data to be
-included in the extract and indicate the desired format and layout.</p>
+<div id="defining-an-ipums-aggregate-data-extract-request" class="section level2">
+<h2>Defining an IPUMS aggregate data extract request</h2>
+<p>To create an extract definition for an IPUMS aggregate data project,
+use <code>define_extract_agg()</code>. When you define an extract
+request, you can specify the data to be included in the extract and
+indicate the desired format and layout.</p>
 <div id="basic-extract-definitions" class="section level3">
 <h3>Basic extract definitions</h3>
 <p>Let’s say we’re interested in getting state-level data on the number
@@ -577,12 +588,15 @@ contained in tables <code>NT2</code> and <code>NT3</code>:</p>
 <div id="dataset-specifications" class="section level4">
 <h4>Dataset specifications</h4>
 <p>To request these data, we need to make an explicit <em>dataset
-specification</em>. All datasets must be associated with a selection of
-data tables and geographic levels. We can use the <code>ds_spec()</code>
-helper function to specify our selections for these parameters.
-<code>ds_spec()</code> bundles all the selections for a given dataset
-together into a single object (in this case, a <code>ds_spec</code>
-object):</p>
+specification</em>.</p>
+<p>For IPUMS NHGIS, all datasets must be associated with a selection of
+data tables and geographic levels. For IHGIS, all datasets must be
+associated with a selection of data tables and tabulation
+geographies.</p>
+<p>We can use the <code>ds_spec()</code> helper function to specify our
+selections for these parameters. <code>ds_spec()</code> bundles all the
+selections for a given dataset together into a single object (in this
+case, a <code>ds_spec</code> object):</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="fu">ds_spec</span>(</span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>  <span class="st">&quot;1900_cAg&quot;</span>,</span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="at">data_tables =</span> <span class="fu">c</span>(<span class="st">&quot;NT1&quot;</span>, <span class="st">&quot;NT2&quot;</span>),</span>
@@ -597,21 +611,39 @@ object):</p>
 <span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="co">#&gt;  - attr(*, &quot;class&quot;)= chr [1:3] &quot;ds_spec&quot; &quot;ipums_spec&quot; &quot;list&quot;</span></span></code></pre></div>
 <p>This dataset specification can then be provided to the extract
 definition:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>nhgis_ext <span class="ot">&lt;-</span> <span class="fu">define_extract_nhgis</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example farm data in 1900&quot;</span>,</span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="at">datasets =</span> dataset</span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>)</span>
-<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>nhgis_ext</span>
-<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; Description: Example farm data in 1900</span></span>
-<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; Dataset: 1900_cAg</span></span>
-<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt;   Tables: NT1, NT2</span></span>
-<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: state</span></span></code></pre></div>
-<p>Dataset specifications can also include selections for
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>nhgis_ext <span class="ot">&lt;-</span> <span class="fu">define_extract_agg</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>  <span class="st">&quot;nhgis&quot;</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example farm data in 1900&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>  <span class="at">datasets =</span> dataset</span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>)</span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>nhgis_ext</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a><span class="co">#&gt; Description: Example farm data in 1900</span></span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a><span class="co">#&gt; Dataset: 1900_cAg</span></span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a><span class="co">#&gt;   Tables: NT1, NT2</span></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: state</span></span></code></pre></div>
+<p>For NHGIS, dataset specifications can also include selections for
 <code>years</code> and <code>breakdown_values</code>, but these are not
 available for all datasets.</p>
+<p>For IHGIS, datasets must include a selection of
+<code>tabulation_geographies</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">define_extract_agg</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="st">&quot;ihgis&quot;</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example IHGIS extract&quot;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="at">datasets =</span> <span class="fu">ds_spec</span>(</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="st">&quot;KZ2009pop&quot;</span>, </span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="at">data_tables =</span> <span class="st">&quot;KZ2009pop.AAA&quot;</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>    <span class="at">tabulation_geographies =</span> <span class="st">&quot;KZ2009pop.g0&quot;</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  )</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>)</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS IHGIS extract </span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; Description: Example IHGIS extract</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; Dataset: KZ2009pop</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;   Tables: KZ2009pop.AAA</span></span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt;   Tabulation Geogs: KZ2009pop.g0</span></span></code></pre></div>
 </div>
 <div id="time-series-table-specifications" class="section level4">
 <h4>Time series table specifications</h4>
@@ -621,46 +653,53 @@ object containing a time series table specification.</p>
 <p>Time series tables do not contain individual data tables, but do
 require a geographic level selection, and allow an optional selection of
 years:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">define_extract_nhgis</span>(</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example time series table request&quot;</span>,</span>
-<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="at">time_series_tables =</span> <span class="fu">tst_spec</span>(</span>
-<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>    <span class="st">&quot;CW3&quot;</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>    <span class="at">geog_levels =</span> <span class="fu">c</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;tract&quot;</span>),</span>
-<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>    <span class="at">years =</span> <span class="fu">c</span>(<span class="st">&quot;1990&quot;</span>, <span class="st">&quot;2000&quot;</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  )</span>
-<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>)</span>
-<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
-<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt; Description: Example time series table request</span></span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; Time Series Table: CW3</span></span>
-<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: county, tract</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt;   Years: 1990, 2000</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">define_extract_agg</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="st">&quot;nhgis&quot;</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example time series table request&quot;</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>  <span class="at">time_series_tables =</span> <span class="fu">tst_spec</span>(</span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>    <span class="st">&quot;CW3&quot;</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>    <span class="at">geog_levels =</span> <span class="fu">c</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;tract&quot;</span>),</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>    <span class="at">years =</span> <span class="fu">c</span>(<span class="st">&quot;1990&quot;</span>, <span class="st">&quot;2000&quot;</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>  )</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>)</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; Description: Example time series table request</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; Time Series Table: CW3</span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: county, tract</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="co">#&gt;   Years: 1990, 2000</span></span></code></pre></div>
 </div>
 <div id="shapefile-specifications" class="section level4">
 <h4>Shapefile specifications</h4>
 <p>Shapefiles don’t have any additional specification options, and
 therefore can be requested simply by providing their names:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">define_extract_nhgis</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example shapefiles request&quot;</span>,</span>
-<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="at">shapefiles =</span> <span class="fu">c</span>(<span class="st">&quot;us_county_2021_tl2021&quot;</span>, <span class="st">&quot;us_county_2020_tl2020&quot;</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>)</span>
-<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
-<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a><span class="co">#&gt; Description: Example shapefiles request</span></span>
-<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="co">#&gt; Shapefiles: us_county_2021_tl2021, us_county_2020_tl2020</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">define_extract_agg</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="st">&quot;nhgis&quot;</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Example shapefiles request&quot;</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>  <span class="at">shapefiles =</span> <span class="fu">c</span>(<span class="st">&quot;us_county_2021_tl2021&quot;</span>, <span class="st">&quot;us_county_2020_tl2020&quot;</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; Description: Example shapefiles request</span></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="co">#&gt; Shapefiles: us_county_2021_tl2021, us_county_2020_tl2020</span></span></code></pre></div>
+<p>IHGIS shapefiles are not available via API, but can be downloaded
+from the <a href="https://ihgis.ipums.org/geography-gis">IHGIS
+website</a>.</p>
 </div>
 <div id="invalid-specifications" class="section level4">
 <h4>Invalid specifications</h4>
-<p>An attempt to define an extract that does not have all the required
-specifications for a given dataset or time series table will throw an
-error:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="fu">define_extract_nhgis</span>(</span>
-<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Invalid extract&quot;</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>  <span class="at">datasets =</span> <span class="fu">ds_spec</span>(<span class="st">&quot;1900_STF1&quot;</span>, <span class="at">data_tables =</span> <span class="st">&quot;NP1&quot;</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>)</span>
-<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a><span class="co">#&gt; Error in `validate_ipums_extract()`:</span></span>
-<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="co">#&gt; ! Invalid `ds_spec` specification:</span></span>
-<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a><span class="co">#&gt; ✖ `geog_levels` must not contain missing values.</span></span></code></pre></div>
+<p>An attempt to define an extract that includes unexpected
+specifications or does not have all the required specifications for the
+given collection will throw an error:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">define_extract_agg</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="st">&quot;nhgis&quot;</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Invalid extract&quot;</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="at">datasets =</span> <span class="fu">ds_spec</span>(<span class="st">&quot;1900_STF1&quot;</span>, <span class="st">&quot;NP1&quot;</span>, <span class="at">tabulation_geographies =</span> <span class="st">&quot;g0&quot;</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="co">#&gt; Error in `validate_ipums_spec()`:</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; ! Invalid `ds_spec` specification:</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt; ✖ `geog_levels` must not contain missing values.</span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt; ✖ `tabulation_geographies` must be missing.</span></span></code></pre></div>
 <p>Note that it is still possible to make invalid extract requests (for
 instance, by requesting a dataset or data table that doesn’t exist).
 This kind of issue will be caught upon submission to the API, not upon
@@ -672,68 +711,70 @@ the creation of the extract definition.</p>
 <p>It’s possible to request data for multiple datasets (or time series
 tables) in a single extract definition. To do so, pass a
 <code>list</code> of <code>ds_spec</code> or <code>tst_spec</code>
-objects in <code>define_extract_nhgis()</code>:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">define_extract_nhgis</span>(</span>
-<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Slightly more complicated extract request&quot;</span>,</span>
-<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="at">datasets =</span> <span class="fu">list</span>(</span>
-<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>    <span class="fu">ds_spec</span>(<span class="st">&quot;2018_ACS1&quot;</span>, <span class="st">&quot;B01001&quot;</span>, <span class="st">&quot;state&quot;</span>),</span>
-<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>    <span class="fu">ds_spec</span>(<span class="st">&quot;2019_ACS1&quot;</span>, <span class="st">&quot;B01001&quot;</span>, <span class="st">&quot;state&quot;</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>  ),</span>
-<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  <span class="at">shapefiles =</span> <span class="fu">c</span>(<span class="st">&quot;us_state_2018_tl2018&quot;</span>, <span class="st">&quot;us_state_2019_tl2019&quot;</span>)</span>
-<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a>)</span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
-<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; Description: Slightly more complicated extract request</span></span>
-<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#&gt; Dataset: 2018_ACS1</span></span>
-<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001</span></span>
-<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: state</span></span>
-<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="co">#&gt; Dataset: 2019_ACS1</span></span>
-<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001</span></span>
-<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: state</span></span>
-<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="co">#&gt; Shapefiles: us_state_2018_tl2018, us_state_2019_tl2019</span></span></code></pre></div>
+objects in <code>define_extract_agg()</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="fu">define_extract_agg</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>  <span class="st">&quot;nhgis&quot;</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Slightly more complicated extract request&quot;</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>  <span class="at">datasets =</span> <span class="fu">list</span>(</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>    <span class="fu">ds_spec</span>(<span class="st">&quot;2018_ACS1&quot;</span>, <span class="st">&quot;B01001&quot;</span>, <span class="st">&quot;state&quot;</span>),</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>    <span class="fu">ds_spec</span>(<span class="st">&quot;2019_ACS1&quot;</span>, <span class="st">&quot;B01001&quot;</span>, <span class="st">&quot;state&quot;</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>  ),</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>  <span class="at">shapefiles =</span> <span class="fu">c</span>(<span class="st">&quot;us_state_2018_tl2018&quot;</span>, <span class="st">&quot;us_state_2019_tl2019&quot;</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>)</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co">#&gt; Description: Slightly more complicated extract request</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt; Dataset: 2018_ACS1</span></span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: state</span></span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#&gt; Dataset: 2019_ACS1</span></span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001</span></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: state</span></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="co">#&gt; Shapefiles: us_state_2018_tl2018, us_state_2019_tl2019</span></span></code></pre></div>
 <p>For extracts with multiple datasets or time series tables, it may be
 easier to generate the specifications independently before creating your
 extract request object. You can quickly create multiple
 <code>ds_spec</code> objects by iterating across the specifications you
-want to include. Here, we use <code>{purrr}</code> to do so, but you
-could also use a <code>for</code> loop:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>ds_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2019_ACS1&quot;</span>, <span class="st">&quot;2018_ACS1&quot;</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;B01001&quot;</span>, <span class="st">&quot;B01002&quot;</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>geogs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;state&quot;</span>)</span>
-<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a></span>
-<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="co"># For each dataset to include, create a specification with the</span></span>
-<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="co"># data tabels and geog levels indicated above</span></span>
-<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>datasets <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
-<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>  ds_names,</span>
-<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">ds_spec</span>(<span class="at">name =</span> .x, <span class="at">data_tables =</span> tables, <span class="at">geog_levels =</span> geogs)</span>
-<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>)</span>
-<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>nhgis_ext <span class="ot">&lt;-</span> <span class="fu">define_extract_nhgis</span>(</span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Slightly more complicated extract request&quot;</span>,</span>
-<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>  <span class="at">datasets =</span> datasets</span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>)</span>
-<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>nhgis_ext</span>
-<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
-<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a><span class="co">#&gt; Description: Slightly more complicated extract request</span></span>
-<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a><span class="co">#&gt; Dataset: 2019_ACS1</span></span>
-<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001, B01002</span></span>
-<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: county, state</span></span>
-<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a><span class="co">#&gt; Dataset: 2018_ACS1</span></span>
-<span id="cb18-26"><a href="#cb18-26" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001, B01002</span></span>
-<span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: county, state</span></span></code></pre></div>
+want to include. (This workflow works particularly well for ACS
+datasets, which often have the same data table names across datasets.)
+Here, we use <code>{purrr}</code> to do so, but you could also use a
+<code>for</code> loop:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>ds_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2019_ACS1&quot;</span>, <span class="st">&quot;2018_ACS1&quot;</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>tables <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;B01001&quot;</span>, <span class="st">&quot;B01002&quot;</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>geogs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;county&quot;</span>, <span class="st">&quot;state&quot;</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="co"># For each dataset to include, create a specification with the</span></span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a><span class="co"># data tabels and geog levels indicated above</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>datasets <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>  ds_names,</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>  <span class="sc">~</span> <span class="fu">ds_spec</span>(<span class="at">name =</span> .x, <span class="at">data_tables =</span> tables, <span class="at">geog_levels =</span> geogs)</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>)</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>nhgis_ext <span class="ot">&lt;-</span> <span class="fu">define_extract_agg</span>(</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>  <span class="st">&quot;nhgis&quot;</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;Slightly more complicated extract request&quot;</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>  <span class="at">datasets =</span> datasets</span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a>)</span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a>nhgis_ext</span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a><span class="co">#&gt; Unsubmitted IPUMS NHGIS extract </span></span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a><span class="co">#&gt; Description: Slightly more complicated extract request</span></span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a><span class="co">#&gt; Dataset: 2019_ACS1</span></span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001, B01002</span></span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: county, state</span></span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a><span class="co">#&gt; Dataset: 2018_ACS1</span></span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a><span class="co">#&gt;   Tables: B01001, B01002</span></span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a><span class="co">#&gt;   Geog Levels: county, state</span></span></code></pre></div>
 <p>This workflow also makes it easy to quickly update the specifications
 in the future. For instance, to add the 2017 ACS 1-year data to the
 extract definition above, you’d only need to add
 <code>&quot;2017_ACS1&quot;</code> to the <code>ds_names</code> variable. The
 iteration would automatically add the selected tables and geog levels
-for the new dataset. (This workflow works particularly well for ACS
-datasets, which often have the same data table names across
-datasets.)</p>
+for the new dataset.</p>
 </div>
 <div id="data-layout-and-file-format" class="section level3">
 <h3>Data layout and file format</h3>
@@ -746,18 +787,15 @@ should be organized.</p>
 types, use the <code>breakdown_and_data_type_layout</code> argument to
 specify a layout . This is most common for data sources that contain
 both estimates and margins of error, like the ACS.</p>
-<p>File formats can be specified with the <code>data_format</code>
-argument. IPUMS NHGIS currently distributes files in csv and fixed-width
-format.</p>
-<p>See the documentation for <code>define_extract_nhgis()</code> for
-more details on these options.</p>
+<p>See the documentation for <code>define_extract_agg()</code> for more
+details on these options.</p>
 </div>
 </div>
 <div id="next-steps" class="section level2">
 <h2>Next steps</h2>
 <p>Once you have defined an extract request, you can submit the extract
 for processing:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>nhgis_ext_submitted <span class="ot">&lt;-</span> <span class="fu">submit_extract</span>(nhgis_ext)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>nhgis_ext_submitted <span class="ot">&lt;-</span> <span class="fu">submit_extract</span>(nhgis_ext)</span></code></pre></div>
 <p>The workflow for submitting and monitoring an extract request and
 downloading its files when complete is described in the <a href="ipums-api.html">IPUMS API introduction</a>.</p>
 </div>
