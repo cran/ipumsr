@@ -96,6 +96,7 @@ NULL
 #'   + [IPUMS USA](https://usa.ipums.org/)
 #'   + [IPUMS CPS](https://cps.ipums.org/)
 #'   + [IPUMS International](https://international.ipums.org/)
+#'   + [IPUMS DHS](https://www.idhsdata.org/idhs/)
 #'   + IPUMS Time Use ([ATUS](https://www.atusdata.org/atus/), [AHTUS](https://www.ahtusdata.org/ahtus/), [MTUS](https://www.mtusdata.org/mtus/))
 #'   + IPUMS Health Surveys ([NHIS](https://nhis.ipums.org/), [MEPS](https://meps.ipums.org/))
 #'
@@ -581,22 +582,10 @@ define_extract_usa <- function(description,
                                rectangular_on = NULL,
                                case_select_who = "individuals",
                                data_quality_flags = NULL) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.8.0",
     "define_extract_usa()",
     "define_extract_micro()"
-  )
-
-  define_extract_micro(
-    collection = "usa",
-    description = description,
-    samples = samples,
-    variables = variables,
-    data_format = data_format,
-    data_structure = data_structure,
-    rectangular_on = rectangular_on,
-    case_select_who = case_select_who,
-    data_quality_flags = data_quality_flags
   )
 }
 
@@ -610,22 +599,10 @@ define_extract_cps <- function(description,
                                rectangular_on = NULL,
                                case_select_who = "individuals",
                                data_quality_flags = NULL) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.8.0",
     "define_extract_cps()",
     "define_extract_micro()"
-  )
-
-  define_extract_micro(
-    collection = "cps",
-    description = description,
-    samples = samples,
-    variables = variables,
-    data_format = data_format,
-    data_structure = data_structure,
-    rectangular_on = rectangular_on,
-    case_select_who = case_select_who,
-    data_quality_flags = data_quality_flags
   )
 }
 
@@ -639,22 +616,10 @@ define_extract_ipumsi <- function(description,
                                   rectangular_on = NULL,
                                   case_select_who = "individuals",
                                   data_quality_flags = NULL) {
-  lifecycle::deprecate_warn(
+  lifecycle::deprecate_stop(
     "0.8.0",
     "define_extract_ipumsi()",
     "define_extract_micro()"
-  )
-
-  define_extract_micro(
-    collection = "ipumsi",
-    description = description,
-    samples = samples,
-    variables = variables,
-    data_format = data_format,
-    data_structure = data_structure,
-    rectangular_on = rectangular_on,
-    case_select_who = case_select_who,
-    data_quality_flags = data_quality_flags
   )
 }
 

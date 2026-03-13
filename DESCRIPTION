@@ -1,6 +1,6 @@
 Package: ipumsr
 Title: An R Interface for Downloading, Reading, and Handling IPUMS Data
-Version: 0.9.0
+Version: 0.10.0
 Authors@R: c(
     person("Greg Freedman Ellis", role = "aut"),
     person("Derek Burk", , , "ipums+cran@umn.edu", role = c("aut", "cre")),
@@ -20,7 +20,7 @@ License: Mozilla Public License 2.0
 URL: https://tech.popdata.org/ipumsr/, https://github.com/ipums/ipumsr,
         https://www.ipums.org
 BugReports: https://github.com/ipums/ipumsr/issues
-Depends: R (>= 3.6)
+Depends: R (>= 4.1)
 Imports: dplyr (>= 0.7.0), haven (>= 2.2.0), hipread (>= 0.2.0), httr,
         jsonlite, lifecycle, purrr, R6, readr, rlang, tibble,
         tidyselect, xml2, zeallot
@@ -31,10 +31,10 @@ Suggests: biglm, covr, crayon, DBI, dbplyr, DT, ggplot2, htmltools,
 VignetteBuilder: knitr
 Contact: ipums@umn.edu
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2025-06-04 16:11:38 UTC; robe2037
+Packaged: 2026-03-12 17:02:45 UTC; Derek
 Author: Greg Freedman Ellis [aut],
   Derek Burk [aut, cre],
   Finn Roberts [aut],
@@ -44,4 +44,4 @@ Author: Greg Freedman Ellis [aut],
   Institute for Social Research and Data Innovation [cph]
 Maintainer: Derek Burk <ipums+cran@umn.edu>
 Repository: CRAN
-Date/Publication: 2025-06-04 16:50:02 UTC
+Date/Publication: 2026-03-13 08:00:14 UTC

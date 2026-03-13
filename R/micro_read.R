@@ -9,7 +9,7 @@
 #' Read a microdata dataset downloaded from the IPUMS extract system.
 #'
 #' Two files are required to load IPUMS microdata extracts:
-#' - A [DDI codebook](https://ddialliance.org/introduction-to-ddi) file
+#' - A [DDI codebook](https://ddialliance.org) file
 #'   (.xml) used to parse the extract's data file
 #' - A data file (either .dat.gz or .csv.gz)
 #'
@@ -358,7 +358,7 @@ warn_if_lower_vars_ignored <- function(ddi, lower_vars, call = caller_env()) {
 
 check_valid_ddi <- function(ddi, call = caller_env()) {
   is_ipums_ddi <- inherits(ddi, "ipums_ddi")
-  is_xml <- tools::file_ext(ddi) == "xml"
+  is_xml <- is.character(ddi) && tools::file_ext(ddi) == "xml"
 
   if (!is_ipums_ddi && !is_xml) {
     rlang::abort(
